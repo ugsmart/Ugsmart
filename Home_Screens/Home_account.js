@@ -9,12 +9,10 @@ import {
 } from "react-native";
 import { Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
+import { auth } from "../Firebase";
 
 const Logout = () => {
-  return Alert.alert("Ugsmart", "You are sure you want to Log out?", [
-    { text: "Yes" },
-    { text: "No" },
-  ]);
+  auth.signOut();
 };
 
 const Delete = () => {

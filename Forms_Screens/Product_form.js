@@ -4,6 +4,7 @@ import { Button, Icon } from 'react-native-elements'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 import { RadioButton } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
+import { storage } from '../Firebase';
 
 const Inputview = ({text}) =>{
   return(
@@ -83,6 +84,10 @@ const Barter = ()=>{
 }
 
 export default function Pform() {
+
+  const upload = ()=>{
+    storage.ref
+  }
 
   //....Image Picker Codes....///
   const[image1,setimage1] = useState(null)

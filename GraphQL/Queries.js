@@ -47,17 +47,25 @@ export const GET_EVENTS = gql`
   }
 `;
 
-export const GET_PRODUCT_CATEGORY= gql `
-query Product_Cate($cate:String!){
-  Product_Cate(cate:$cate){
-    _id
-    Name
-    Category
-    Bater
-    Price
-    Images
-    usermail
-    createdAt
+export const GET_PRODUCT_CATEGORY = gql`
+  query Product_Cate($cate: String!) {
+    Product_Cate(cate: $cate) {
+      _id
+      Name
+      Category
+      Bater
+      Price
+      Images
+      usermail
+      createdAt
+    }
   }
-}
-`
+`;
+export const GET_PROFILE = gql`
+  query Profile($user: String!) {
+    Profile(user: $user) {
+      _id
+      Tutor
+    }
+  }
+`;

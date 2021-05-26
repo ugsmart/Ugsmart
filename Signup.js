@@ -11,7 +11,8 @@ import { Button, Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 
 import { auth } from "./Firebase";
-
+import { useMutation } from "@apollo/client";
+import { CREATE_USER } from "./GraphQL/Mutations";
 const Textview = ({ text, num, icon, value, setValue }) => {
   return (
     <View
@@ -111,6 +112,7 @@ const Textview1 = ({ num, value, setValue }) => {
 };
 
 export default function Signup({ navigation }) {
+  const [Add_User] = useMutation(CREATE_USER);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -120,12 +122,21 @@ export default function Signup({ navigation }) {
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((authUser) => {
-        authUser.user.updateProfile({
-          displayName: name,
-        });
-
+        Add_User({
+          variables: {
+            Name: name,
+            Email: email,
+            Contact: phone,
+          },
+        })
+          .then(() => {
+            alert("You have successfully registered");
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("Error occured, Try Again");
+          });
         console.log(authUser);
-        alert("success");
       })
       .catch((err) => {
         alert(err.message);

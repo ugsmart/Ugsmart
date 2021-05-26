@@ -17,6 +17,8 @@ import Change from "./Accounts_Screen/Changepass";
 import Edit from "./Accounts_Screen/Edit";
 import Invite from "./Accounts_Screen/Invite";
 import Verify from "./Verify";
+import TutorEdit from "./Forms_Screens/Edit_Tutor_form";
+import Splash from "./SplashScreen";
 
 //icon={{name:'person-outline', type:'ionicon'}}
 //Header Right view...
@@ -46,6 +48,11 @@ const Main = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+          name="Splash"
+          component={Splash}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Verify"
           component={Verify}
@@ -96,6 +103,11 @@ const Main = () => {
           name="Ctutor"
           options={{ headerTitle: null, headerStyle: { elevation: 0 } }}
           component={Tform}
+        />
+        <Stack.Screen
+          name="EditTutor"
+          options={{ headerTitle: null, headerStyle: { elevation: 0 } }}
+          component={TutorEdit}
         />
         <Stack.Screen
           name="Edit"

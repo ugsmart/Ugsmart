@@ -44,18 +44,20 @@ export default function App() {
 
   if (userLoggedIn === null) {
     return (
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Intro" component={Intro} />
-          <Stack.Screen name="Login" component={Login} />
+      <ApolloProvider client={client}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Intro" component={Intro} />
+            <Stack.Screen name="Login" component={Login} />
 
-          <Stack.Screen
-            name="Signup"
-            component={Signup}
-            options={{ headerShown: true, headerTitle: null }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+            <Stack.Screen
+              name="Signup"
+              component={Signup}
+              options={{ headerShown: true, headerTitle: null }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ApolloProvider>
     );
   }
   return (

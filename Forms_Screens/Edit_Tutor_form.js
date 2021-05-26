@@ -10,9 +10,9 @@ import {
 import { Button, Avatar } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import * as ImagePicker from "expo-image-picker";
-import { ADD_TUTOR, STATUS_CHANGE } from "../GraphQL/Mutations";
+import { ADD_TUTOR } from "../GraphQL/Mutations";
 import { useMutation } from "@apollo/client";
-import { auth, storage } from "../Firebase";
+import { auth } from "../Firebase";
 
 const Inputview = ({ text, value, setValue }) => {
   return (
@@ -62,9 +62,7 @@ const Ipicker2 = ({ img, fun }) => {
   );
 };
 
-export default function Tform({ navigation }) {
-  const [Add_Tutor] = useMutation(ADD_TUTOR);
-  const [Status_change] = useMutation(STATUS_CHANGE);
+export default function TutorEdit({ navigation }) {
   const [program, setProgram] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -95,7 +93,7 @@ export default function Tform({ navigation }) {
     }
   };
 
-  const upload = async () => {
+  const upload = () => {
     if (
       program === "" ||
       description === "" ||
@@ -104,49 +102,16 @@ export default function Tform({ navigation }) {
     ) {
       alert("Please fill in all the relevant information");
     } else {
-      const response = await fetch(image);
-      const blob = await response.blob();
       const bucketName = "TutorImages";
-      const storageRef = storage
-        .ref()
-        .child(`${bucketName}/${Date.now().toString()}`);
-      storageRef.put(blob).on(
+      const storageRef = storage.ref(`${bucketName}/${Date.now().toString()}`);
+      storageRef.put(image).on(
         "state_changed",
         () => {},
         (err) => {
           console.log(err);
-          alert(err.message);
         },
         async () => {
           const url = await storageRef.getDownloadURL();
-          console.log(url);
-          Add_Tutor({
-            variables: {
-              Program: program,
-              Description: description,
-              Price: price,
-              Image: url,
-              usermail: auth.currentUser.email,
-            },
-          })
-            .then((data) => {
-              console.log(data);
-              Status_change({
-                variables: {
-                  user: auth.currentUser.email,
-                  status: true,
-                },
-              })
-                .then(() => {
-                  Alert.alert("Tutor Profile has been setup sucessfully");
-                  navigation.goBack();
-                })
-                .catch((err) => console.log(err));
-            })
-            .catch((err) => {
-              console.log(err);
-              Alert.alert("Error Ocurred, Please try again");
-            });
         }
       );
     }
@@ -157,9 +122,9 @@ export default function Tform({ navigation }) {
       contentContainerStyle={{ flexGrow: 1 }}
       style={styles.container}
     >
-      <Text style={styles.Htext}>Tutor Form</Text>
+      <Text style={styles.Htext}>Edit Tutor Profile</Text>
       <View style={styles.Mview}>
-        {Screens()}
+        {/* {Screens()} */}
         <Inputview
           text="Program of Study"
           value={program}
@@ -174,7 +139,7 @@ export default function Tform({ navigation }) {
         <Button
           title="Done"
           onPress={() => {
-            upload();
+            // upload()
           }}
           buttonStyle={{
             marginTop: 20,

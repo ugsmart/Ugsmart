@@ -7,19 +7,28 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  Alert,
 } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { RadioButton } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { storage } from "../Firebase";
+import { auth, storage } from "../Firebase";
+import { ADD_EVENT } from "../GraphQL/Mutations";
+import { useMutation } from "@apollo/client";
 
-const Inputview = ({ text }) => {
+const Inputview = ({ text, value, setValue, keyboard = "default" }) => {
   return (
     <View>
       <Text style={styles.Text}>{text}</Text>
-      <TextInput multiline={true} style={styles.Input} />
+      <TextInput
+        multiline={true}
+        style={styles.Input}
+        value={value}
+        onChangeText={setValue}
+        keyboardType={keyboard}
+      />
     </View>
   );
 };
@@ -102,14 +111,13 @@ const Iview = ({ img, fun }) => {
   );
 };
 
-const Catego = () => {
-  const [cat, setcat] = useState("");
+const Catego = ({ cat, setCat }) => {
   return (
     <View>
       <Text style={styles.Text}>Event Category</Text>
       <RadioButton.Group
         onValueChange={(value) => {
-          setcat(value);
+          setCat(value);
         }}
         value={cat}
       >
@@ -128,9 +136,26 @@ const Catego = () => {
 };
 
 export default function Eform() {
-  //....Image Picker Codes....///
+  const [Add_Event, { error }] = useMutation(ADD_EVENT);
+
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  //Variables for Date n Time Picker Modal
+  const [showd, setd] = useState(false);
+  const [showt, sett] = useState(false);
+  const [date, setdate] = useState("Date");
+  const [time, settime] = useState("Time");
+
+  const [cat, setCat] = useState("");
+
+  //Variable For Date n Time for Server
+  const [dnt, setdnt] = useState();
+
   const [image, setimage] = useState(null);
   const [done, setdone] = useState(false);
+
+  //....Image Picker Codes....///
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -146,6 +171,7 @@ export default function Eform() {
     }
   };
   //End...
+  const addEvent = () => {};
 
   const Screen = () => {
     if (done) {
@@ -154,32 +180,58 @@ export default function Eform() {
       return <Ipicker fun={pickImage} />;
     }
   };
-  //Variables for Date n Time Picker Modal
-  const [showd, setd] = useState(false);
-  const [showt, sett] = useState(false);
-  const [date, setdate] = useState("Date");
-  const [time, settime] = useState("Time");
-  //End...
 
-  //Variable For Date n Time for Server
-  const [dnt, setdnt] = useState();
-
-  const upload = () => {
-    const bucketName = "EventImages";
-    const storageRef = storage.ref(`${bucketName}/test`);
-    storageRef.put(image).on(
-      "state_changed",
-      () => {},
-      (err) => {
-        console.log(err);
-      },
-      async () => {
-        const url = await storageRef.getDownloadURL();
-        console.log(url);
-      }
-    );
+  const upload = async () => {
+    if (
+      name === "" ||
+      cat === "" ||
+      description === "" ||
+      price === "" ||
+      date === "Date" ||
+      time === "Time" ||
+      image === null
+    ) {
+      alert("Please fill in all the relevant information");
+    } else {
+      const response = await fetch(image);
+      const blob = await response.blob();
+      const bucketName = "EventImages";
+      const storageRef = storage
+        .ref()
+        .child(`${bucketName}/${Date.now().toString()}`);
+      storageRef.put(blob).on(
+        "state_changed",
+        () => {},
+        (err) => {
+          console.log(err);
+        },
+        async () => {
+          const url = await storageRef.getDownloadURL();
+          console.log(url);
+          Add_Event({
+            variables: {
+              Name: name,
+              Category: cat,
+              Description: description,
+              Price: price,
+              Time: time,
+              Date: date,
+              Flyer: url,
+              usermail: auth.currentUser.email,
+            },
+          })
+            .then((data) => {
+              console.log(data);
+              Alert.alert("Event has been added sucessfully");
+            })
+            .catch((err) => {
+              console.log(err);
+              Alert.alert("Error Ocurred, Please try again");
+            });
+        }
+      );
+    }
   };
-
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -187,10 +239,19 @@ export default function Eform() {
     >
       <View style={styles.Mview}>
         {Screen()}
-        <Inputview text="Event Name" />
-        <Catego />
-        <Inputview text="Description" />
-        <Inputview text="Price Details" />
+        <Inputview text="Event Name" value={name} setValue={setName} />
+        <Catego cat={cat} setCat={setCat} />
+        <Inputview
+          text="Description"
+          value={description}
+          setValue={setDescription}
+        />
+        <Inputview
+          text="Price Details"
+          value={price}
+          setValue={setPrice}
+          keyboard="number-pad"
+        />
         <DnTview
           tnd={setdnt}
           show1={showd}

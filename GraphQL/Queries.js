@@ -40,7 +40,8 @@ export const GET_EVENTS = gql`
       Description
       Price
       Time
-      Flier
+      Date
+      Flyer
       usermail
       createdAt
     }
@@ -66,6 +67,22 @@ export const GET_PROFILE = gql`
     Profile(user: $user) {
       _id
       Tutor
+    }
+  }
+`;
+export const MY_EVENTS = gql`
+  query User_Event($user: String!) {
+    User_Event(user: $user) {
+      _id
+      Name
+      Category
+      Description
+      Price
+      Time
+      Date
+      Flyer
+      usermail
+      createdAt
     }
   }
 `;

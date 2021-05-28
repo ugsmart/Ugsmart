@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,7 +15,7 @@ import { RadioButton } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { auth, storage } from "../Firebase";
-import { ADD_EVENT } from "../GraphQL/Mutations";
+import { ADD_EVENT, EDIT_EVENT } from "../GraphQL/Mutations";
 import { useMutation } from "@apollo/client";
 
 const Inputview = ({ text, value, setValue, keyboard = "default" }) => {
@@ -135,9 +135,10 @@ const Catego = ({ cat, setCat }) => {
   );
 };
 
-export default function Eform({ navigation }) {
-  const [Add_Event, { error }] = useMutation(ADD_EVENT);
-
+export default function EditEvent({ navigation, route }) {
+  const { item } = route.params;
+  console.log(item);
+  const [Edit_Event] = useMutation(EDIT_EVENT);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -145,16 +146,20 @@ export default function Eform({ navigation }) {
   //Variables for Date n Time Picker Modal
   const [showd, setd] = useState(false);
   const [showt, sett] = useState(false);
-  const [date, setdate] = useState("Date");
-  const [time, settime] = useState("Time");
-
+  const [date, setDate] = useState("Date");
+  const [time, setTime] = useState("Time");
   const [cat, setCat] = useState("");
-
-  //Variable For Date n Time for Server
   const [dnt, setdnt] = useState();
-
   const [image, setimage] = useState(null);
   const [done, setdone] = useState(false);
+  useEffect(() => {
+    setCat(item.Category);
+    setDescription(item.Description);
+    setName(item.Name);
+    setPrice(item.Price);
+    setTime(item.Time);
+    setDate(item.Date);
+  }, [item]);
 
   //....Image Picker Codes....///
   const pickImage = async () => {
@@ -172,7 +177,6 @@ export default function Eform({ navigation }) {
     }
   };
   //End...
-  const addEvent = () => {};
 
   const Screen = () => {
     if (done) {
@@ -182,7 +186,7 @@ export default function Eform({ navigation }) {
     }
   };
 
-  const upload = async () => {
+  const update = async () => {
     if (
       name === "" ||
       cat === "" ||
@@ -210,29 +214,6 @@ export default function Eform({ navigation }) {
         async () => {
           const url = await storageRef.getDownloadURL();
           console.log(url);
-          Add_Event({
-            variables: {
-              Name: name,
-              Category: cat,
-              Description: description,
-              Price: price,
-              Time: time,
-              Date: date,
-              Flyer: url,
-              usermail: auth.currentUser.email,
-            },
-          })
-            .then((data) => {
-              console.log(data);
-              setLoading(false);
-              Alert.alert("Event has been added sucessfully");
-              navigation.goBack();
-            })
-            .catch((err) => {
-              setLoading(false);
-              console.log(err);
-              Alert.alert("Error Ocurred, Please try again");
-            });
         }
       );
     }
@@ -256,8 +237,8 @@ export default function Eform({ navigation }) {
           tnd={setdnt}
           show1={showd}
           date={date}
-          tim={settime}
-          dat={setdate}
+          tim={setTime}
+          dat={setDate}
           time={time}
           show2={showt}
           set1={setd}
@@ -266,7 +247,7 @@ export default function Eform({ navigation }) {
         <Button
           title="Done"
           onPress={() => {
-            upload();
+            // update();
           }}
           buttonStyle={{
             marginTop: 20,

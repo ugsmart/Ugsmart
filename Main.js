@@ -19,6 +19,8 @@ import Invite from "./Accounts_Screen/Invite";
 import Verify from "./Verify";
 import TutorEdit from "./Forms_Screens/Edit_Tutor_form";
 import Splash from "./SplashScreen";
+import Eform from "./Forms_Screens/Event_form";
+import EditEvent from "./Forms_Screens/Edit_Event_Form";
 
 //icon={{name:'person-outline', type:'ionicon'}}
 //Header Right view...
@@ -37,8 +39,8 @@ const Left = () => {
 const Header = () => {
   return (
     <Image
-      style={{ width: RFPercentage(5.5), height: RFPercentage(5.5) }}
-      source={require("./assets/img.png")}
+      style={{ width: RFPercentage(7.5), height: RFPercentage(7.5) }}
+      source={require("./assets/icon.png")}
     />
   );
 };
@@ -80,6 +82,11 @@ const Main = () => {
           component={Ievent}
         />
         <Stack.Screen
+          name="Event Form"
+          options={{ headerStyle: { elevation: 0 } }}
+          component={Eform}
+        />
+        <Stack.Screen
           name="Tutor Info"
           options={{ headerStyle: { elevation: 0 } }}
           component={Itutor}
@@ -93,6 +100,11 @@ const Main = () => {
           name="Event"
           options={{ headerStyle: { elevation: 0 } }}
           component={Sevent}
+        />
+        <Stack.Screen
+          name="Edit Event"
+          options={{ headerStyle: { elevation: 0 } }}
+          component={EditEvent}
         />
         <Stack.Screen
           name="Product"

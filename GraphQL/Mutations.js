@@ -61,6 +61,8 @@ export const ADD_TUTOR = gql`
   mutation Add_Tutor(
     $Program: String!
     $Description: String!
+    $Name: String!
+    $College: String!
     $Price: String!
     $Image: String!
     $usermail: String!
@@ -68,6 +70,8 @@ export const ADD_TUTOR = gql`
     Add_Tutor(
       Program: $Program
       Description: $Description
+      Name: $Name
+      College: $College
       Price: $Price
       Image: $Image
       usermail: $usermail
@@ -111,6 +115,34 @@ export const EDIT_EVENT = gql`
       Flyer: $Flyer
       id: $id
     ) {
+      _id
+    }
+  }
+`;
+export const EDIT_TUTOR = gql`
+  mutation Edit_Profile(
+    $Program: String!
+    $Description: String!
+    $Price: String!
+    $Image: String!
+    $College: String!
+    $id: String!
+  ) {
+    Edit_Profile(
+      Program: $Program
+      Description: $Description
+      Price: $Price
+      Image: $Image
+      College: $College
+      id: $id
+    ) {
+      _id
+    }
+  }
+`;
+export const DELETE_TUTOR = gql`
+  mutation Delete_Tutor($email: String!) {
+    Delete_Tutor(email: $email) {
       _id
     }
   }

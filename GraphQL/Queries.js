@@ -6,6 +6,7 @@ export const GET_TUTORS = gql`
       _id
       Program
       Description
+      Name
       Price
       Image
       usermail
@@ -83,6 +84,40 @@ export const MY_EVENTS = gql`
       Flyer
       usermail
       createdAt
+    }
+  }
+`;
+export const GET_EVENTS_CATEGORY = gql`
+  query Event_Cate($cate: String!) {
+    Event_Cate(cate: $cate) {
+      _id
+      Name
+      Category
+      Description
+      Date
+      Price
+      Time
+      Flyer
+      usermail
+      createdAt
+    }
+  }
+`;
+export const GET_TUTOR = gql`
+  query ($user: String!) {
+    User_Tutor(user: $user) {
+      _id
+      Program
+      Name
+      Description
+      Price
+      Image
+      College
+      usermail
+    }
+    Profile(user: $user) {
+      _id
+      Name
     }
   }
 `;

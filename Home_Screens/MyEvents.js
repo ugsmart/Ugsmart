@@ -12,7 +12,7 @@ import Loading from "../Loading";
 
 const noImage = require("../assets/noImage.jpg");
 
-const EventItem = ({ item, deleteEvent, toEdit }) => (
+const EventItem = ({ item, deleteEvent, toEdit, viewEvent }) => (
   <View style={styles.eventCon}>
     <View style={{ flexDirection: "row", alignItems: "center" }}>
       <Avatar
@@ -23,7 +23,14 @@ const EventItem = ({ item, deleteEvent, toEdit }) => (
       <Text style={styles.title}>{item.Name}</Text>
     </View>
     <View style={{ flexDirection: "row", marginTop: 7 }}>
-      <Button title="View" type="clear" titleStyle={{ color: "green" }} />
+      <Button
+        title="View"
+        type="clear"
+        titleStyle={{ color: "green" }}
+        onPress={() => {
+          viewEvent(item);
+        }}
+      />
       <Button
         title="Edit"
         type="clear"
@@ -56,6 +63,10 @@ const MyEvents = ({ navigation }) => {
     }
   }, [data]);
 
+  const refresh = () => {
+    refetch();
+  };
+
   const DeleteEvent = (id) => {
     return Alert.alert(
       "Delete Event",
@@ -71,7 +82,7 @@ const MyEvents = ({ navigation }) => {
             })
               .then(() => {
                 alert("Deleted Successfully");
-                refetch();
+                refresh();
               })
               .catch((err) => {
                 alert("Error occured, Try again");
@@ -84,13 +95,16 @@ const MyEvents = ({ navigation }) => {
     );
   };
   const toEdit = (item) => {
-    navigation.navigate("Edit Event", { item });
+    navigation.navigate("Edit Event", { item, refresh });
+  };
+  const viewEvent = (item) => {
+    navigation.navigate("Event Info", { item });
   };
   if (loading) {
     return <Loading />;
   }
   if (error) {
-    return <ErrorPage refresh={refetch} />;
+    return <ErrorPage refresh={refresh} />;
   }
   return (
     <View style={styles.container}>
@@ -112,7 +126,12 @@ const MyEvents = ({ navigation }) => {
           data={myEvents}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
-            <EventItem item={item} deleteEvent={DeleteEvent} toEdit={toEdit} />
+            <EventItem
+              item={item}
+              deleteEvent={DeleteEvent}
+              toEdit={toEdit}
+              viewEvent={viewEvent}
+            />
           )}
         />
       </View>

@@ -17,6 +17,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { auth, storage } from "../Firebase";
 import { ADD_EVENT, EDIT_EVENT } from "../GraphQL/Mutations";
 import { useMutation } from "@apollo/client";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const Inputview = ({ text, value, setValue, keyboard = "default" }) => {
   return (
@@ -136,8 +137,7 @@ const Catego = ({ cat, setCat }) => {
 };
 
 export default function EditEvent({ navigation, route }) {
-  const { item } = route.params;
-  console.log(item);
+  const { item, refresh } = route.params;
   const [Edit_Event] = useMutation(EDIT_EVENT);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -152,6 +152,8 @@ export default function EditEvent({ navigation, route }) {
   const [dnt, setdnt] = useState();
   const [image, setimage] = useState(null);
   const [done, setdone] = useState(false);
+  const [imgUrl, setImgUrl] = useState("");
+  const [deleteLoad, setDeleteLoad] = useState(false);
   useEffect(() => {
     setCat(item.Category);
     setDescription(item.Description);
@@ -159,8 +161,8 @@ export default function EditEvent({ navigation, route }) {
     setPrice(item.Price);
     setTime(item.Time);
     setDate(item.Date);
+    setImgUrl(item.Flyer);
   }, [item]);
-
   //....Image Picker Codes....///
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -185,6 +187,67 @@ export default function EditEvent({ navigation, route }) {
       return <Ipicker fun={pickImage} />;
     }
   };
+  const Photo = () => {
+    return (
+      <View style={{ flex: 1 }}>
+        <Image
+          source={{ uri: imgUrl }}
+          style={{ width: "100%", height: 200, alignSelf: "center" }}
+        />
+        <Button
+          type="outline"
+          title="delete"
+          containerStyle={{ alignSelf: "flex-end" }}
+          titleStyle={{ color: "red" }}
+          icon={<MaterialIcons name="delete" size={20} color="red" />}
+          iconRight
+          loading={deleteLoad}
+          onPress={DeleteImg}
+        />
+      </View>
+    );
+  };
+  const DeleteImg = () => {
+    setDeleteLoad(true);
+    storage
+      .refFromURL(imgUrl)
+      .delete()
+      .then(() => {
+        setImgUrl("");
+        setDeleteLoad(false);
+      })
+      .catch((e) => {
+        Alert.alert("Error", e.message);
+        setDeleteLoad(false);
+      });
+  };
+
+  const editEvent = (imgUrl) => {
+    Edit_Event({
+      variables: {
+        id: item._id,
+        Name: name,
+        Category: cat,
+        Description: description,
+        Price: price,
+        Time: time,
+        Date: date,
+        Flyer: imgUrl,
+        usermail: auth.currentUser.email,
+      },
+    })
+      .then(() => {
+        setLoading(false);
+        Alert.alert("Event has been updated sucessfully");
+        navigation.goBack();
+        refresh();
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+        Alert.alert("Error Ocurred, Please try again");
+      });
+  };
 
   const update = async () => {
     if (
@@ -194,28 +257,33 @@ export default function EditEvent({ navigation, route }) {
       price === "" ||
       date === "Date" ||
       time === "Time" ||
-      image === null
+      (image === null && imgUrl === "")
     ) {
       alert("Please fill in all the relevant information");
     } else {
-      setLoading(true);
-      const response = await fetch(image);
-      const blob = await response.blob();
-      const bucketName = "EventImages";
-      const storageRef = storage
-        .ref()
-        .child(`${bucketName}/${Date.now().toString()}`);
-      storageRef.put(blob).on(
-        "state_changed",
-        () => {},
-        (err) => {
-          console.log(err);
-        },
-        async () => {
-          const url = await storageRef.getDownloadURL();
-          console.log(url);
-        }
-      );
+      if (imgUrl) {
+        setLoading(true);
+        editEvent(imgUrl);
+      } else {
+        setLoading(true);
+        const response = await fetch(image);
+        const blob = await response.blob();
+        const bucketName = "EventImages";
+        const storageRef = storage
+          .ref()
+          .child(`${bucketName}/${Date.now().toString()}`);
+        storageRef.put(blob).on(
+          "state_changed",
+          () => {},
+          (err) => {
+            console.log(err);
+          },
+          async () => {
+            const url = await storageRef.getDownloadURL();
+            editEvent(url);
+          }
+        );
+      }
     }
   };
   return (
@@ -224,7 +292,7 @@ export default function EditEvent({ navigation, route }) {
       style={styles.container}
     >
       <View style={styles.Mview}>
-        {Screen()}
+        {imgUrl ? <Photo /> : Screen()}
         <Inputview text="Event Name" value={name} setValue={setName} />
         <Catego cat={cat} setCat={setCat} />
         <Inputview
@@ -245,9 +313,9 @@ export default function EditEvent({ navigation, route }) {
           set2={sett}
         />
         <Button
-          title="Done"
+          title="Update"
           onPress={() => {
-            // update();
+            update();
           }}
           buttonStyle={{
             marginTop: 20,

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { StyleSheet, View, ScrollView, Image, Text } from "react-native";
 import { Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
+const noImage = require("../assets/noImage.jpg");
 
-const Des_view = () => {
+const Des_view = ({ item }) => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -11,7 +12,7 @@ const Des_view = () => {
     >
       <View style={styles.container}>
         <Image
-          source={require("../assets/chu.png")}
+          source={item.Flyer ? { uri: item.Flyer } : noImage}
           style={{ height: "100%", width: "100%" }}
         />
       </View>
@@ -32,21 +33,35 @@ const Des_view = () => {
             />
           </View>
         </View>
-        <Text style={styles.text}>
-          Lorem ipsum dolor sit amet, unum alterum tincidunt vel an, oportere
-          dissentiet eam ut. Unum putent legimus vim ex, in odio omnium verear
-          per, te duo sapientem salutatus reprehendunt. Omittam fabellas
-          dissentias ei nam, voluptua officiis conceptam no duo. Alterum
-          detraxit hendrerit vix ex.
-        </Text>
+        <Text style={styles.text}>{item.Description}</Text>
+        <View style={styles.row}>
+          <Text style={styles.bold}>Date: </Text>
+          <Text style={styles.text}>{item.Date}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.bold}>Time: </Text>
+          <Text style={styles.text}>{item.Time}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.bold}>Price Details: </Text>
+          <Text style={styles.text}>{item.Price}</Text>
+        </View>
       </View>
     </ScrollView>
   );
 };
 
 //Ievent = Information event
-export default function Ievent() {
-  return <Des_view />;
+export default function Ievent({ route, navigation }) {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: item.Name,
+    });
+  }, [navigation]);
+  const { item } = route.params;
+  console.log(item);
+
+  return <Des_view item={item} />;
 }
 
 const styles = StyleSheet.create({
@@ -79,4 +94,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
   },
+  bold: {
+    fontWeight: "bold",
+    fontSize: RFPercentage(3.0),
+    fontFamily: "Noto",
+  },
+  row: { flexDirection: "row", alignItems: "center" },
 });

@@ -1,4 +1,5 @@
-import React from "react";
+import { useQuery } from "@apollo/client";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   ScrollView,
@@ -10,6 +11,10 @@ import {
 } from "react-native";
 import { Icon, Avatar } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
+import ErrorPage from "../ErrorPage";
+import { GET_TUTORS } from "../GraphQL/Queries";
+import Loading from "../Loading";
+const noImage = require("../assets/noImage.jpg");
 
 //Search Box Component used in the other Home views...
 export const Search = ({ place }) => {
@@ -43,30 +48,19 @@ export const Search = ({ place }) => {
 };
 //End...
 
-//Dummy Data used for our Tutor View...Should be removed afterApi Integrtion...
-const Data = [
-  { id: "1", name: "Ekow Nyankah", course: "Bsc. Computer Science" },
-  { id: "2", name: "David Adlai Nettey", course: "Bsc. Computer Science" },
-  { id: "3", name: "Cedric Ahenkorah", course: "Bsc.Computer Science" },
-  { id: "4", name: "Lynda Nettey", course: "Bsc.Earth Science" },
-  { id: "5", name: "Ama Nyankah", course: "Bsc.Information Tehnology" },
-  { id: "6", name: "Kofi Nyankah", course: "Bsc.Business Administration" },
-];
-//End...
-
 //Tutor Profile View....
-const Tutor = ({ nam, cor, nav }) => {
+const Tutor = ({ item, nav }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        nav.navigate("Tutor Info");
+        nav.navigate("Tutor Info", { item });
       }}
       style={styles.tutorview}
     >
       <Avatar
         size={RFPercentage(20)}
         rounded={true}
-        source={require("../assets/tutor.jpg")}
+        source={item.Image ? { uri: item.Image } : noImage}
       />
       <Text
         style={{
@@ -76,7 +70,7 @@ const Tutor = ({ nam, cor, nav }) => {
           marginTop: 10,
         }}
       >
-        {nam}
+        {item.Name}
       </Text>
       <Text
         style={{
@@ -85,7 +79,7 @@ const Tutor = ({ nam, cor, nav }) => {
           fontFamily: "Ranch",
         }}
       >
-        {cor}
+        {item.Program}
       </Text>
     </TouchableOpacity>
   );
@@ -93,6 +87,22 @@ const Tutor = ({ nam, cor, nav }) => {
 //End..
 
 export default function Htutor({ navigation }) {
+  const { data, loading, error, refetch } = useQuery(GET_TUTORS);
+  const [tutors, setTutors] = useState([]);
+  useEffect(() => {
+    if (data) {
+      setTutors(data.Tutors);
+    }
+  }, [data]);
+  const refresh = () => {
+    refetch();
+  };
+  if (loading) {
+    return <Loading />;
+  }
+  if (error) {
+    return <ErrorPage refresh={refresh} />;
+  }
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
@@ -102,11 +112,9 @@ export default function Htutor({ navigation }) {
         <View style={styles.content}>
           <FlatList
             numColumns={2}
-            data={Data}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <Tutor nav={navigation} cor={item.course} nam={item.name} />
-            )}
+            data={tutors}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }) => <Tutor nav={navigation} item={item} />}
           />
         </View>
       </View>

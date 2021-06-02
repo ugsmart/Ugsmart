@@ -83,39 +83,47 @@ const Iview = ({ img1, img2, img3, fun1, fun2, fun3 }) => {
     <View>
       <Text style={styles.Text}>Product Photo</Text>
       <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity
-          onPress={() => {
-            fun1();
-          }}
-          style={styles.Iopc}
-        >
-          <Image
-            style={{ flex: 1, width: "100%", borderRadius: 5 }}
-            source={{ uri: img1 }}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            fun2();
-          }}
-          style={styles.Iopc}
-        >
-          <Image
-            style={{ flex: 1, width: "100%", borderRadius: 5 }}
-            source={{ uri: img2 }}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            fun3();
-          }}
-          style={styles.Iopc}
-        >
-          <Image
-            style={{ flex: 1, width: "100%", borderRadius: 5 }}
-            source={{ uri: img3 }}
-          />
-        </TouchableOpacity>
+        <View style={{ flex: 1 }}>
+          <TouchableOpacity
+            onPress={() => {
+              fun1();
+            }}
+            style={styles.Iopc}
+          >
+            <Image
+              style={{ flex: 1, width: "100%", borderRadius: 5 }}
+              source={{ uri: img1 }}
+            />
+          </TouchableOpacity>
+          <Button title="upload" />
+        </View>
+        <View style={{ flex: 1 }}>
+          <TouchableOpacity
+            onPress={() => {
+              fun2();
+            }}
+            style={styles.Iopc}
+          >
+            <Image
+              style={{ flex: 1, width: "100%", borderRadius: 5 }}
+              source={{ uri: img2 }}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={{ flex: 1 }}>
+          <TouchableOpacity
+            onPress={() => {
+              fun3();
+            }}
+            style={styles.Iopc}
+          >
+            <Image
+              style={{ flex: 1, width: "100%", borderRadius: 5 }}
+              source={{ uri: img3 }}
+            />
+          </TouchableOpacity>
+          {img3 && <Button title="upload" />}
+        </View>
       </View>
     </View>
   );
@@ -337,7 +345,7 @@ export default function Pform() {
       }
     }
   };
-  console.log(loading);
+
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}

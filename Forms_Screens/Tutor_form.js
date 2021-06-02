@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Button, Avatar } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
+import { RadioButton } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import { ADD_TUTOR, STATUS_CHANGE } from "../GraphQL/Mutations";
 import { useMutation } from "@apollo/client";
@@ -62,12 +63,37 @@ const Ipicker2 = ({ img, fun }) => {
   );
 };
 
-export default function Tform({ navigation }) {
+const CollegeInput = ({ college, setCollege }) => {
+  return (
+    <View>
+      <Text style={styles.Text}>College</Text>
+      <RadioButton.Group
+        onValueChange={(value) => {
+          setCollege(value);
+        }}
+        value={college}
+      >
+        <RadioButton.Item label="Health  Sciences" value="Health  Sciences" />
+        <RadioButton.Item
+          label="Basic &  Applied Sciences"
+          value="Basic &  Applied Sciences"
+        />
+        <RadioButton.Item label="Humanities" value="Humanities" />
+        <RadioButton.Item label="Education" value="Education" />
+      </RadioButton.Group>
+    </View>
+  );
+};
+
+export default function Tform({ navigation, route }) {
+  const { refresh, userName } = route.params;
   const [Add_Tutor] = useMutation(ADD_TUTOR);
   const [Status_change] = useMutation(STATUS_CHANGE);
   const [program, setProgram] = useState("");
   const [description, setDescription] = useState("");
+  const [college, setCollege] = useState("");
   const [price, setPrice] = useState("");
+  const [loading, setLoading] = useState(false);
   //....Image Picker Codes....///
   const [image, setimage] = useState(null);
   const [done, setdone] = useState(false);
@@ -99,11 +125,13 @@ export default function Tform({ navigation }) {
     if (
       program === "" ||
       description === "" ||
+      college === "" ||
       price === "" ||
       image === null
     ) {
       alert("Please fill in all the relevant information");
     } else {
+      setLoading(true);
       const response = await fetch(image);
       const blob = await response.blob();
       const bucketName = "TutorImages";
@@ -125,27 +153,23 @@ export default function Tform({ navigation }) {
               Program: program,
               Description: description,
               Price: price,
+              College: college,
+              Name: userName,
               Image: url,
               usermail: auth.currentUser.email,
             },
           })
             .then((data) => {
               console.log(data);
-              Status_change({
-                variables: {
-                  user: auth.currentUser.email,
-                  status: true,
-                },
-              })
-                .then(() => {
-                  Alert.alert("Tutor Profile has been setup sucessfully");
-                  navigation.goBack();
-                })
-                .catch((err) => console.log(err));
+              Alert.alert("Tutor Profile has been setup sucessfully");
+              navigation.goBack();
+              refresh();
+              setLoading(false);
             })
             .catch((err) => {
               console.log(err);
               Alert.alert("Error Ocurred, Please try again");
+              setLoading(false);
             });
         }
       );
@@ -170,6 +194,7 @@ export default function Tform({ navigation }) {
           value={description}
           setValue={setDescription}
         />
+        <CollegeInput college={college} setCollege={setCollege} />
         <Inputview text="Price Details" value={price} setValue={setPrice} />
         <Button
           title="Done"
@@ -182,6 +207,7 @@ export default function Tform({ navigation }) {
             backgroundColor: "#37A7E8",
           }}
           containerStyle={{ width: "100%" }}
+          loading={loading}
         />
       </View>
     </ScrollView>

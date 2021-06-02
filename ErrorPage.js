@@ -13,7 +13,6 @@ const ErrorPage = ({ refresh }) => {
         type="outline"
         onPress={() => {
           refresh();
-          console.log("re");
         }}
       />
     </View>

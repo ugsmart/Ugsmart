@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,13 +6,16 @@ import {
   ScrollView,
   TextInput,
   Alert,
+  Image,
 } from "react-native";
 import { Button, Avatar } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import * as ImagePicker from "expo-image-picker";
-import { ADD_TUTOR } from "../GraphQL/Mutations";
+import { ADD_TUTOR, EDIT_TUTOR } from "../GraphQL/Mutations";
 import { useMutation } from "@apollo/client";
-import { auth } from "../Firebase";
+import { auth, storage } from "../Firebase";
+import { RadioButton } from "react-native-paper";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const Inputview = ({ text, value, setValue }) => {
   return (
@@ -62,13 +65,51 @@ const Ipicker2 = ({ img, fun }) => {
   );
 };
 
-export default function TutorEdit({ navigation }) {
+const CollegeInput = ({ college, setCollege }) => {
+  return (
+    <View>
+      <Text style={styles.Text}>College</Text>
+      <RadioButton.Group
+        onValueChange={(value) => {
+          setCollege(value);
+        }}
+        value={college}
+      >
+        <RadioButton.Item label="Health  Sciences" value="Health  Sciences" />
+        <RadioButton.Item
+          label="Basic &  Applied Sciences"
+          value="Basic &  Applied Sciences"
+        />
+        <RadioButton.Item label="Humanities" value="Humanities" />
+        <RadioButton.Item label="Education" value="Education" />
+      </RadioButton.Group>
+    </View>
+  );
+};
+
+export default function TutorEdit({ navigation, route }) {
+  const { item, refresh } = route.params;
   const [program, setProgram] = useState("");
   const [description, setDescription] = useState("");
+  const [college, setCollege] = useState("");
   const [price, setPrice] = useState("");
   //....Image Picker Codes....///
   const [image, setimage] = useState(null);
   const [done, setdone] = useState(false);
+  const [imgUrl, setImgUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [deleteLoad, setDeleteLoad] = useState(false);
+
+  const [Edit_Profile] = useMutation(EDIT_TUTOR);
+
+  useEffect(() => {
+    setProgram(item.Program);
+    setCollege(item.College);
+    setDescription(item.Description);
+    setPrice(item.Price);
+    setImgUrl(item.Image);
+  }, [item]);
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -83,7 +124,21 @@ export default function TutorEdit({ navigation }) {
       setdone(true);
     }
   };
-  //End...
+
+  const DeleteImg = () => {
+    setDeleteLoad(true);
+    storage
+      .refFromURL(imgUrl)
+      .delete()
+      .then(() => {
+        setImgUrl("");
+        setDeleteLoad(false);
+      })
+      .catch((e) => {
+        Alert.alert("Error", e.message);
+        setDeleteLoad(false);
+      });
+  };
 
   const Screens = () => {
     if (done) {
@@ -93,27 +148,84 @@ export default function TutorEdit({ navigation }) {
     }
   };
 
-  const upload = () => {
+  const Photo = () => {
+    return (
+      <View style={{ flex: 1 }}>
+        <Image
+          source={{ uri: imgUrl }}
+          style={{ width: "100%", height: 200, alignSelf: "center" }}
+        />
+        <Button
+          type="outline"
+          title="delete"
+          containerStyle={{ alignSelf: "flex-end" }}
+          titleStyle={{ color: "red" }}
+          icon={<MaterialIcons name="delete" size={20} color="red" />}
+          iconRight
+          loading={deleteLoad}
+          onPress={DeleteImg}
+        />
+      </View>
+    );
+  };
+
+  const editTutor = (imgUrl) => {
+    Edit_Profile({
+      variables: {
+        id: item._id,
+        Program: program,
+        Description: description,
+        Price: price,
+        College: college,
+        Image: imgUrl,
+      },
+    })
+      .then(() => {
+        Alert.alert("Tutor Profile has been updated sucessfully");
+        navigation.goBack();
+        refresh();
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        Alert.alert("Error Ocurred, Please try again");
+        setLoading(false);
+      });
+  };
+
+  const update = async () => {
     if (
       program === "" ||
       description === "" ||
       price === "" ||
-      image === null
+      (image === null && imgUrl === "")
     ) {
       alert("Please fill in all the relevant information");
     } else {
-      const bucketName = "TutorImages";
-      const storageRef = storage.ref(`${bucketName}/${Date.now().toString()}`);
-      storageRef.put(image).on(
-        "state_changed",
-        () => {},
-        (err) => {
-          console.log(err);
-        },
-        async () => {
-          const url = await storageRef.getDownloadURL();
-        }
-      );
+      if (imgUrl) {
+        setLoading(true);
+        editTutor(imgUrl);
+      } else {
+        setLoading(true);
+        const response = await fetch(image);
+        const blob = await response.blob();
+        const bucketName = "TutorImages";
+        const storageRef = storage
+          .ref()
+          .child(`${bucketName}/${Date.now().toString()}`);
+        storageRef.put(blob).on(
+          "state_changed",
+          () => {},
+          (err) => {
+            console.log(err);
+            alert(err.message);
+          },
+          async () => {
+            const url = await storageRef.getDownloadURL();
+            editTutor(url);
+          }
+        );
+      }
     }
   };
 
@@ -124,7 +236,7 @@ export default function TutorEdit({ navigation }) {
     >
       <Text style={styles.Htext}>Edit Tutor Profile</Text>
       <View style={styles.Mview}>
-        {/* {Screens()} */}
+        {imgUrl ? <Photo /> : Screens()}
         <Inputview
           text="Program of Study"
           value={program}
@@ -135,11 +247,12 @@ export default function TutorEdit({ navigation }) {
           value={description}
           setValue={setDescription}
         />
+        <CollegeInput college={college} setCollege={setCollege} />
         <Inputview text="Price Details" value={price} setValue={setPrice} />
         <Button
           title="Done"
           onPress={() => {
-            // upload()
+            update();
           }}
           buttonStyle={{
             marginTop: 20,
@@ -147,6 +260,7 @@ export default function TutorEdit({ navigation }) {
             backgroundColor: "#37A7E8",
           }}
           containerStyle={{ width: "100%" }}
+          loading={loading}
         />
       </View>
     </ScrollView>

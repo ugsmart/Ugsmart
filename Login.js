@@ -107,13 +107,17 @@ const Textview1 = ({ num, value, setPassword }) => {
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const login = () => {
+    setLoading(true);
     auth
       .signInWithEmailAndPassword(email, password)
-      .then(() => {})
+      .then(() => {
+        setLoading(false);
+      })
       .catch((err) => {
         alert(err.message);
+        setLoading(false);
       });
   };
 
@@ -149,6 +153,7 @@ export default function Login({ navigation }) {
           setPassword={setPassword}
         />
         <Button
+          loading={loading}
           title="Login"
           onPress={login}
           buttonStyle={{

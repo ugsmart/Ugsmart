@@ -5,18 +5,18 @@ import { TouchableOpacity } from "react-native";
 import { StyleSheet, Text, View } from "react-native";
 import { Avatar, Button, Icon } from "react-native-elements";
 import ErrorPage from "../ErrorPage";
-import { auth } from "../Firebase";
-import { DELETE_EVENT } from "../GraphQL/Mutations";
-import { MY_EVENTS } from "../GraphQL/Queries";
+import { auth, storage } from "../Firebase";
+import { DELETE_PRODUCT } from "../GraphQL/Mutations";
+import { MY_PRODUCTS } from "../GraphQL/Queries";
 import Loading from "../Loading";
 
 const noImage = require("../assets/noImage.jpg");
 
-const EventItem = ({ item, deleteEvent, toEdit, viewEvent }) => (
+const ProductItem = ({ item, toEdit, viewProduct, deleteProduct }) => (
   <View style={styles.eventCon}>
     <View style={{ flexDirection: "row", alignItems: "center" }}>
       <Avatar
-        source={item.Flyer ? { uri: item.Flyer } : noImage}
+        source={item.Images.Image1 ? { uri: item.Images.Image1 } : noImage}
         rounded
         size="medium"
       />
@@ -28,7 +28,7 @@ const EventItem = ({ item, deleteEvent, toEdit, viewEvent }) => (
         type="clear"
         titleStyle={{ color: "green" }}
         onPress={() => {
-          viewEvent(item);
+          viewProduct(item);
         }}
       />
       <Button
@@ -43,39 +43,44 @@ const EventItem = ({ item, deleteEvent, toEdit, viewEvent }) => (
         type="clear"
         titleStyle={{ color: "red" }}
         onPress={() => {
-          deleteEvent(item._id);
+          deleteProduct(item._id, item.Images);
         }}
       />
     </View>
   </View>
 );
 
-const MyEvents = ({ navigation }) => {
-  const [myEvents, setMyEvents] = useState([]);
-  const { data, loading, error, refetch } = useQuery(MY_EVENTS, {
+const MyProducts = ({ navigation }) => {
+  const [myProducts, setMyProducts] = useState([]);
+  const { data, loading, error, refetch } = useQuery(MY_PRODUCTS, {
     variables: { user: auth.currentUser.email },
     fetchPolicy: "network-only",
   });
-  const [Delete_Event] = useMutation(DELETE_EVENT);
+  const [Delete_Product] = useMutation(DELETE_PRODUCT);
   useEffect(() => {
     if (data) {
-      setMyEvents(data.User_Event);
+      setMyProducts(data.User_Product);
     }
-  }, [data]);
-
+  }, [data, error]);
   const refresh = () => {
     refetch();
   };
+  const deleteImgs = (img1, img2, img3) => {
+    storage.refFromURL(img1).delete();
+    storage.refFromURL(img2).delete();
+    storage.refFromURL(img3).delete();
+  };
 
-  const DeleteEvent = (id) => {
+  const DeleteProduct = (id, Images) => {
     return Alert.alert(
-      "Delete Event",
+      "Delete Product",
       "Are you sure, action is irreversible.",
       [
         {
           text: "Delete",
           onPress: () => {
-            Delete_Event({
+            deleteImgs(Images.Image1, Images.Image2, Images.Image3);
+            Delete_Product({
               variables: {
                 id,
               },
@@ -95,10 +100,10 @@ const MyEvents = ({ navigation }) => {
     );
   };
   const toEdit = (item) => {
-    navigation.navigate("Edit Event", { item, refresh });
+    navigation.navigate("Product Edit", { item, refresh });
   };
-  const viewEvent = (item) => {
-    navigation.navigate("Event Info", { item });
+  const viewProduct = (item) => {
+    navigation.navigate("Product Info", { item });
   };
   if (loading) {
     return <Loading />;
@@ -111,28 +116,28 @@ const MyEvents = ({ navigation }) => {
       <TouchableOpacity
         style={styles.touchable}
         onPress={() => {
-          navigation.navigate("Event Form");
+          navigation.navigate("Product Form", { refresh });
         }}
       >
         <Icon name="add-outline" type="ionicon" color="white" />
       </TouchableOpacity>
       <View style={{ paddingVertical: 10 }}>
-        {myEvents.length === 0 && (
+        {myProducts.length === 0 && (
           <Text
             style={{ color: "grey", fontWeight: "bold", textAlign: "center" }}
           >
-            No Events yet
+            No Products yet
           </Text>
         )}
         <FlatList
-          data={myEvents}
+          data={myProducts}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
-            <EventItem
+            <ProductItem
               item={item}
-              deleteEvent={DeleteEvent}
+              deleteProduct={DeleteProduct}
               toEdit={toEdit}
-              viewEvent={viewEvent}
+              viewProduct={viewProduct}
             />
           )}
         />
@@ -141,7 +146,7 @@ const MyEvents = ({ navigation }) => {
   );
 };
 
-export default MyEvents;
+export default MyProducts;
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 7 },

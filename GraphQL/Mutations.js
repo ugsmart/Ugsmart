@@ -32,6 +32,29 @@ export const ADD_PRODUCT = gql`
     }
   }
 `;
+export const EDIT_PRODUCT = gql`
+  mutation Edit_Product(
+    $Name: String!
+    $Category: String!
+    $Description: String!
+    $Bater: String!
+    $Price: String!
+    $Image: Photo!
+    $id: String!
+  ) {
+    Edit_Product(
+      Name: $Name
+      Category: $Category
+      Description: $Description
+      Bater: $Bater
+      Price: $Price
+      Image: $Image
+      id: $id
+    ) {
+      _id
+    }
+  }
+`;
 export const ADD_EVENT = gql`
   mutation Add_Event(
     $Name: String!
@@ -143,6 +166,13 @@ export const EDIT_TUTOR = gql`
 export const DELETE_TUTOR = gql`
   mutation Delete_Tutor($email: String!) {
     Delete_Tutor(email: $email) {
+      _id
+    }
+  }
+`;
+export const DELETE_PRODUCT = gql`
+  mutation Delete_Product($id: String!) {
+    Delete_Product(id: $id) {
       _id
     }
   }

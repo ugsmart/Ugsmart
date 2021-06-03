@@ -21,6 +21,9 @@ import TutorEdit from "./Forms_Screens/Edit_Tutor_form";
 import Splash from "./SplashScreen";
 import Eform from "./Forms_Screens/Event_form";
 import EditEvent from "./Forms_Screens/Edit_Event_Form";
+import Pform from "./Forms_Screens/Product_form";
+import ProductEdit from "./Forms_Screens/Edit_Product_Form";
+import Stutor from "./Home_Sub_Screens/sub_Tutor";
 
 //icon={{name:'person-outline', type:'ionicon'}}
 //Header Right view...
@@ -53,18 +56,18 @@ const Main = () => {
         <Stack.Screen
           name="Splash"
           component={Splash}
-          options={{ headerShown: false }}
+          options={{ headerShown: false, headerStyle: { elevation: 0 } }}
         />
         <Stack.Screen
           name="Verify"
           component={Verify}
-          options={{ headerShown: false }}
+          options={{ headerShown: false, headerStyle: { elevation: 0 } }}
         />
         <Stack.Screen
           name="Main"
           options={{
             headerTitle: () => <Header />,
-            headerLeft: () => <Left />,
+            headerLeft: null,
             headerTitleAlign: "center",
             headerLeftContainerStyle: { margin: 10 },
             headerStyle: { elevation: 0 },
@@ -92,9 +95,19 @@ const Main = () => {
           component={Itutor}
         />
         <Stack.Screen
+          name="Product Form"
+          options={{ headerStyle: { elevation: 0 } }}
+          component={Pform}
+        />
+        <Stack.Screen
           name="Product Info"
           options={{ headerStyle: { elevation: 0 } }}
           component={Iproduct}
+        />
+        <Stack.Screen
+          name="Product Edit"
+          options={{ headerStyle: { elevation: 0 } }}
+          component={ProductEdit}
         />
         <Stack.Screen
           name="Event"
@@ -120,6 +133,11 @@ const Main = () => {
           name="EditTutor"
           options={{ headerTitle: null, headerStyle: { elevation: 0 } }}
           component={TutorEdit}
+        />
+        <Stack.Screen
+          name="Tutor"
+          options={{ headerStyle: { elevation: 0 } }}
+          component={Stutor}
         />
         <Stack.Screen
           name="Edit"

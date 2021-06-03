@@ -13,9 +13,8 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 import { RadioButton } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import { auth, storage } from "../Firebase";
-import { isNamedType } from "graphql";
 import { useMutation } from "@apollo/client";
-import { ADD_PRODUCT } from "../GraphQL/Mutations";
+import { EDIT_PRODUCT } from "../GraphQL/Mutations";
 
 const Inputview = ({ text, value, setValue, keyboard = "default" }) => {
   return (
@@ -264,9 +263,9 @@ const Barter = ({ value, setValue }) => {
   );
 };
 
-export default function Pform({ navigation, route }) {
-  const { refresh } = route.params;
-  const [Add_Product] = useMutation(ADD_PRODUCT);
+export default function ProductEdit({ navigation, route }) {
+  const { item, refresh } = route.params;
+  const [Edit_Product] = useMutation(EDIT_PRODUCT);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -279,11 +278,22 @@ export default function Pform({ navigation, route }) {
   const [done2, setdone2] = useState(false);
   const [image3, setimage3] = useState(null);
   const [done3, setdone3] = useState(false);
-  console.log(barter);
   const [imgUrl_1, setImgUrl_1] = useState("");
   const [imgUrl_2, setImgUrl_2] = useState("");
   const [imgUrl_3, setImgUrl_3] = useState("");
   const [loading, setLoading] = useState(false);
+
+  console.log(item);
+  useEffect(() => {
+    setName(item.Name);
+    setDescription(item.Description);
+    setCategory(item.Category);
+    setBarter(item.Bater.toString());
+    setPrice(item.Price);
+    setImgUrl_1(item.Images.Image1);
+    setImgUrl_2(item.Images.Image2);
+    setImgUrl_3(item.Images.Image3);
+  }, [item]);
 
   const pickImage1 = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -331,7 +341,7 @@ export default function Pform({ navigation, route }) {
   };
   //End...
   const Screen = () => {
-    if (image1 || image2 || image3) {
+    if (imgUrl_1 || imgUrl_2 || imgUrl_3) {
       return (
         <Iview
           fun1={pickImage1}
@@ -356,7 +366,7 @@ export default function Pform({ navigation, route }) {
     }
   };
 
-  const upload = () => {
+  const update = () => {
     if (
       name === "" ||
       category === "" ||
@@ -370,20 +380,20 @@ export default function Pform({ navigation, route }) {
         alert("Please upload at least three images of the Product");
       } else {
         setLoading(true);
-        Add_Product({
+        Edit_Product({
           variables: {
+            id: item._id,
             Name: name,
             Category: category,
             Description: description,
             Bater: barter,
             Price: price,
-            Images: { Image1: imgUrl_1, Image2: imgUrl_2, Image3: imgUrl_3 },
-            usermail: auth.currentUser.email,
+            Image: { Image1: imgUrl_1, Image2: imgUrl_2, Image3: imgUrl_3 },
           },
         })
           .then(() => {
             setLoading(false);
-            alert("Product has been added successfully");
+            alert("Product has been Updated successfully");
             navigation.goBack();
             refresh();
           })
@@ -413,9 +423,9 @@ export default function Pform({ navigation, route }) {
         <Barter value={barter} setValue={setBarter} />
         <Inputview text="Price Details" value={price} setValue={setPrice} />
         <Button
-          title="Done"
+          title="Update"
           onPress={() => {
-            upload();
+            update();
           }}
           loading={loading}
           buttonStyle={{

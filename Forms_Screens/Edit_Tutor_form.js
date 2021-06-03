@@ -234,7 +234,6 @@ export default function TutorEdit({ navigation, route }) {
       contentContainerStyle={{ flexGrow: 1 }}
       style={styles.container}
     >
-      <Text style={styles.Htext}>Edit Tutor Profile</Text>
       <View style={styles.Mview}>
         {imgUrl ? <Photo /> : Screens()}
         <Inputview

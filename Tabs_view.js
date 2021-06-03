@@ -5,7 +5,6 @@ import Home from "./Home_Screens/Home";
 import Htutor from "./Home_Screens/Home_tutor";
 import Etabs from "./Event_tab";
 import Ptabs from "./Product_tab";
-import { useRoute } from "@react-navigation/native";
 import { auth } from "./Firebase";
 
 export default function Tabs({ navigation }) {
@@ -17,8 +16,6 @@ export default function Tabs({ navigation }) {
     });
     return unsub;
   }, []);
-  const route = useRoute();
-  console.log(route.name);
 
   const Tab = createMaterialBottomTabNavigator();
   return (

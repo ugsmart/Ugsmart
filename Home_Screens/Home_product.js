@@ -1,4 +1,5 @@
-import React from "react";
+import { useQuery } from "@apollo/client";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -9,29 +10,27 @@ import {
 } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
+import ErrorPage from "../ErrorPage";
+import { GET_PRODUCTS } from "../GraphQL/Queries";
 import { Search } from "../Home_Screens/Home_tutor";
+import Loading from "../Loading";
 
-//Dummy Data used in our List View.. Should be removed after API Integration...
-const Data = [
-  { id: "1", date: "28/04/2021", img: require("../assets/nike1.jpg") },
-  { id: "2", date: "28/04/2021", img: require("../assets/nike2.jpg") },
-  { id: "3", date: "28/04/2021", img: require("../assets/nike3.jpg") },
-  { id: "4", date: "28/04/2021", img: require("../assets/nike2.jpg") },
-  { id: "5", date: "28/04/2021", img: require("../assets/nike2.jpg") },
-  { id: "6", date: "28/04/2021", img: require("../assets/nike2.jpg") },
-];
-//End...
+const noImage = require("../assets/noImage.jpg");
 
 //Individual View used for Product Display...
-const Eview = ({ date, img, nav }) => {
+const Eview = ({ item, nav }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        nav.navigate("Product Info");
+        nav.navigate("Product Info", { item });
       }}
       style={styles.tutorview}
     >
-      <Avatar rounded={true} size={RFPercentage(20)} source={img} />
+      <Avatar
+        rounded={true}
+        size={RFPercentage(20)}
+        source={item.Images.Image1 ? { uri: item.Images.Image1 } : noImage}
+      />
       <Text
         style={{
           textAlign: "center",
@@ -40,7 +39,7 @@ const Eview = ({ date, img, nav }) => {
           marginTop: 10,
         }}
       >
-        Lighthouse Party
+        {item.Name}
       </Text>
       <Text
         style={{
@@ -49,19 +48,19 @@ const Eview = ({ date, img, nav }) => {
           fontFamily: "Ranch",
         }}
       >
-        {date}
+        {item.Price}
       </Text>
     </TouchableOpacity>
   );
 };
 
 //View used for our Category List in the Product Home View...
-const Viewz = ({ name, nav }) => {
+const Viewz = ({ name, nav, data }) => {
   return (
     <View style={styles.content}>
       <TouchableOpacity
         onPress={() => {
-          nav.navigate("Product");
+          nav.navigate("Product", { name });
         }}
         style={styles.touch}
       >
@@ -70,29 +69,60 @@ const Viewz = ({ name, nav }) => {
       </TouchableOpacity>
       <FlatList
         horizontal={true}
-        data={Data}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <Eview nav={nav} date={item.date} img={item.img} />
-        )}
+        data={data}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => <Eview nav={nav} item={item} />}
       />
     </View>
   );
 };
 //End...
 
-//Data used into Naming Categories for our Product Home page...
-const Name = [
-  { id: "1", name: "Beauty & Cosmetics" },
-  { id: "2", name: "Educational Items" },
-  { id: "3", name: "Electronics & Accessories" },
-  { id: "4", name: "Fashion" },
-  { id: "5", name: "Food & Drinks" },
-  { id: "6", name: "Sports & Accessories" },
-];
-//End...
-
 export default function Hproduct({ navigation }) {
+  const { data, loading, error, refetch } = useQuery(GET_PRODUCTS);
+  const [beautyCos, setBeautyCos] = useState([]);
+  const [educational, setEducational] = useState([]);
+  const [elecAcc, setElecAcc] = useState([]);
+  const [fashion, setFashion] = useState([]);
+  const [foodD, setFoodD] = useState([]);
+  const [sportsA, setSportsA] = useState([]);
+
+  const refresh = () => {
+    refetch();
+  };
+  useEffect(() => {
+    if (data) {
+      const products = data.Products;
+      const beaut = products.filter(
+        (item) => item.Category === "Beauty & Cosmetics"
+      );
+      setBeautyCos(beaut);
+      const edu = products.filter(
+        (item) => item.Category === "Educational Items"
+      );
+      setEducational(edu);
+      const elec = products.filter(
+        (item) => item.Category === "Electronics & Accessories"
+      );
+      setElecAcc(elec);
+      const fash = products.filter((item) => item.Category === "Fashion");
+      setFashion(fash);
+      const food = products.filter((item) => item.Category === "Food & Drinks");
+      setFoodD(food);
+      const sports = products.filter(
+        (item) => item.Category === "Sports & Accessories"
+      );
+      setSportsA(sports);
+    }
+  }, [data]);
+
+  if (loading) {
+    return <Loading />;
+  }
+  if (error) {
+    return <ErrorPage refresh={refresh} />;
+  }
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -102,8 +132,28 @@ export default function Hproduct({ navigation }) {
         <View style={styles.searchview}>
           <Search place="Search Product..." />
         </View>
-        <Viewz nav={navigation} name="Beauty & Cosmetics" />
-        <Viewz nav={navigation} name="Educational Items" />
+        {beautyCos.length > 0 && (
+          <Viewz nav={navigation} name="Beauty & Cosmetics" data={beautyCos} />
+        )}
+        {educational.length > 0 && (
+          <Viewz nav={navigation} name="Educational Items" data={educational} />
+        )}
+        {elecAcc.length > 0 && (
+          <Viewz
+            nav={navigation}
+            name="Electronics & Accessories"
+            data={elecAcc}
+          />
+        )}
+        {fashion.length > 0 && (
+          <Viewz nav={navigation} name="Fashion" data={fashion} />
+        )}
+        {foodD.length > 0 && (
+          <Viewz nav={navigation} name="Food & Drinks" data={foodD} />
+        )}
+        {sportsA.length > 0 && (
+          <Viewz nav={navigation} name="Sports & Accessories" data={sportsA} />
+        )}
       </View>
     </ScrollView>
   );
@@ -112,13 +162,11 @@ export default function Hproduct({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     backgroundColor: "white",
   },
   searchview: {
     flex: 0.1,
     alignItems: "center",
-    justifyContent: "center",
     padding: 8,
   },
   content: {
@@ -145,6 +193,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 5,
     elevation: 5,
+    maxHeight: 230,
   },
   touch: {
     flexDirection: "row",

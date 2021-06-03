@@ -87,6 +87,11 @@ export default function Hevent({ navigation }) {
   const [religion, setReligion] = useState([]);
   const [sports, setSports] = useState([]);
   const [socialLifestyle, setSocialLifestyle] = useState([]);
+
+  const refresh = () => {
+    refetch();
+  };
+
   useEffect(() => {
     if (data) {
       const events = data.Events;
@@ -113,7 +118,7 @@ export default function Hevent({ navigation }) {
     return <Loading />;
   }
   if (error) {
-    return <ErrorPage refresh={refetch} />;
+    return <ErrorPage refresh={refresh} />;
   }
   return (
     <ScrollView
@@ -154,13 +159,11 @@ export default function Hevent({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     backgroundColor: "white",
   },
   searchview: {
     flex: 0.1,
     alignItems: "center",
-    justifyContent: "center",
     padding: 8,
   },
   content: {
@@ -187,6 +190,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 5,
     elevation: 5,
+    maxHeight: 230,
   },
   touch: {
     flexDirection: "row",

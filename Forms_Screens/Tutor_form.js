@@ -73,10 +73,10 @@ const CollegeInput = ({ college, setCollege }) => {
         }}
         value={college}
       >
-        <RadioButton.Item label="Health  Sciences" value="Health  Sciences" />
+        <RadioButton.Item label="Health Sciences" value="Health Sciences" />
         <RadioButton.Item
-          label="Basic &  Applied Sciences"
-          value="Basic &  Applied Sciences"
+          label="Basic & Applied Sciences"
+          value="Basic & Applied Sciences"
         />
         <RadioButton.Item label="Humanities" value="Humanities" />
         <RadioButton.Item label="Education" value="Education" />

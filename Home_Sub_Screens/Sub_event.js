@@ -15,14 +15,6 @@ import { GET_EVENTS_CATEGORY } from "../GraphQL/Queries";
 import { Search } from "../Home_Screens/Home_tutor";
 import Loading from "../Loading";
 
-const Data = [
-  { id: "1", date: "28/04/2021", img: require("../assets/chu.png") },
-  { id: "2", date: "28/04/2021", img: require("../assets/chu.png") },
-  { id: "3", date: "28/04/2021", img: require("../assets/chu.png") },
-  { id: "4", date: "28/04/2021", img: require("../assets/chu.png") },
-  { id: "5", date: "28/04/2021", img: require("../assets/chu.png") },
-  { id: "6", date: "28/04/2021", img: require("../assets/chu.png") },
-];
 const noImage = require("../assets/noImage.jpg");
 
 const Eview = ({ nav, item }) => {

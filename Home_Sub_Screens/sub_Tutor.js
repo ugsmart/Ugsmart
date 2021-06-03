@@ -11,7 +11,7 @@ import {
 import { Avatar } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import ErrorPage from "../ErrorPage";
-import { GET_PRODUCT_CATEGORY } from "../GraphQL/Queries";
+import { GET_PRODUCT_CATEGORY, GET_TUTOR_COL } from "../GraphQL/Queries";
 import { Search } from "../Home_Screens/Home_tutor";
 import Loading from "../Loading";
 
@@ -21,14 +21,14 @@ const Eview = ({ nav, item }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        nav.navigate("Product Info", { item });
+        nav.navigate("Tutor Info", { item });
       }}
       style={styles.tutorview}
     >
       <Avatar
         rounded={true}
         size={RFPercentage(22)}
-        source={item.Images.Image1 ? { uri: item.Images.Image1 } : noImage}
+        source={item.Image ? { uri: item.Image } : noImage}
       />
       <Text
         style={{
@@ -47,22 +47,24 @@ const Eview = ({ nav, item }) => {
           fontFamily: "Ranch",
         }}
       >
-        {item.Price}
+        {item.Program}
       </Text>
     </TouchableOpacity>
   );
 };
 
-export default function Sproduct({ navigation, route }) {
+export default function Stutor({ navigation, route }) {
   const { name } = route.params;
-  const { data, loading, error, refetch } = useQuery(GET_PRODUCT_CATEGORY, {
-    variables: { cate: name },
+  const { data, loading, error, refetch } = useQuery(GET_TUTOR_COL, {
+    variables: { college: name },
   });
-
-  const [productCate, setProductCate] = useState([]);
+  const refresh = () => {
+    refetch();
+  };
+  const [tutorCollege, setTutorCollege] = useState([]);
   useEffect(() => {
     if (data) {
-      setProductCate(data.Product_Cate);
+      setTutorCollege(data.College);
     }
     if (error) {
       console.log(JSON.stringify(error, null, 2));
@@ -74,25 +76,25 @@ export default function Sproduct({ navigation, route }) {
     });
   }, [navigation]);
 
-  console.log(productCate);
+  console.log(tutorCollege);
 
   if (loading) {
     return <Loading />;
   }
   if (error) {
-    return <ErrorPage refresh={refetch} />;
+    return <ErrorPage refresh={refresh} />;
   }
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
         <View style={styles.searchview}>
-          <Search place="Search Event..." />
+          <Search place="Search Tutor..." />
         </View>
         <View style={styles.content}>
-          <Text style={styles.title}>Products</Text>
+          <Text style={styles.title}>Tutors</Text>
           <FlatList
             numColumns={2}
-            data={productCate}
+            data={tutorCollege}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => <Eview nav={navigation} item={item} />}
           />

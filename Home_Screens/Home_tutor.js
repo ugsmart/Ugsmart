@@ -48,18 +48,17 @@ export const Search = ({ place }) => {
 };
 //End...
 
-//Tutor Profile View....
-const Tutor = ({ item, nav }) => {
+const Eview = ({ item, nav }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        nav.navigate("Tutor Info", { item });
+        // nav.navigate("Product Info", { item });
       }}
       style={styles.tutorview}
     >
       <Avatar
-        size={RFPercentage(20)}
         rounded={true}
+        size={RFPercentage(20)}
         source={item.Image ? { uri: item.Image } : noImage}
       />
       <Text
@@ -84,16 +83,56 @@ const Tutor = ({ item, nav }) => {
     </TouchableOpacity>
   );
 };
-//End..
+
+const Viewz = ({ name, nav, data }) => {
+  return (
+    <View style={styles.content}>
+      <TouchableOpacity
+        onPress={() => {
+          nav.navigate("Tutor", { name });
+        }}
+        style={styles.touch}
+      >
+        <Text style={styles.title}>{name}</Text>
+        <Icon name="chevron-forward" type="ionicon" />
+      </TouchableOpacity>
+      <FlatList
+        horizontal={true}
+        data={data}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => <Eview nav={nav} item={item} />}
+      />
+    </View>
+  );
+};
 
 export default function Htutor({ navigation }) {
-  const { data, loading, error, refetch } = useQuery(GET_TUTORS);
-  const [tutors, setTutors] = useState([]);
+  const { data, loading, error, refetch } = useQuery(GET_TUTORS, {
+    pollInterval: 100,
+  });
+  const [healthS, setHealthS] = useState([]);
+  const [basicS, setBasicS] = useState([]);
+  const [humanities, setHumanities] = useState([]);
+  const [education, setEducation] = useState([]);
+
   useEffect(() => {
     if (data) {
-      setTutors(data.Tutors);
+      const tutors = data.Tutors;
+      const health = tutors.filter(
+        (item) => item.College === "Health Sciences"
+      );
+      setHealthS(health);
+      const basic = tutors.filter(
+        (item) => item.College === "Basic & Applied Sciences"
+      );
+      setBasicS(basic);
+      const hum = tutors.filter((item) => item.College === "Humanities");
+      setHumanities(hum);
+      const edu = tutors.filter((item) => item.College === "Education");
+      setEducation(edu);
     }
   }, [data]);
+  console.log(data);
   const refresh = () => {
     refetch();
   };
@@ -104,19 +143,30 @@ export default function Htutor({ navigation }) {
     return <ErrorPage refresh={refresh} />;
   }
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
       <View style={styles.container}>
         <View style={styles.searchview}>
           <Search place="Search Tutor..." />
         </View>
-        <View style={styles.content}>
-          <FlatList
-            numColumns={2}
-            data={tutors}
-            keyExtractor={(item) => item._id}
-            renderItem={({ item }) => <Tutor nav={navigation} item={item} />}
+        {healthS.length > 0 && (
+          <Viewz nav={navigation} name="Health Sciences" data={healthS} />
+        )}
+        {basicS.length > 0 && (
+          <Viewz
+            nav={navigation}
+            name="Basic & Applied Sciences"
+            data={basicS}
           />
-        </View>
+        )}
+        {humanities.length > 0 && (
+          <Viewz nav={navigation} name="Humanities" data={humanities} />
+        )}
+        {education.length > 0 && (
+          <Viewz nav={navigation} name="Education" data={education} />
+        )}
       </View>
     </ScrollView>
   );
@@ -125,7 +175,6 @@ export default function Htutor({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     backgroundColor: "white",
   },
   searchview: {
@@ -134,10 +183,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 8,
   },
+  title: {
+    fontFamily: "Titan",
+    fontSize: RFPercentage(3.4),
+    padding: 5,
+  },
   content: {
     flex: 4,
     justifyContent: "center",
-    padding: 8,
+    padding: 5,
   },
   tutorview: {
     flex: 1,
@@ -148,5 +202,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 5,
     elevation: 5,
+    maxHeight: 230,
+  },
+  touch: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 });

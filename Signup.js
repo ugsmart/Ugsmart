@@ -117,11 +117,12 @@ export default function Signup({ navigation }) {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const signUp = () => {
+    setLoading(true);
     auth
       .createUserWithEmailAndPassword(email, password)
-      .then((authUser) => {
+      .then(() => {
         Add_User({
           variables: {
             Name: name,
@@ -131,15 +132,17 @@ export default function Signup({ navigation }) {
         })
           .then(() => {
             alert("You have successfully registered");
+            setLoading(false);
           })
           .catch((err) => {
             console.log(err);
             alert("Error occured, Try Again");
+            setLoading(false);
           });
-        console.log(authUser);
       })
       .catch((err) => {
         alert(err.message);
+        setLoading(false);
       });
   };
 

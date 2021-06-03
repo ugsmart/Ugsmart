@@ -7,8 +7,9 @@ import {
   FlatList,
   Alert,
   ScrollView,
+  ImageBackground,
 } from "react-native";
-import { Icon, ListItem } from "react-native-elements";
+import { Avatar, Icon, ListItem } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { auth, storage } from "../Firebase";
 import { useMutation, useQuery } from "@apollo/client";
@@ -123,6 +124,20 @@ export default function Haccount({ navigation }) {
   return (
     <View style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
+        <ImageBackground
+          blurRadius={5}
+          imageStyle={{ borderRadius: 8 }}
+          style={styles.main}
+          source={require("../assets/tutor.jpg")}
+        >
+          <Avatar
+            size="xlarge"
+            rounded={true}
+            source={require("../assets/tutor.jpg")}
+          />
+        </ImageBackground>
+        <Text style={{ fontWeight: "bold" }}>Account Profile</Text>
+
         <Aview
           name="Edit Profile"
           icon="person-add-outline"
@@ -173,7 +188,10 @@ export default function Haccount({ navigation }) {
           name="Log out"
           icon="log-out-outline"
           onPress={() => {
-            Logout();
+            Alert.alert("Ugsmart", "Are you sure you want to Log out?", [
+              { text: "Yes", onPress: () => Logout() },
+              { text: "No" },
+            ]);
           }}
         />
 
@@ -207,5 +225,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     fontFamily: "Noto",
     fontSize: RFPercentage(2.4),
+  },
+  main: {
+    flex: 1,
+    flexDirection: "row",
+    marginBottom: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 5,
   },
 });

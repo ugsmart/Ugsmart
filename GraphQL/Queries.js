@@ -7,6 +7,7 @@ export const GET_TUTORS = gql`
       Program
       Description
       Name
+      College
       Price
       Image
       usermail
@@ -57,7 +58,11 @@ export const GET_PRODUCT_CATEGORY = gql`
       Category
       Bater
       Price
-      Images
+      Images {
+        Image1
+        Image2
+        Image3
+      }
       usermail
       createdAt
     }
@@ -118,6 +123,39 @@ export const GET_TUTOR = gql`
     Profile(user: $user) {
       _id
       Name
+    }
+  }
+`;
+export const GET_TUTOR_COL = gql`
+  query College($college: String!) {
+    College(college: $college) {
+      _id
+      Program
+      Description
+      Price
+      Image
+      College
+      Name
+      usermail
+    }
+  }
+`;
+export const MY_PRODUCTS = gql`
+  query User_Product($user: String!) {
+    User_Product(user: $user) {
+      _id
+      Name
+      Category
+      Description
+      Bater
+      Price
+      Images {
+        Image1
+        Image2
+        Image3
+      }
+      usermail
+      createdAt
     }
   }
 `;

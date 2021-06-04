@@ -54,29 +54,22 @@ const Eview = ({ item, nav }) => {
   );
 };
 
-//View used for our Category List in the Product Home View...
-const Viewz = ({ name, nav, data }) => {
-  return (
-    <View style={styles.content}>
-      <TouchableOpacity
-        onPress={() => {
-          nav.navigate("Product", { name });
-        }}
-        style={styles.touch}
-      >
-        <Text style={styles.title}>{name}</Text>
-        <Icon name="chevron-forward" type="ionicon" />
-      </TouchableOpacity>
-      <FlatList
-        horizontal={true}
-        data={data}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => <Eview nav={nav} item={item} />}
-      />
-    </View>
-  );
-};
-//End...
+const Category_view = ({nav, name, data})=>{
+  return(
+      <View style={{flex:1}}>
+        <TouchableOpacity onPress={()=>{nav.navigate("Product", { name })}} style={{flexDirection:'row',padding:5,alignItems:'center',justifyContent:'space-between'}}>
+          <Text style={styles.title}>{name}</Text>
+          <Icon name="chevron-forward-circle-outline" type='ionicon'/>
+        </TouchableOpacity>
+        <FlatList
+          horizontal={true}
+          data={data}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <Eview nav={nav} item={item}/>}
+        />
+      </View>
+  )
+}
 
 export default function Hproduct({ navigation }) {
   const { data, loading, error, refetch } = useQuery(GET_PRODUCTS);
@@ -90,6 +83,7 @@ export default function Hproduct({ navigation }) {
   const refresh = () => {
     refetch();
   };
+
   useEffect(() => {
     if (data) {
       const products = data.Products;
@@ -133,26 +127,26 @@ export default function Hproduct({ navigation }) {
           <Search place="Search Product..." />
         </View>
         {beautyCos.length > 0 && (
-          <Viewz nav={navigation} name="Beauty & Cosmetics" data={beautyCos} />
+          <Category_view nav={navigation} name="Beauty & Cosmetics" data={beautyCos} />
         )}
         {educational.length > 0 && (
-          <Viewz nav={navigation} name="Educational Items" data={educational} />
+          <Category_view nav={navigation} name="Educational Items" data={educational} />
         )}
         {elecAcc.length > 0 && (
-          <Viewz
+          <Category_view
             nav={navigation}
             name="Electronics & Accessories"
             data={elecAcc}
           />
         )}
         {fashion.length > 0 && (
-          <Viewz nav={navigation} name="Fashion" data={fashion} />
+          <Category_view nav={navigation} name="Fashion" data={fashion} />
         )}
         {foodD.length > 0 && (
-          <Viewz nav={navigation} name="Food & Drinks" data={foodD} />
+          <Category_view nav={navigation} name="Food & Drinks" data={foodD} />
         )}
         {sportsA.length > 0 && (
-          <Viewz nav={navigation} name="Sports & Accessories" data={sportsA} />
+          <Category_view nav={navigation} name="Sports & Accessories" data={sportsA} />
         )}
       </View>
     </ScrollView>
@@ -166,8 +160,9 @@ const styles = StyleSheet.create({
   },
   searchview: {
     flex: 0.1,
-    alignItems: "center",
     padding: 8,
+    alignItems:'center',
+    justifyContent:'center'
   },
   content: {
     flex: 4,

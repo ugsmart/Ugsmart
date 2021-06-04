@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import { Avatar } from "react-native-elements";
+import { Avatar, Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import ErrorPage from "../ErrorPage";
 import { GET_PRODUCT_CATEGORY, GET_TUTOR_COL } from "../GraphQL/Queries";
@@ -91,7 +91,11 @@ export default function Stutor({ navigation, route }) {
           <Search place="Search Tutor..." />
         </View>
         <View style={styles.content}>
-          <Text style={styles.title}>Tutors</Text>
+        {tutorCollege.length===0 &&
+         <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
+           <Icon size={RFPercentage(10)} name="school-outline" type="ionicon"/>
+           <Text>No Tutors under this Category yet.</Text>
+         </View>}
           <FlatList
             numColumns={2}
             data={tutorCollege}

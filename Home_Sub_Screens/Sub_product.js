@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import { Avatar } from "react-native-elements";
+import { Avatar, Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import ErrorPage from "../ErrorPage";
 import { GET_PRODUCT_CATEGORY } from "../GraphQL/Queries";
@@ -89,7 +89,11 @@ export default function Sproduct({ navigation, route }) {
           <Search place="Search Event..." />
         </View>
         <View style={styles.content}>
-          <Text style={styles.title}>Products</Text>
+          {productCate.length===0 && 
+          <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
+            <Icon size={RFPercentage(10)} name="cart-outline" type="ionicon"/>
+            <Text>No Products under this Category yet.</Text>
+          </View> }
           <FlatList
             numColumns={2}
             data={productCate}

@@ -42,7 +42,7 @@ const Left = () => {
 const Header = () => {
   return (
     <Image
-      style={{ width: RFPercentage(7.5), height: RFPercentage(7.5) }}
+      style={{ width: RFPercentage(6), height: RFPercentage(6) }}
       source={require("./assets/icon.png")}
     />
   );
@@ -56,12 +56,12 @@ const Main = () => {
         <Stack.Screen
           name="Splash"
           component={Splash}
-          options={{ headerShown: false, headerStyle: { elevation: 0 } }}
+          options={{ headerShown: true, headerTitle:null, headerStyle: { elevation: 0 } }}
         />
         <Stack.Screen
           name="Verify"
           component={Verify}
-          options={{ headerShown: false, headerStyle: { elevation: 0 } }}
+          options={{ headerShown: true, headerTitle:null, headerStyle: { elevation: 0 } }}
         />
         <Stack.Screen
           name="Main"
@@ -142,7 +142,7 @@ const Main = () => {
         <Stack.Screen
           name="Edit"
           options={{
-            headerTitle: "Profile Edit",
+            headerTitle: "Edit Pofile",
             headerStyle: { elevation: 0 },
           }}
           component={Edit}

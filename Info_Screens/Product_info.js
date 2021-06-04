@@ -4,12 +4,6 @@ import { Button, Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { SliderBox } from "react-native-image-slider-box";
 
-const image = [
-  require("../assets/nike1.jpg"),
-  require("../assets/nike2.jpg"),
-  require("../assets/nike3.jpg"),
-];
-
 const Des_view = ({ nav, item }) => {
   return (
     <ScrollView
@@ -19,8 +13,8 @@ const Des_view = ({ nav, item }) => {
       <View style={styles.container}>
         <SliderBox
           resizeMethod={"auto"}
-          height={280}
-          sliderBoxHeight={280}
+          height={400}
+          sliderBoxHeight={350}
           paginationBoxVerticalPadding={1}
           dotColor="red"
           inactiveDotColor="grey"

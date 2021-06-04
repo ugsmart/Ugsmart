@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import { Avatar } from "react-native-elements";
+import { Avatar, Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import ErrorPage from "../ErrorPage";
 import { GET_EVENTS_CATEGORY } from "../GraphQL/Queries";
@@ -82,7 +82,11 @@ export default function Sevent({ navigation, route }) {
           <Search place="Search Event..." />
         </View>
         <View style={styles.content}>
-          <Text style={styles.title}>Events</Text>
+        {eventCate.length===0&& 
+        <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
+          <Icon size={RFPercentage(10)} name="calendar-outline" type="ionicon"/>
+          <Text>No Events under this Category yet.</Text>
+        </View>}
           <FlatList
             numColumns={2}
             data={eventCate}

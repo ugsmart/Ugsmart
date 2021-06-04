@@ -46,7 +46,7 @@ export default function App() {
     return (
       <ApolloProvider client={client}>
         <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: true }}>
+          <Stack.Navigator screenOptions={{ headerShown: true, headerTitle:null }}>
             <Stack.Screen
               name="Intro"
               options={{ headerStyle: { elevation: 0 } }}
@@ -62,8 +62,6 @@ export default function App() {
               name="Signup"
               component={Signup}
               options={{
-                headerShown: true,
-                headerTitle: null,
                 headerStyle: { elevation: 0 },
               }}
             />

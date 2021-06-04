@@ -52,7 +52,7 @@ const Eview = ({ item, nav }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        // nav.navigate("Product Info", { item });
+        nav.navigate("Tutor Info", { item });
       }}
       style={styles.tutorview}
     >
@@ -106,6 +106,23 @@ const Viewz = ({ name, nav, data }) => {
   );
 };
 
+const Category_view = ({nav, name, data})=>{
+  return(
+      <View style={{flex:1}}>
+        <TouchableOpacity onPress={()=>{nav.navigate("Tutor", { name })}} style={{flexDirection:'row',padding:5,alignItems:'center',justifyContent:'space-between'}}>
+          <Text style={styles.title}>{name}</Text>
+          <Icon name="chevron-forward-circle-outline" type='ionicon'/>
+        </TouchableOpacity>
+        <FlatList
+          horizontal={true}
+          data={data}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <Eview nav={nav} item={item}/>}
+        />
+      </View>
+  )
+}
+
 export default function Htutor({ navigation }) {
   const { data, loading, error, refetch } = useQuery(GET_TUTORS, {
     pollInterval: 100,
@@ -132,7 +149,6 @@ export default function Htutor({ navigation }) {
       setEducation(edu);
     }
   }, [data]);
-  console.log(data);
   const refresh = () => {
     refetch();
   };
@@ -152,20 +168,20 @@ export default function Htutor({ navigation }) {
           <Search place="Search Tutor..." />
         </View>
         {healthS.length > 0 && (
-          <Viewz nav={navigation} name="Health Sciences" data={healthS} />
+          <Category_view nav={navigation} name="Health Sciences" data={healthS} />
         )}
         {basicS.length > 0 && (
-          <Viewz
+          <Category_view
             nav={navigation}
             name="Basic & Applied Sciences"
             data={basicS}
           />
         )}
         {humanities.length > 0 && (
-          <Viewz nav={navigation} name="Humanities" data={humanities} />
+          <Category_view nav={navigation} name="Humanities" data={humanities} />
         )}
         {education.length > 0 && (
-          <Viewz nav={navigation} name="Education" data={education} />
+          <Category_view nav={navigation} name="Education" data={education} />
         )}
       </View>
     </ScrollView>

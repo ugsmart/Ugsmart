@@ -4,7 +4,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  FlatList,
   Alert,
   ScrollView,
   ImageBackground,
@@ -13,7 +12,7 @@ import { Avatar, Icon, ListItem } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { auth, storage } from "../Firebase";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_PROFILE, GET_TUTOR } from "../GraphQL/Queries";
+import { GET_TUTOR } from "../GraphQL/Queries";
 import { DELETE_TUTOR } from "../GraphQL/Mutations";
 import Loading from "../Loading";
 import ErrorPage from "../ErrorPage";
@@ -212,7 +211,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     justifyContent: "center",
-    padding: 16,
+    padding: 5,
   },
   Touch: {
     flex: 1,
@@ -224,7 +223,7 @@ const styles = StyleSheet.create({
   Text: {
     marginHorizontal: 10,
     fontFamily: "Noto",
-    fontSize: RFPercentage(2.4),
+    fontSize: RFPercentage(2.9),
   },
   main: {
     flex: 1,
@@ -232,6 +231,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: "center",
     justifyContent: "center",
-    padding: 5,
+    padding: 15,
   },
 });

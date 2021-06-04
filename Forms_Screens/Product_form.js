@@ -292,8 +292,6 @@ export default function Pform({ navigation, route }) {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setimage1(result.uri);
       setdone1(true);

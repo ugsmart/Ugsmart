@@ -1,160 +1,86 @@
 import React from "react";
+import { ImageBackground } from "react-native";
+import { TouchableOpacity } from "react-native";
+import { Pressable } from "react-native";
 import {
   StyleSheet,
   View,
   ScrollView,
   Text,
-  TouchableOpacity,
   FlatList,
-  ImageBackground,
 } from "react-native";
-import { Avatar, Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import Swiper from "react-native-swiper/src";
+import { Icon } from "react-native-elements"
 
 //Dummy Data used in our List View.. Should be removed after API Integration...
-const Data = [
-  { id: "1", date: "28/04/2021", img: require("../assets/nike1.jpg") },
-  { id: "2", date: "28/04/2021", img: require("../assets/nike2.jpg") },
-  { id: "3", date: "28/04/2021", img: require("../assets/nike3.jpg") },
-  { id: "4", date: "28/04/2021", img: require("../assets/nike2.jpg") },
-  { id: "5", date: "28/04/2021", img: require("../assets/nike2.jpg") },
-  { id: "6", date: "28/04/2021", img: require("../assets/nike2.jpg") },
+const Pdata = [
+  { id: "1", text: "Beauty & Cosmetics", image:require('../assets/Products/beauty.png') },
+  { id: "2", text: "Educational Items", image:require('../assets/Products/edi.png') },
+  { id: "3", text: "Electronics & Accessories", image:require('../assets/Products/elec.png') },
+  { id: "4", text: "Fashion", image:require('../assets/Products/fashion.png') },
+  { id: "5", text: "Food & Drinks", image:require('../assets/Products/food.png') },
+  { id: "6", text: "Sports & Accessories", image:require('../assets/Products/sport.png')},
+];
+
+const Edata = [
+  { id: "1", text: "Arts & Culture",image:require('../assets/Events/arts.png') },
+  { id: "2", text: "Education", image:require('../assets/Events/educ.png') },
+  { id: "3", text: "Entertainment", image:require('../assets/Events/entertain.png') },
+  { id: "4", text: "Religion", image:require('../assets/Events/religion.png') },
+  { id: "5", text: "Social & Lifestyle", image:require('../assets/Events/social.png') },
+  { id: "6", text: "Sports", image:require('../assets/Events/sport.png') },
+];
+
+const Tdata = [
+  { id: "1", text: "Basic & Applied Sciences", image:require('../assets/Colleges/science.png') },
+  { id: "2", text: "Education", image:require('../assets/Colleges/education.png') },
+  { id: "3", text: "Health Sciences", image:require('../assets/Colleges/medo.png') },
+  { id: "4", text: "Humanities", image:require('../assets/Colleges/human.png') }
 ];
 //End...
+
 
 //Individual View used for Product Display...
-const Eview = ({ nav }) => {
-  return (
-    <TouchableOpacity
-      onPress={() => {
-        nav.navigate("Product Info");
-      }}
-      style={styles.tutorview}
-    >
-      <Avatar
-        rounded={true}
-        size={RFPercentage(20)}
-        source={require("../assets/nike2.jpg")}
-      />
-      <Text
-        style={{
-          textAlign: "center",
-          fontFamily: "Ranch",
-          fontSize: RFPercentage(3.8),
-          marginTop: 10,
-        }}
-      >
-        Lighthouse Party
-      </Text>
-      <Text
-        style={{
-          textAlign: "center",
-          fontSize: RFPercentage(2.8),
-          fontFamily: "Ranch",
-        }}
-      >
-        23/05/21
-      </Text>
-    </TouchableOpacity>
-  );
-};
+const Individual_view = ({ text, image,nav, sub })=>{
+  return(
+    <Pressable onPress={()=>{
+      nav.navigate(sub,{name:text})
+    }}>
+      <ImageBackground blurRadius={0.5} imageStyle={{ flex:1, borderRadius:15 }} source={image} style={styles.background}>
+       <Text style={styles.text}>{text}</Text>
+      </ImageBackground>
+    </Pressable>
+  )
+}
 
-const Page = (name, nav) => {
-  if (name == "Events") {
-    nav.navigate("Events");
-  } else if (name == "Products") {
-    nav.navigate("Products");
-  } else if (name == "Tutors") {
-    nav.navigate("Tutors");
-  }
-};
-
-//View used for our Category List in the Product Home View...
-const Viewz = ({ name, nav }) => {
-  return (
-    <View style={styles.content}>
-      <TouchableOpacity
-        onPress={() => {
-          Page(name, nav);
-        }}
-        style={styles.touch}
-      >
-        <Text style={styles.title}>{name}</Text>
+const Category_view = ({nav, title, data,sub})=>{
+  return(
+    <View style={{ flex:1 }}>
+      <TouchableOpacity onPress={()=>nav.navigate(title)} style={{ flexDirection:'row', padding:5 ,alignItems:'center', justifyContent:'space-between' }}>
+        <Text style={styles.title}>{title}</Text>
         <Icon name="chevron-forward-circle-outline" type="ionicon" />
-      </TouchableOpacity>
+      </TouchableOpacity>  
       <FlatList
         horizontal={true}
-        data={Data}
+        data={data}
+        showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Eview nav={nav} />}
+        renderItem={({ item }) => <Individual_view text={item.text} nav={nav} image={item.image} sub={sub} />}
       />
     </View>
-  );
-};
-//End...
+  )
+}
 
-//Data used into Naming Categories for our Product Home page...
-const Name = [
-  { id: "1", name: "Events" },
-  { id: "2", name: "Products" },
-  { id: "3", name: "Tutors" },
-];
-//End...
-
-const Swiscreen = ({ img, t1, t2 }) => {
-  return (
-    <ImageBackground
-      blurRadius={0.5}
-      source={img}
-      style={{ flex: 1, justifyContent: "flex-end", padding: 8 }}
-    >
-      <Text
-        style={{
-          color: "white",
-          fontSize: RFPercentage(2.8),
-          fontFamily: "Noto",
-          fontWeight: "bold",
-        }}
-      >
-        {t1}
-      </Text>
-      <Text style={{ color: "white", fontFamily: "Noto", fontWeight: "bold" }}>
-        {t2}
-      </Text>
-    </ImageBackground>
-  );
-};
-/** */
 export default function Home({ navigation }) {
   return (
     <ScrollView
       style={styles.container}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ flexGrow: 1 }}
+      contentContainerStyle={{ flexGrow: 1,justifyContent:'center' }}
     >
-      <Swiper containerStyle={{ height: RFPercentage(40) }} autoplay={true}>
-        <Swiscreen
-          t1="Ekow Yankah"
-          t2="Ghc 20.00/per session"
-          img={require("../assets/tutor.jpg")}
-        />
-        <Swiscreen
-          t1="Lighthoue Party"
-          t2="23/04/21"
-          img={require("../assets/chu.png")}
-        />
-        <Swiscreen
-          t1="The Harp"
-          t2="14/04/21"
-          img={require("../assets/harp.jpeg")}
-        />
-      </Swiper>
-      <FlatList
-        data={Name}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Viewz nav={navigation} name={item.name} />}
-      />
+      <Category_view nav={navigation} data={Pdata} title="Products" sub='Product'/>
+      <Category_view nav={navigation} data={Edata} title="Events"sub='Event'/>
+      <Category_view nav={navigation} data={Tdata} title="Tutors"sub='Tutor'/>
     </ScrollView>
   );
 }
@@ -164,39 +90,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
-  searchview: {
-    height: RFPercentage(40),
-    backgroundColor: "red",
+  text: {
+    fontFamily: "Ranch",
+    fontSize: RFPercentage(5.2),
+    color:'white',
+    position:'absolute',
+    bottom:8,
+    left:15
   },
-  content: {
-    flex: 4,
-    padding: 5,
-    justifyContent: "center",
-    marginTop: 10,
+  background: {
+    alignItems:'center',
+    justifyContent:'center',
+    height:250,
+    width:350,
+    margin:5,
   },
-  title: {
+  title:{
     fontFamily: "Titan",
-    fontSize: RFPercentage(4.2),
-    padding: 5,
-  },
-  Event: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  tutorview: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white",
-    padding: 10,
-    borderRadius: 10,
-    margin: 5,
-    elevation: 5,
-  },
-  touch: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
+    fontSize: RFPercentage(4),
+  }
 });

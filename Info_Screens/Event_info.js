@@ -13,7 +13,7 @@ const Des_view = ({ item }) => {
       <View style={styles.container}>
         <Image
           source={item.Flyer ? { uri: item.Flyer } : noImage}
-          style={{ height: "100%", width: "100%" }}
+          style={{ height: 500,flex:1 }}
         />
       </View>
       <View style={styles.content}>
@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: RFPercentage(2.4),
-    fontFamily: "Noto",
   },
   content: {
     flex: 1,
@@ -91,13 +90,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "white",
   },
   bold: {
     fontWeight: "bold",
     fontSize: RFPercentage(3.0),
-    fontFamily: "Noto",
   },
   row: { flexDirection: "row", alignItems: "center" },
 });

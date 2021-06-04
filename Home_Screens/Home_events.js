@@ -55,31 +55,26 @@ const Eview = ({ item, nav }) => {
 };
 //End...
 
-//View for Event Home page Content...
-const Viewz = ({ name, nav, data }) => {
-  return (
-    <View style={styles.content}>
-      <TouchableOpacity
-        onPress={() => {
-          nav.navigate("Event", { name });
-        }}
-        style={styles.touch}
-      >
-        <Text style={styles.title}>{name}</Text>
-        <Icon name="chevron-forward" type="ionicon" />
-      </TouchableOpacity>
-      <FlatList
-        horizontal={true}
-        data={data}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => <Eview nav={nav} item={item} />}
-      />
-    </View>
-  );
-};
-//End...
+const Category_view = ({nav, title, name, data})=>{
+  return(
+      <View style={{flex:1}}>
+        <TouchableOpacity onPress={()=>{nav.navigate("Event", { name })}} style={{flexDirection:'row',padding:5,alignItems:'center',justifyContent:'space-between'}}>
+          <Text style={styles.title}>{title}</Text>
+          <Icon name="chevron-forward-circle-outline" type='ionicon'/>
+        </TouchableOpacity>
+        <FlatList
+          horizontal={true}
+          data={data}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <Eview nav={nav} item={item}/>}
+        />
+      </View>
+  )
+}
 
-export default function Hevent({ navigation }) {
+
+export default function Hevent({ navigation }){
+
   const { data, loading, error, refetch } = useQuery(GET_EVENTS);
   const [artsCulture, setArtsCulture] = useState([]);
   const [education, setEducation] = useState([]);
@@ -87,10 +82,6 @@ export default function Hevent({ navigation }) {
   const [religion, setReligion] = useState([]);
   const [sports, setSports] = useState([]);
   const [socialLifestyle, setSocialLifestyle] = useState([]);
-
-  const refresh = () => {
-    refetch();
-  };
 
   useEffect(() => {
     if (data) {
@@ -118,7 +109,7 @@ export default function Hevent({ navigation }) {
     return <Loading />;
   }
   if (error) {
-    return <ErrorPage refresh={refresh} />;
+    return <ErrorPage refresh={refetch} />;
   }
   return (
     <ScrollView
@@ -130,26 +121,27 @@ export default function Hevent({ navigation }) {
           <Search place="Search Event..." />
         </View>
         {artsCulture.length > 0 && (
-          <Viewz nav={navigation} name="Arts & Culture" data={artsCulture} />
+          <Category_view title="Arts & Culture" nav={navigation} name="Arts & Culture" data={artsCulture} />
         )}
         {education.length > 0 && (
-          <Viewz nav={navigation} name="Education" data={education} />
+          <Category_view title="Education" nav={navigation} name="Education" data={education} />
         )}
         {entertainment.length > 0 && (
-          <Viewz nav={navigation} name="Entertainment" data={entertainment} />
+          <Category_view title="Entertainment" nav={navigation} name="Entertainment" data={entertainment} />
         )}
         {religion.length > 0 && (
-          <Viewz nav={navigation} name="Religion" data={religion} />
+          <Category_view title="Religion" nav={navigation} name="Religion" data={religion} />
         )}
         {socialLifestyle.length > 0 && (
-          <Viewz
+          <Category_view
+           title="Social & Lifestyle"
             nav={navigation}
             name="Social & Lifestyle"
             data={socialLifestyle}
           />
         )}
         {sports.length > 0 && (
-          <Viewz nav={navigation} name="Sports" data={sports} />
+          <Category_view title="Sports" nav={navigation} name="Sports" data={sports} />
         )}
       </View>
     </ScrollView>
@@ -159,11 +151,13 @@ export default function Hevent({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
     backgroundColor: "white",
   },
   searchview: {
     flex: 0.1,
     alignItems: "center",
+    justifyContent: "center",
     padding: 8,
   },
   content: {
@@ -190,7 +184,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 5,
     elevation: 5,
-    maxHeight: 230,
   },
   touch: {
     flexDirection: "row",

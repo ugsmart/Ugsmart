@@ -22,7 +22,7 @@ const Des_view = ({ nav, item }) => {
           blurRadius={5}
           style={{
             flex: 1,
-            padding: 20,
+            padding: 25,
             alignItems: "center",
             justifyContent: "center",
           }}

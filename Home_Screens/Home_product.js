@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import { Avatar, Icon } from "react-native-elements";
+import { Avatar, Button, Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import ErrorPage from "../ErrorPage";
 import { GET_PRODUCTS } from "../GraphQL/Queries";
@@ -54,22 +54,32 @@ const Eview = ({ item, nav }) => {
   );
 };
 
-const Category_view = ({nav, name, data})=>{
-  return(
-      <View style={{flex:1}}>
-        <TouchableOpacity onPress={()=>{nav.navigate("Product", { name })}} style={{flexDirection:'row',padding:5,alignItems:'center',justifyContent:'space-between'}}>
-          <Text style={styles.title}>{name}</Text>
-          <Icon name="chevron-forward-circle-outline" type='ionicon'/>
-        </TouchableOpacity>
-        <FlatList
-          horizontal={true}
-          data={data}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <Eview nav={nav} item={item}/>}
-        />
-      </View>
-  )
-}
+const Category_view = ({ nav, name, data }) => {
+  return (
+    <View style={{ flex: 1 }}>
+      <TouchableOpacity
+        onPress={() => {
+          nav.navigate("Product", { name });
+        }}
+        style={{
+          flexDirection: "row",
+          padding: 5,
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text style={styles.title}>{name}</Text>
+        <Icon name="chevron-forward-circle-outline" type="ionicon" />
+      </TouchableOpacity>
+      <FlatList
+        horizontal={true}
+        data={data}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => <Eview nav={nav} item={item} />}
+      />
+    </View>
+  );
+};
 
 export default function Hproduct({ navigation }) {
   const { data, loading, error, refetch } = useQuery(GET_PRODUCTS);
@@ -114,7 +124,15 @@ export default function Hproduct({ navigation }) {
     return <Loading />;
   }
   if (error) {
-    return <ErrorPage refresh={refresh} />;
+    return (
+      <ErrorPage refresh={refresh} />
+      // <View>
+      //   <Button
+      //     title="rate"
+      //     onPress={() => navigation.navigate("Post Rating")}
+      //   />
+      // </View>
+    );
   }
 
   return (
@@ -127,10 +145,18 @@ export default function Hproduct({ navigation }) {
           <Search place="Search Product..." />
         </View>
         {beautyCos.length > 0 && (
-          <Category_view nav={navigation} name="Beauty & Cosmetics" data={beautyCos} />
+          <Category_view
+            nav={navigation}
+            name="Beauty & Cosmetics"
+            data={beautyCos}
+          />
         )}
         {educational.length > 0 && (
-          <Category_view nav={navigation} name="Educational Items" data={educational} />
+          <Category_view
+            nav={navigation}
+            name="Educational Items"
+            data={educational}
+          />
         )}
         {elecAcc.length > 0 && (
           <Category_view
@@ -146,7 +172,11 @@ export default function Hproduct({ navigation }) {
           <Category_view nav={navigation} name="Food & Drinks" data={foodD} />
         )}
         {sportsA.length > 0 && (
-          <Category_view nav={navigation} name="Sports & Accessories" data={sportsA} />
+          <Category_view
+            nav={navigation}
+            name="Sports & Accessories"
+            data={sportsA}
+          />
         )}
       </View>
     </ScrollView>
@@ -161,8 +191,8 @@ const styles = StyleSheet.create({
   searchview: {
     flex: 0.1,
     padding: 8,
-    alignItems:'center',
-    justifyContent:'center'
+    alignItems: "center",
+    justifyContent: "center",
   },
   content: {
     flex: 4,

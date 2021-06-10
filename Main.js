@@ -24,6 +24,11 @@ import EditEvent from "./Forms_Screens/Edit_Event_Form";
 import Pform from "./Forms_Screens/Product_form";
 import ProductEdit from "./Forms_Screens/Edit_Product_Form";
 import Stutor from "./Home_Sub_Screens/sub_Tutor";
+import RatingPage from "./Ratings_Screens/RatingPage";
+import PostRating from "./Ratings_Screens/PostRating";
+import ChatHistory from "./ChatHistory";
+import PostTRating from "./Ratings_Screens/PostTRating";
+import RatingPageT from "./Ratings_Screens/RatingPageT";
 
 //icon={{name:'person-outline', type:'ionicon'}}
 //Header Right view...
@@ -56,12 +61,20 @@ const Main = () => {
         <Stack.Screen
           name="Splash"
           component={Splash}
-          options={{ headerShown: true, headerTitle:null, headerStyle: { elevation: 0 } }}
+          options={{
+            headerShown: true,
+            headerTitle: null,
+            headerStyle: { elevation: 0 },
+          }}
         />
         <Stack.Screen
           name="Verify"
           component={Verify}
-          options={{ headerShown: true, headerTitle:null, headerStyle: { elevation: 0 } }}
+          options={{
+            headerShown: true,
+            headerTitle: null,
+            headerStyle: { elevation: 0 },
+          }}
         />
         <Stack.Screen
           name="Main"
@@ -78,6 +91,11 @@ const Main = () => {
           name="Chat"
           options={{ headerStyle: { elevation: 0 } }}
           component={Chat}
+        />
+        <Stack.Screen
+          name="Chat History"
+          options={{ headerStyle: { elevation: 0 } }}
+          component={ChatHistory}
         />
         <Stack.Screen
           name="Event Info"
@@ -160,6 +178,22 @@ const Main = () => {
           options={{ headerTitle: "Invite", headerStyle: { elevation: 0 } }}
           component={Invite}
         />
+        <Stack.Screen
+          name="Ratings P"
+          component={RatingPage}
+          options={{ headerTitle: "Ratings and Reviews" }}
+        />
+        <Stack.Screen
+          name="Post Rating"
+          component={PostRating}
+          options={{ headerTitle: "Rate Product" }}
+        />
+        <Stack.Screen
+          name="Ratings T"
+          component={RatingPageT}
+          options={{ headerTitle: "Ratings and Reviews" }}
+        />
+        <Stack.Screen name="Rate Tutor" component={PostTRating} />
       </Stack.Navigator>
     </NavigationContainer>
   );

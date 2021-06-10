@@ -1,3 +1,4 @@
 {
-    "color-pick.analytics": true
+    "color-pick.analytics": true,
+    "editor.formatOnSave": true
 }

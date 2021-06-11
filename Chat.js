@@ -34,6 +34,7 @@ export default function Chat({ route }) {
         setMessages(
           snap.docs.map((doc) => {
             const data = doc.data();
+            console.log(data);
             return {
               ...data,
               createdAt: data.createdAt.toDate(),

@@ -13,7 +13,6 @@ import { PROFILE_NAME } from "./GraphQL/Queries";
 
 const ChatItem = ({ item, nav }) => {
   const rEmail = item.chatName.replace(auth.currentUser.email, "");
-  console.log(rEmail);
   const { data, loading, error } = useQuery(PROFILE_NAME, {
     variables: { user: rEmail },
   });
@@ -66,7 +65,6 @@ const ChatHistory = ({ navigation }) => {
       chats.filter((item) => item.chatName.includes(auth.currentUser.email))
     );
   }, [chats]);
-  console.log(myChats);
   return (
     <View style={styles.container}>
       <FlatList

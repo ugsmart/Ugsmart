@@ -176,7 +176,7 @@ export default function Haccount({ navigation }) {
           />
         )}
         <Aview
-          name="Chat History"
+          name="Chats"
           icon="chatbubbles-outline"
           onPress={() => {
             navigation.navigate("Chat History");

@@ -65,7 +65,7 @@ const Category_view = ({nav, title, name, data})=>{
         <FlatList
           horizontal={true}
           data={data}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item._id}
           renderItem={({ item }) => <Eview nav={nav} item={item}/>}
         />
       </View>

@@ -112,7 +112,6 @@ export default function Haccount({ navigation }) {
       ]
     );
   };
-
   if (loading) {
     return <Loading />;
   }
@@ -176,6 +175,13 @@ export default function Haccount({ navigation }) {
             }}
           />
         )}
+        <Aview
+          name="Chat History"
+          icon="chatbubbles-outline"
+          onPress={() => {
+            navigation.navigate("Chat History");
+          }}
+        />
         <Aview
           name="Invite"
           icon="share-social-outline"

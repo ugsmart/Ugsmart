@@ -21,6 +21,7 @@ export const GET_PRODUCTS = gql`
       Name
       Category
       Bater
+      Description
       Price
       Images {
         Image1
@@ -156,6 +157,40 @@ export const MY_PRODUCTS = gql`
       }
       usermail
       createdAt
+    }
+  }
+`;
+export const PROFILE_NAME = gql`
+  query Profile($user: String!) {
+    Profile(user: $user) {
+      _id
+      Name
+    }
+  }
+`;
+export const P_REVIEWS = gql`
+  query P_reviews($id: String!) {
+    P_reviews(id: $id) {
+      _id
+      value
+      comment
+      date
+      username
+      usermail
+      Product_id
+    }
+  }
+`;
+export const T_REVIEWS = gql`
+  query T_reviews($id: String!) {
+    T_reviews(id: $id) {
+      _id
+      value
+      comment
+      date
+      username
+      usermail
+      Tutor_id
     }
   }
 `;

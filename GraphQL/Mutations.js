@@ -177,3 +177,45 @@ export const DELETE_PRODUCT = gql`
     }
   }
 `;
+export const RATE_PRODUCT = gql`
+  mutation Rate_Product(
+    $value: Int!
+    $comment: String!
+    $username: String!
+    $usermail: String!
+    $date: String!
+    $Product_id: String!
+  ) {
+    Rate_Product(
+      value: $value
+      comment: $comment
+      username: $username
+      usermail: $usermail
+      date: $date
+      Product_id: $Product_id
+    ) {
+      _id
+    }
+  }
+`;
+export const RATE_TUTOR = gql`
+  mutation Rate_Tutor(
+    $value: Int!
+    $comment: String!
+    $username: String!
+    $usermail: String!
+    $date: String!
+    $Tutor_id: String!
+  ) {
+    Rate_Tutor(
+      value: $value
+      comment: $comment
+      username: $username
+      usermail: $usermail
+      date: $date
+      Tutor_id: $Tutor_id
+    ) {
+      _id
+    }
+  }
+`;

@@ -9,11 +9,14 @@ import Loading from "./Loading";
 import { auth } from "./Firebase";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import Main from "./Main";
+import { LogBox } from "react-native";
 
 const client = new ApolloClient({
   uri: "https://afternoon-beach-13592.herokuapp.com/graphql",
   cache: new InMemoryCache(),
 });
+
+LogBox.ignoreLogs(["Setting a timer for a long period of time"]);
 
 export default function App() {
   const [loaded] = useFonts({
@@ -46,7 +49,9 @@ export default function App() {
     return (
       <ApolloProvider client={client}>
         <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: true, headerTitle:null }}>
+          <Stack.Navigator
+            screenOptions={{ headerShown: true, headerTitle: null }}
+          >
             <Stack.Screen
               name="Intro"
               options={{ headerStyle: { elevation: 0 } }}

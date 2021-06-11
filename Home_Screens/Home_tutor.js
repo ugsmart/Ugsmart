@@ -84,17 +84,22 @@ const Eview = ({ item, nav }) => {
   );
 };
 
-const Viewz = ({ name, nav, data }) => {
+const Category_view = ({ nav, name, data }) => {
   return (
-    <View style={styles.content}>
+    <View style={{ flex: 1 }}>
       <TouchableOpacity
         onPress={() => {
           nav.navigate("Tutor", { name });
         }}
-        style={styles.touch}
+        style={{
+          flexDirection: "row",
+          padding: 5,
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
       >
         <Text style={styles.title}>{name}</Text>
-        <Icon name="chevron-forward" type="ionicon" />
+        <Icon name="chevron-forward-circle-outline" type="ionicon" />
       </TouchableOpacity>
       <FlatList
         horizontal={true}
@@ -105,23 +110,6 @@ const Viewz = ({ name, nav, data }) => {
     </View>
   );
 };
-
-const Category_view = ({nav, name, data})=>{
-  return(
-      <View style={{flex:1}}>
-        <TouchableOpacity onPress={()=>{nav.navigate("Tutor", { name })}} style={{flexDirection:'row',padding:5,alignItems:'center',justifyContent:'space-between'}}>
-          <Text style={styles.title}>{name}</Text>
-          <Icon name="chevron-forward-circle-outline" type='ionicon'/>
-        </TouchableOpacity>
-        <FlatList
-          horizontal={true}
-          data={data}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <Eview nav={nav} item={item}/>}
-        />
-      </View>
-  )
-}
 
 export default function Htutor({ navigation }) {
   const { data, loading, error, refetch } = useQuery(GET_TUTORS, {
@@ -168,7 +156,11 @@ export default function Htutor({ navigation }) {
           <Search place="Search Tutor..." />
         </View>
         {healthS.length > 0 && (
-          <Category_view nav={navigation} name="Health Sciences" data={healthS} />
+          <Category_view
+            nav={navigation}
+            name="Health Sciences"
+            data={healthS}
+          />
         )}
         {basicS.length > 0 && (
           <Category_view

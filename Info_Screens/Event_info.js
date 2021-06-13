@@ -1,8 +1,31 @@
 import React, { useLayoutEffect } from "react";
-import { StyleSheet, View, ScrollView, Image, Text } from "react-native";
+import { StyleSheet, View, ScrollView, Image, Text, Share } from "react-native";
 import { Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 const noImage = require("../assets/noImage.jpg");
+import * as Linking from "expo-linking"
+
+const link = Linking.createURL(`/Ievent`)
+const Social = async () => {
+  try {
+    const result = await Share.share({
+      title: "UG Smart",
+      message: `Heya, I just up some products on UG-Smart you might be intreasted in. Click on the link to know more about the Event.\n` +
+        link
+    });
+    if (result.action === Share.sharedAction) {
+      if (result.activityType) {
+        // shared with activity type of result.activityType
+      } else {
+        // shared
+      }
+    } else if (result.action === Share.dismissedAction) {
+      // dismissed
+    }
+  } catch (error) {
+    alert(error.message);
+  }
+};
 
 const Des_view = ({ item }) => {
   return (
@@ -13,7 +36,7 @@ const Des_view = ({ item }) => {
       <View style={styles.container}>
         <Image
           source={item.Flyer ? { uri: item.Flyer } : noImage}
-          style={{ height: 500,flex:1 }}
+          style={{ height: 500, flex: 1 }}
         />
       </View>
       <View style={styles.content}>
@@ -30,6 +53,7 @@ const Des_view = ({ item }) => {
               name="share-social-outline"
               size={RFPercentage(4)}
               type="ionicon"
+              onPress={() => Social()}
             />
           </View>
         </View>
@@ -59,8 +83,6 @@ export default function Ievent({ route, navigation }) {
     });
   }, [navigation]);
   const { item } = route.params;
-  console.log(item);
-
   return <Des_view item={item} />;
 }
 

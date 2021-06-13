@@ -7,6 +7,7 @@ import {
   Text,
   ImageBackground,
   TouchableOpacity,
+  Share
 } from "react-native";
 import { Button, Icon, Avatar, AirbnbRating } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
@@ -15,6 +16,30 @@ import { auth, db } from "../Firebase";
 import { T_REVIEWS } from "../GraphQL/Queries";
 import Loading from "../Loading";
 const noImage = require("../assets/noImage.jpg");
+import * as Linking from "expo-linking"
+
+
+const link = Linking.createURL(`/Itutor`)
+const Social = async () => {
+  try {
+    const result = await Share.share({
+      title: "UG Smart",
+      message: `Heya, I just up some products on UG-Smart you might be intreasted in. Click on the link to know more about the Event.\n` +
+        link
+    });
+    if (result.action === Share.sharedAction) {
+      if (result.activityType) {
+        // shared with activity type of result.activityType
+      } else {
+        // shared
+      }
+    } else if (result.action === Share.dismissedAction) {
+      // dismissed
+    }
+  } catch (error) {
+    alert(error.message);
+  }
+};
 
 const Des_view = ({ nav, item, Ratings, refresh }) => {
   let total = 0;
@@ -59,6 +84,7 @@ const Des_view = ({ nav, item, Ratings, refresh }) => {
               name="share-social-outline"
               size={RFPercentage(4)}
               type="ionicon"
+              onPress={() => Social()}
             />
           </View>
         </View>

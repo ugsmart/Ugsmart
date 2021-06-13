@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useLayoutEffect,
+} from "react";
 import { GiftedChat } from "react-native-gifted-chat";
 import { auth, db } from "./Firebase";
-import firebase from "firebase";
 import { useQuery } from "@apollo/client";
 import { PROFILE_NAME } from "./GraphQL/Queries";
 import Loading from "./Loading";
@@ -28,35 +32,32 @@ export default function Chat({ route }) {
     }
   }, [data]);
 
-  useEffect(() => {
-    const unsub = chatRef.orderBy("createdAt", "desc").onSnapshot((snap) => {
-      if (snap)
-        setMessages(
-          snap.docs.map((doc) => {
-            const data = doc.data();
-            console.log(data);
-            return {
-              ...data,
-              createdAt: data.createdAt.toDate(),
-            };
-          })
-        );
-    });
+  useLayoutEffect(() => {
+    const unsub = chatRef.orderBy("createdAt", "desc").onSnapshot((snap) =>
+      setMessages(
+        snap.docs.map((doc) => ({
+          _id: doc.data()._id,
+          createdAt: doc.data().createdAt.toDate(),
+          text: doc.data().text,
+          user: doc.data().user,
+        }))
+      )
+    );
     return unsub;
   }, []);
 
-  const onSend = async (messages) => {
-    const write = messages.map((m) =>
-      chatRef.add({
-        ...m,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      })
+  const onSend = useCallback((messages = []) => {
+    setMessages((previousMessages) =>
+      GiftedChat.append(previousMessages, messages)
     );
-    await Promise.all(write).catch((err) => {
-      console.log(err);
-      alert("Error occured");
+    const { _id, createdAt, text, user } = messages[0];
+    chatRef.add({
+      _id,
+      createdAt,
+      text,
+      user,
     });
-  };
+  }, []);
 
   if (loading) {
     return <Loading />;

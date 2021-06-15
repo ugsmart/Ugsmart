@@ -60,6 +60,8 @@ export default function Sproduct({ navigation, route }) {
   });
 
   const [productCate, setProductCate] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [searched, setSearched] = useState([]);
   useEffect(() => {
     if (data) {
       setProductCate(data.Product_Cate);
@@ -69,12 +71,18 @@ export default function Sproduct({ navigation, route }) {
     }
   }, [data]);
   useLayoutEffect(() => {
+    setSearched(
+      productCate.filter(
+        (item) =>
+          item.Name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1
+      )
+    );
+  }, [searchInput, productCate]);
+  useLayoutEffect(() => {
     navigation.setOptions({
       title: name,
     });
   }, [navigation]);
-
-  console.log(productCate);
 
   if (loading) {
     return <Loading />;
@@ -86,17 +94,42 @@ export default function Sproduct({ navigation, route }) {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
         <View style={styles.searchview}>
-          <Search place="Search Event..." />
+          <Search
+            place="Search Event..."
+            value={searchInput}
+            setValue={setSearchInput}
+          />
         </View>
         <View style={styles.content}>
-          {productCate.length===0 && 
-          <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
-            <Icon size={RFPercentage(10)} name="cart-outline" type="ionicon"/>
-            <Text>No Products under this Category yet.</Text>
-          </View> }
+          {productCate.length === 0 && (
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                flex: 1,
+              }}
+            >
+              <Icon
+                size={RFPercentage(10)}
+                name="cart-outline"
+                type="ionicon"
+              />
+              <Text>No Products under this Category yet.</Text>
+            </View>
+          )}
+          {searched.length === 0 && productCate.length !== 0 && (
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text>No Products found.</Text>
+            </View>
+          )}
           <FlatList
             numColumns={2}
-            data={productCate}
+            data={searched}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => <Eview nav={navigation} item={item} />}
           />

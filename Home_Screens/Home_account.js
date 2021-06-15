@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   Text: {
     marginHorizontal: 10,
     fontFamily: "Noto",
-    fontSize: RFPercentage(2.9),
+    fontSize: RFPercentage(2.4),
   },
   main: {
     flex: 1,

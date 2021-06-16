@@ -17,7 +17,7 @@ import Loading from "../Loading";
 const noImage = require("../assets/noImage.jpg");
 
 //Search Box Component used in the other Home views...
-export const Search = ({ place }) => {
+export const Search = ({ place, value, setValue }) => {
   return (
     <View
       style={{
@@ -41,6 +41,8 @@ export const Search = ({ place }) => {
         <TextInput
           style={{ fontSize: RFPercentage(2.8), padding: 5 }}
           placeholder={place}
+          value={value}
+          onChangeText={setValue}
         />
       </View>
     </View>
@@ -152,9 +154,6 @@ export default function Htutor({ navigation }) {
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <View style={styles.container}>
-        <View style={styles.searchview}>
-          <Search place="Search Tutor..." />
-        </View>
         {healthS.length > 0 && (
           <Category_view
             nav={navigation}

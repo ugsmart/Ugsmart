@@ -124,15 +124,7 @@ export default function Hproduct({ navigation }) {
     return <Loading />;
   }
   if (error) {
-    return (
-      <ErrorPage refresh={refresh} />
-      // <View>
-      //   <Button
-      //     title="rate"
-      //     onPress={() => navigation.navigate("Post Rating")}
-      //   />
-      // </View>
-    );
+    return <ErrorPage refresh={refresh} />;
   }
 
   return (
@@ -141,9 +133,6 @@ export default function Hproduct({ navigation }) {
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <View style={styles.container}>
-        <View style={styles.searchview}>
-          <Search place="Search Product..." />
-        </View>
         {beautyCos.length > 0 && (
           <Category_view
             nav={navigation}

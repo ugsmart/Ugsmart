@@ -8,10 +8,11 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import { Avatar, Icon } from "react-native-elements";
+import { Avatar, Icon, ListItem } from "react-native-elements";
+import { BottomSheet } from "react-native-elements/dist/bottomSheet/BottomSheet";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import ErrorPage from "../ErrorPage";
-import { GET_PRODUCT_CATEGORY, GET_TUTOR_COL } from "../GraphQL/Queries";
+import { GET_TUTOR_COL } from "../GraphQL/Queries";
 import { Search } from "../Home_Screens/Home_tutor";
 import Loading from "../Loading";
 
@@ -62,6 +63,20 @@ export default function Stutor({ navigation, route }) {
     refetch();
   };
   const [tutorCollege, setTutorCollege] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [searched, setSearched] = useState([]);
+  const [isVisible, setIsVisible] = useState(false);
+  const [searchBy, setSearchBy] = useState("Name");
+  useEffect(() => {
+    setSearched(
+      tutorCollege.filter((item) =>
+        searchBy === "Name"
+          ? item.Name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1
+          : item.Program.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1
+      )
+    );
+  }, [searchInput, tutorCollege, searchBy]);
+
   useEffect(() => {
     if (data) {
       setTutorCollege(data.College);
@@ -76,8 +91,6 @@ export default function Stutor({ navigation, route }) {
     });
   }, [navigation]);
 
-  console.log(tutorCollege);
-
   if (loading) {
     return <Loading />;
   }
@@ -88,22 +101,91 @@ export default function Stutor({ navigation, route }) {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
         <View style={styles.searchview}>
-          <Search place="Search Tutor..." />
+          <Search
+            place={`Search Tutor by ${searchBy}..`}
+            value={searchInput}
+            setValue={setSearchInput}
+          />
+          <Icon
+            size={RFPercentage(4)}
+            containerStyle={styles.icon}
+            name="filter-outline"
+            type="ionicon"
+            onPress={() => setIsVisible(true)}
+          />
         </View>
         <View style={styles.content}>
-        {tutorCollege.length===0 &&
-         <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
-           <Icon size={RFPercentage(10)} name="school-outline" type="ionicon"/>
-           <Text>No Tutors under this Category yet.</Text>
-         </View>}
+          {tutorCollege.length === 0 && (
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                flex: 1,
+              }}
+            >
+              <Icon
+                size={RFPercentage(10)}
+                name="school-outline"
+                type="ionicon"
+              />
+              <Text>No Tutors under this Category yet.</Text>
+            </View>
+          )}
+          {searched.length === 0 && tutorCollege.length !== 0 && (
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text>No Tutors found.</Text>
+            </View>
+          )}
           <FlatList
             numColumns={2}
-            data={tutorCollege}
+            data={searched}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => <Eview nav={navigation} item={item} />}
           />
         </View>
       </View>
+      <BottomSheet
+        isVisible={isVisible}
+        containerStyle={{ backgroundColor: "rgba(0.5, 0.25, 0, 0.2)" }}
+      >
+        <ListItem
+          onPress={() => {
+            setSearchBy("Name");
+            setIsVisible(false);
+            setSearchInput("");
+          }}
+        >
+          <ListItem.Content>
+            <ListItem.Title>Search by Name</ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+        <ListItem
+          onPress={() => {
+            setSearchBy("Course");
+            setIsVisible(false);
+            setSearchInput("");
+          }}
+        >
+          <ListItem.Content>
+            <ListItem.Title>Search by Course</ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+        <ListItem
+          onPress={() => {
+            setIsVisible(false);
+          }}
+          containerStyle={{ backgroundColor: "grey" }}
+        >
+          <ListItem.Content>
+            <ListItem.Title style={{ color: "white" }}>Cancel</ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+      </BottomSheet>
     </ScrollView>
   );
 }
@@ -119,6 +201,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 8,
+    flexDirection: "row",
+    position: "relative",
+  },
+  icon: {
+    position: "absolute",
+    right: 25,
+    padding: 7,
+    borderRadius: 50,
   },
   content: {
     flex: 4,

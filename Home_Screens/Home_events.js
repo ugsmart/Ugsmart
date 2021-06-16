@@ -55,26 +55,34 @@ const Eview = ({ item, nav }) => {
 };
 //End...
 
-const Category_view = ({nav, title, name, data})=>{
-  return(
-      <View style={{flex:1}}>
-        <TouchableOpacity onPress={()=>{nav.navigate("Event", { name })}} style={{flexDirection:'row',padding:5,alignItems:'center',justifyContent:'space-between'}}>
-          <Text style={styles.title}>{title}</Text>
-          <Icon name="chevron-forward-circle-outline" type='ionicon'/>
-        </TouchableOpacity>
-        <FlatList
-          horizontal={true}
-          data={data}
-          keyExtractor={(item) => item._id}
-          renderItem={({ item }) => <Eview nav={nav} item={item}/>}
-        />
-      </View>
-  )
-}
+const Category_view = ({ nav, title, name, data }) => {
+  return (
+    <View style={{ flex: 1 }}>
+      <TouchableOpacity
+        onPress={() => {
+          nav.navigate("Event", { name });
+        }}
+        style={{
+          flexDirection: "row",
+          padding: 5,
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text style={styles.title}>{title}</Text>
+        <Icon name="chevron-forward-circle-outline" type="ionicon" />
+      </TouchableOpacity>
+      <FlatList
+        horizontal={true}
+        data={data}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => <Eview nav={nav} item={item} />}
+      />
+    </View>
+  );
+};
 
-
-export default function Hevent({ navigation }){
-
+export default function Hevent({ navigation }) {
   const { data, loading, error, refetch } = useQuery(GET_EVENTS);
   const [artsCulture, setArtsCulture] = useState([]);
   const [education, setEducation] = useState([]);
@@ -117,31 +125,53 @@ export default function Hevent({ navigation }){
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <View style={styles.container}>
-        <View style={styles.searchview}>
-          <Search place="Search Event..." />
-        </View>
         {artsCulture.length > 0 && (
-          <Category_view title="Arts & Culture" nav={navigation} name="Arts & Culture" data={artsCulture} />
+          <Category_view
+            title="Arts & Culture"
+            nav={navigation}
+            name="Arts & Culture"
+            data={artsCulture}
+          />
         )}
         {education.length > 0 && (
-          <Category_view title="Education" nav={navigation} name="Education" data={education} />
+          <Category_view
+            title="Education"
+            nav={navigation}
+            name="Education"
+            data={education}
+          />
         )}
         {entertainment.length > 0 && (
-          <Category_view title="Entertainment" nav={navigation} name="Entertainment" data={entertainment} />
+          <Category_view
+            title="Entertainment"
+            nav={navigation}
+            name="Entertainment"
+            data={entertainment}
+          />
         )}
         {religion.length > 0 && (
-          <Category_view title="Religion" nav={navigation} name="Religion" data={religion} />
+          <Category_view
+            title="Religion"
+            nav={navigation}
+            name="Religion"
+            data={religion}
+          />
         )}
         {socialLifestyle.length > 0 && (
           <Category_view
-           title="Social & Lifestyle"
+            title="Social & Lifestyle"
             nav={navigation}
             name="Social & Lifestyle"
             data={socialLifestyle}
           />
         )}
         {sports.length > 0 && (
-          <Category_view title="Sports" nav={navigation} name="Sports" data={sports} />
+          <Category_view
+            title="Sports"
+            nav={navigation}
+            name="Sports"
+            data={sports}
+          />
         )}
       </View>
     </ScrollView>

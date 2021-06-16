@@ -59,6 +59,17 @@ export default function Sevent({ navigation, route }) {
     variables: { cate: name },
   });
   const [eventCate, setEventCate] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [searched, setSearched] = useState([]);
+  useEffect(() => {
+    setSearched(
+      eventCate.filter(
+        (item) =>
+          item.Name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1
+      )
+    );
+  }, [searchInput, eventCate]);
+
   useEffect(() => {
     if (data) {
       setEventCate(data.Event_Cate);
@@ -79,17 +90,42 @@ export default function Sevent({ navigation, route }) {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
         <View style={styles.searchview}>
-          <Search place="Search Event..." />
+          <Search
+            place="Search Event..."
+            value={searchInput}
+            setValue={setSearchInput}
+          />
         </View>
         <View style={styles.content}>
-        {eventCate.length===0&& 
-        <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
-          <Icon size={RFPercentage(10)} name="calendar-outline" type="ionicon"/>
-          <Text>No Events under this Category yet.</Text>
-        </View>}
+          {eventCate.length === 0 && (
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                flex: 1,
+              }}
+            >
+              <Icon
+                size={RFPercentage(10)}
+                name="calendar-outline"
+                type="ionicon"
+              />
+              <Text>No Events under this Category yet.</Text>
+            </View>
+          )}
+          {searched.length === 0 && eventCate.length !== 0 && (
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text>No Events found.</Text>
+            </View>
+          )}
           <FlatList
             numColumns={2}
-            data={eventCate}
+            data={searched}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => <Eview nav={navigation} item={item} />}
           />

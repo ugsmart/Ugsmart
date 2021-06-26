@@ -20,10 +20,13 @@ LogBox.ignoreLogs(["Setting a timer for a long period of time"]);
 
 export default function App() {
   const [loaded] = useFonts({
-    Acolo: require("./fonts/Aclonica-Regular.ttf"),
     Ranch: require("./fonts/Rancho-Regular.ttf"),
     Titan: require("./fonts/TitanOne-Regular.ttf"),
     Noto: require("./fonts/NotoSansJP-Regular.otf"),
+    Robo: require("./fonts/Roboto-Thin.ttf"),
+    Rob: require("./fonts/Roboto-Regular.ttf"),
+    Sans: require("./fonts/SourceSansPro-Regular.ttf"),
+    San: require("./fonts/SourceSansPro-Light.ttf"),
   });
 
   const [userLoggedIn, setUserLoggedIn] = useState(null);

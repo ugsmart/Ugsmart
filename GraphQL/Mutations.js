@@ -86,6 +86,8 @@ export const ADD_TUTOR = gql`
     $Description: String!
     $Name: String!
     $College: String!
+    $Card: String!
+    $Transcript: String!
     $Price: String!
     $Image: String!
     $usermail: String!
@@ -95,6 +97,8 @@ export const ADD_TUTOR = gql`
       Description: $Description
       Name: $Name
       College: $College
+      Card: $Card
+      Transcript: $Transcript
       Price: $Price
       Image: $Image
       usermail: $usermail

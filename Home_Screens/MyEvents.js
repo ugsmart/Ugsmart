@@ -9,6 +9,7 @@ import { auth } from "../Firebase";
 import { DELETE_EVENT } from "../GraphQL/Mutations";
 import { MY_EVENTS } from "../GraphQL/Queries";
 import Loading from "../Loading";
+import { RFPercentage } from "react-native-responsive-fontsize";
 
 const noImage = require("../assets/noImage.jpg");
 
@@ -118,11 +119,16 @@ const MyEvents = ({ navigation }) => {
       </TouchableOpacity>
       <View style={{ paddingVertical: 10 }}>
         {myEvents.length === 0 && (
-          <Text
-            style={{ color: "grey", fontWeight: "bold", textAlign: "center" }}
+          <View
+            style={{ justifyContent: 'center' }}
           >
-            No Events yet
-          </Text>
+            <Icon
+              size={RFPercentage(6)}
+              name="calendar-outline"
+              type="ionicon"
+            />
+            <Text style={{ color: "black", fontWeight: "bold", textAlign: "center" }}>No Events yet</Text>
+          </View>
         )}
         <FlatList
           data={myEvents}
@@ -144,7 +150,7 @@ const MyEvents = ({ navigation }) => {
 export default MyEvents;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 7 },
+  container: { flex: 1, padding: 7, backgroundColor: 'white' },
   title: { fontSize: 17, fontWeight: "bold", marginLeft: 5 },
   eventCon: {
     flex: 1,

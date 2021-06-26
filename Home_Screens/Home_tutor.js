@@ -12,7 +12,7 @@ import {
 import { Icon, Avatar } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import ErrorPage from "../ErrorPage";
-import { GET_TUTORS } from "../GraphQL/Queries";
+import { GET_APPROVED_TUTORS } from "../GraphQL/Queries";
 import Loading from "../Loading";
 const noImage = require("../assets/noImage.jpg");
 
@@ -66,9 +66,10 @@ const Eview = ({ item, nav }) => {
       <Text
         style={{
           textAlign: "center",
-          fontFamily: "Ranch",
-          fontSize: RFPercentage(3.8),
+          fontFamily: "Lato",
+          fontSize: RFPercentage(3),
           marginTop: 10,
+          padding: 5
         }}
       >
         {item.Name}
@@ -76,8 +77,8 @@ const Eview = ({ item, nav }) => {
       <Text
         style={{
           textAlign: "center",
-          fontSize: RFPercentage(2.8),
-          fontFamily: "Ranch",
+          fontSize: RFPercentage(2),
+          fontFamily: "Lato",
         }}
       >
         {item.Program}
@@ -114,17 +115,18 @@ const Category_view = ({ nav, name, data }) => {
 };
 
 export default function Htutor({ navigation }) {
-  const { data, loading, error, refetch } = useQuery(GET_TUTORS, {
-    pollInterval: 100,
+  const { data, loading, error, refetch } = useQuery(GET_APPROVED_TUTORS, {
+    pollInterval: 500,
   });
+  const [tutors, setTutors] = useState([])
   const [healthS, setHealthS] = useState([]);
   const [basicS, setBasicS] = useState([]);
   const [humanities, setHumanities] = useState([]);
   const [education, setEducation] = useState([]);
-
   useEffect(() => {
     if (data) {
-      const tutors = data.Tutors;
+      const tutors = data.Approved_tutors;
+      setTutors(data.Approved_tutors)
       const health = tutors.filter(
         (item) => item.College === "Health Sciences"
       );
@@ -154,6 +156,16 @@ export default function Htutor({ navigation }) {
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <View style={styles.container}>
+        {tutors.length === 0 && < View
+          style={{ justifyContent: 'center' }}
+        >
+          <Icon
+            size={RFPercentage(6)}
+            name="school-outline"
+            type="ionicon"
+          />
+          <Text style={{ color: "black", fontWeight: "bold", textAlign: "center" }}>No Tutors yet</Text>
+        </View>}
         {healthS.length > 0 && (
           <Category_view
             nav={navigation}
@@ -191,9 +203,10 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   title: {
-    fontFamily: "Titan",
-    fontSize: RFPercentage(3.4),
+    fontFamily: "Lato",
+    fontSize: RFPercentage(3.5),
     padding: 5,
+    fontWeight: 'bold'
   },
   content: {
     flex: 4,

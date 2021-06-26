@@ -164,7 +164,6 @@ export default function Eform({ navigation }) {
       quality: 1,
     });
 
-    console.log(result);
 
     if (!result.cancelled) {
       setimage(result.uri);
@@ -172,7 +171,6 @@ export default function Eform({ navigation }) {
     }
   };
   //End...
-  const addEvent = () => {};
 
   const Screen = () => {
     if (done) {
@@ -203,7 +201,7 @@ export default function Eform({ navigation }) {
         .child(`${bucketName}/${Date.now().toString()}`);
       storageRef.put(blob).on(
         "state_changed",
-        () => {},
+        () => { },
         (err) => {
           console.log(err);
         },

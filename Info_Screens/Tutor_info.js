@@ -75,12 +75,6 @@ const Des_view = ({ nav, item, Ratings, refresh }) => {
           <Text style={styles.title}>{item.Name}</Text>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Icon
-              name="heart-outline"
-              style={{ marginRight: 10 }}
-              size={RFPercentage(4.5)}
-              type="ionicon"
-            />
-            <Icon
               name="share-social-outline"
               size={RFPercentage(4)}
               type="ionicon"
@@ -209,32 +203,27 @@ export default function Itutor({ navigation, route }) {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: RFPercentage(3.5),
-    fontFamily: "Titan",
+    fontSize: RFPercentage(4.2),
+    fontFamily: "Robo",
+    fontWeight: 'bold'
   },
   tview: {
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
   },
-  date: {
-    marginTop: 10,
-    fontSize: 16,
-    fontWeight: "bold",
-  },
   text: {
-    fontSize: RFPercentage(2.2),
-    fontFamily: "Noto",
+    fontSize: RFPercentage(2.5),
+    fontFamily: "Rob",
   },
   Ptext: {
     fontWeight: "bold",
-    fontSize: RFPercentage(2.6),
+    fontSize: RFPercentage(2.9),
   },
   content: {
     flex: 1,
     padding: 8,
     backgroundColor: "white",
-    paddingBottom: 40,
   },
   container: {
     flex: 1,
@@ -243,7 +232,6 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    marginTop: 20,
     justifyContent: "space-between",
     paddingRight: 3,
   },

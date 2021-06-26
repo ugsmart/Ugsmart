@@ -135,14 +135,6 @@ export default function Haccount({ navigation }) {
           />
         </ImageBackground>
         <Text style={{ fontWeight: "bold" }}>Account Profile</Text>
-
-        <Aview
-          name="Edit Profile"
-          icon="person-add-outline"
-          onPress={() => {
-            navigation.navigate("Edit");
-          }}
-        />
         <Aview
           name="Change Password"
           icon="shield-checkmark-outline"

@@ -8,12 +8,34 @@ export const GET_TUTORS = gql`
       Description
       Name
       College
+      Card
+      Transcript
+      Approved
       Price
       Image
       usermail
     }
   }
 `;
+
+export const GET_APPROVED_TUTORS = gql`
+  query {
+    Approved_tutors {
+      _id
+      Program
+      Description
+      Name
+      College
+      Card
+      Transcript
+      Approved
+      Price
+      Image
+      usermail
+    }
+  }
+`;
+
 export const GET_PRODUCTS = gql`
   query {
     Products {
@@ -119,6 +141,9 @@ export const GET_TUTOR = gql`
       Price
       Image
       College
+      Card
+      Transcript
+      Approved
       usermail
     }
     Profile(user: $user) {

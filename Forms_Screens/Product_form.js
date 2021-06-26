@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,7 +13,6 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 import { RadioButton } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import { auth, storage } from "../Firebase";
-import { isNamedType } from "graphql";
 import { useMutation } from "@apollo/client";
 import { ADD_PRODUCT } from "../GraphQL/Mutations";
 
@@ -88,7 +87,7 @@ const uploadImg = async (image, setImgUrl, setLoading) => {
     .child(`${bucketName}/${Date.now().toString()}`);
   storageRef.put(blob).on(
     "state_changed",
-    () => {},
+    () => { },
     (err) => {
       console.log(err);
       setLoading(false);
@@ -279,7 +278,7 @@ export default function Pform({ navigation, route }) {
   const [done2, setdone2] = useState(false);
   const [image3, setimage3] = useState(null);
   const [done3, setdone3] = useState(false);
-  console.log(barter);
+
   const [imgUrl_1, setImgUrl_1] = useState("");
   const [imgUrl_2, setImgUrl_2] = useState("");
   const [imgUrl_3, setImgUrl_3] = useState("");
@@ -305,8 +304,6 @@ export default function Pform({ navigation, route }) {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setimage2(result.uri);
       setdone2(true);
@@ -319,8 +316,6 @@ export default function Pform({ navigation, route }) {
       allowsEditing: true,
       quality: 1,
     });
-
-    console.log(result);
 
     if (!result.cancelled) {
       setimage3(result.uri);

@@ -89,6 +89,7 @@ export const ADD_TUTOR = gql`
     $Card: String!
     $Transcript: String!
     $Price: String!
+    $Duration: String!
     $Image: String!
     $usermail: String!
   ) {
@@ -100,6 +101,7 @@ export const ADD_TUTOR = gql`
       Card: $Card
       Transcript: $Transcript
       Price: $Price
+      Duration: $Duration
       Image: $Image
       usermail: $usermail
     ) {

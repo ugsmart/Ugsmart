@@ -87,7 +87,7 @@ const uploadImg = async (image, setImgUrl, setLoading) => {
     .child(`${bucketName}/${Date.now().toString()}`);
   storageRef.put(blob).on(
     "state_changed",
-    () => { },
+    () => {},
     (err) => {
       console.log(err);
       setLoading(false);
@@ -288,7 +288,7 @@ export default function Pform({ navigation, route }) {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      quality: 1,
+      quality: 0.5,
     });
 
     if (!result.cancelled) {
@@ -301,7 +301,7 @@ export default function Pform({ navigation, route }) {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      quality: 1,
+      quality: 0.5,
     });
 
     if (!result.cancelled) {
@@ -314,7 +314,7 @@ export default function Pform({ navigation, route }) {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      quality: 1,
+      quality: 0.5,
     });
 
     if (!result.cancelled) {

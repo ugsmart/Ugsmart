@@ -161,9 +161,8 @@ export default function Eform({ navigation }) {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      quality: 1,
+      quality: 0.5,
     });
-
 
     if (!result.cancelled) {
       setimage(result.uri);
@@ -201,7 +200,7 @@ export default function Eform({ navigation }) {
         .child(`${bucketName}/${Date.now().toString()}`);
       storageRef.put(blob).on(
         "state_changed",
-        () => { },
+        () => {},
         (err) => {
           console.log(err);
         },

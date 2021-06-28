@@ -17,7 +17,7 @@ import { auth, storage } from "../Firebase";
 import { RadioButton } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const Inputview = ({ text, value, setValue }) => {
+const Inputview = ({ text, value, setValue, keyboard = "default" }) => {
   return (
     <View>
       <Text style={styles.Text}>{text}</Text>
@@ -26,6 +26,7 @@ const Inputview = ({ text, value, setValue }) => {
         style={styles.Input}
         value={value}
         onChangeText={setValue}
+        keyboardType={keyboard}
       />
     </View>
   );
@@ -87,12 +88,32 @@ const CollegeInput = ({ college, setCollege }) => {
   );
 };
 
+const Duration = ({ time, setTime }) => {
+  return (
+    <View>
+      <Text style={styles.Text}>Duration</Text>
+      <RadioButton.Group
+        onValueChange={(value) => {
+          setTime(value);
+        }}
+        value={time}
+      >
+        <RadioButton.Item label="Hourly" value="Hourly" />
+        <RadioButton.Item label="Daily" value="Daily" />
+        <RadioButton.Item label="Weekly" value="Weekly" />
+        <RadioButton.Item label="Monthly" value="Monthly" />
+      </RadioButton.Group>
+    </View>
+  );
+};
+
 export default function TutorEdit({ navigation, route }) {
   const { item, refresh } = route.params;
   const [program, setProgram] = useState("");
   const [description, setDescription] = useState("");
   const [college, setCollege] = useState("");
   const [price, setPrice] = useState("");
+  const [time, setTime] = useState("");
   //....Image Picker Codes....///
   const [image, setimage] = useState(null);
   const [done, setdone] = useState(false);
@@ -108,13 +129,14 @@ export default function TutorEdit({ navigation, route }) {
     setDescription(item.Description);
     setPrice(item.Price);
     setImgUrl(item.Image);
+    setTime(item.Duration);
   }, [item]);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      quality: 1,
+      quality: 0.5,
     });
 
     console.log(result);
@@ -176,6 +198,7 @@ export default function TutorEdit({ navigation, route }) {
         Program: program,
         Description: description,
         Price: price,
+        Duration: time,
         College: college,
         Image: imgUrl,
       },
@@ -198,6 +221,7 @@ export default function TutorEdit({ navigation, route }) {
       program === "" ||
       description === "" ||
       price === "" ||
+      time === "" ||
       (image === null && imgUrl === "")
     ) {
       alert("Please fill in all the relevant information");
@@ -247,7 +271,13 @@ export default function TutorEdit({ navigation, route }) {
           setValue={setDescription}
         />
         <CollegeInput college={college} setCollege={setCollege} />
-        <Inputview text="Price Details" value={price} setValue={setPrice} />
+        <Inputview
+          text="Price (Ghc)"
+          value={price}
+          setValue={setPrice}
+          keyboard="numeric"
+        />
+        <Duration setTime={setTime} time={time} />
         <Button
           title="Done"
           onPress={() => {

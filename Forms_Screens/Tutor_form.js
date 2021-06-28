@@ -19,7 +19,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import Cam from "../Camera";
 
-const Inputview = ({ text, value, setValue, keyboard = 'default' }) => {
+const Inputview = ({ text, value, setValue, keyboard = "default" }) => {
   return (
     <View>
       <Text style={styles.Text}>{text}</Text>
@@ -292,13 +292,13 @@ export default function Tform({ navigation, route }) {
   const [imgUrl, setImgUrl] = useState("");
   const [idUrl, setIdUrl] = useState("");
   const [docUrl, setDocUrl] = useState("");
-  const [time, settime] = useState("")
+  const [time, settime] = useState("");
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      quality: 1,
+      quality: 0.5,
     });
 
     if (!result.cancelled) {
@@ -373,13 +373,13 @@ export default function Tform({ navigation, route }) {
     setLoading(true);
     const response = await fetch(file);
     const blob = await response.blob();
-    const bucketName = { bucket };
+    const bucketName = bucket;
     const storageRef = storage
       .ref()
       .child(`${bucketName}/${Date.now().toString()}`);
     storageRef.put(blob).on(
       "state_changed",
-      () => { },
+      () => {},
       (err) => {
         setLoading(false);
         console.log(err);
@@ -416,8 +416,7 @@ export default function Tform({ navigation, route }) {
       description === "" ||
       college === "" ||
       price === "" ||
-      time === ''
-
+      time === ""
     ) {
       alert("Please fill in all the relevant information");
     } else {
@@ -429,7 +428,8 @@ export default function Tform({ navigation, route }) {
           variables: {
             Program: program,
             Description: description,
-            Price: `Ghc${price} ${time}`,
+            Price: price,
+            Duration: time,
             College: college,
             Card: idUrl,
             Transcript: docUrl,
@@ -504,7 +504,12 @@ export default function Tform({ navigation, route }) {
         ) : (
           <Screen2 />
         )}
-        <Inputview text="Price (Ghc)" value={price} setValue={setPrice} keyboard='numeric' />
+        <Inputview
+          text="Price (Ghc)"
+          value={price}
+          setValue={setPrice}
+          keyboard="numeric"
+        />
         <Duration settime={settime} time={time} />
         <Button
           title="Done"

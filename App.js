@@ -20,14 +20,9 @@ LogBox.ignoreLogs(["Setting a timer for a long period of time"]);
 
 export default function App() {
   const [loaded] = useFonts({
-    Ranch: require("./fonts/Rancho-Regular.ttf"),
-    Titan: require("./fonts/TitanOne-Regular.ttf"),
     Noto: require("./fonts/NotoSansJP-Regular.otf"),
     Robo: require("./fonts/Roboto-Thin.ttf"),
     Rob: require("./fonts/Roboto-Regular.ttf"),
-    Sans: require("./fonts/SourceSansPro-Regular.ttf"),
-    San: require("./fonts/SourceSansPro-Light.ttf"),
-    Bar: require("./fonts/Barlow-Regular.ttf"),
     Rub: require("./fonts/Rubik-VariableFont_wght.ttf"),
     Rub1: require("./fonts/Rubik-Italic-VariableFont_wght.ttf"),
   });

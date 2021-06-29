@@ -53,9 +53,10 @@ const Des_view = ({ nav, item, Ratings, refresh }) => {
     >
       <View style={styles.container}>
         <SliderBox
-          resizeMethod={"auto"}
-          height={400}
-          sliderBoxHeight={350}
+          resizeMode={"cover"}
+          autoplay={true}
+          height={RFPercentage(62)}
+          sliderBoxHeight={RFPercentage(62)}
           paginationBoxVerticalPadding={1}
           dotColor="red"
           inactiveDotColor="grey"
@@ -67,22 +68,17 @@ const Des_view = ({ nav, item, Ratings, refresh }) => {
           <Text style={styles.title}>{item.Name}</Text>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Icon
-              name="heart-outline"
-              style={{ marginRight: 10 }}
-              size={RFPercentage(4.5)}
-              type="ionicon"
-            />
-            <Icon
               name="share-social-outline"
               size={RFPercentage(4)}
               type="ionicon"
               onPress={() => Social()}
+              containerStyle={{ marginRight: 5 }}
             />
           </View>
         </View>
         <Text style={styles.text}>{item.Description}</Text>
         <Text style={styles.Ptext}>Price Details</Text>
-        <Text>{item.Price}</Text>
+        <Text style={styles.price}>{item.Price}</Text>
         <View style={{ flexDirection: "row", marginTop: 5 }}>
           <Text style={styles.Ptext}>Barter Trade</Text>
           {item.Bater ? (
@@ -207,46 +203,46 @@ export default function Iproduct({ navigation, route }) {
 //close-circle
 const styles = StyleSheet.create({
   title: {
-    fontSize: RFPercentage(3.5),
-    fontFamily: "Titan",
+    fontSize: RFPercentage(4),
+    fontFamily: "Rub",
+    fontWeight: 'bold'
   },
   tview: {
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
   },
-  date: {
-    marginTop: 10,
-    fontSize: 16,
-    fontWeight: "bold",
-  },
   text: {
-    fontSize: RFPercentage(2.2),
-    fontFamily: "Noto",
+    fontSize: RFPercentage(2.4),
+    fontFamily: "Rub",
   },
   Ptext: {
-    fontWeight: "bold",
-    fontSize: RFPercentage(2.6),
+    fontSize: RFPercentage(2.8),
     marginRight: 8,
+    fontFamily: "Rub",
+    fontWeight: 'bold'
   },
   content: {
     flex: 1,
     padding: 8,
     backgroundColor: "white",
-    paddingBottom: 60,
   },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 10,
+    padding: 8,
     backgroundColor: "white",
+  },
+  price: {
+    fontSize: RFPercentage(2.4),
+    fontFamily: "Rub"
   },
   row: {
     flexDirection: "row",
-    marginTop: 20,
+    marginTop: 10,
     justifyContent: "space-between",
-    paddingRight: 3,
+    paddingRight: 5,
   },
   row2: { flexDirection: "row", alignItems: "center" },
 });

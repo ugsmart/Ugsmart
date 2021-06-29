@@ -9,6 +9,7 @@ import { auth, storage } from "../Firebase";
 import { DELETE_PRODUCT } from "../GraphQL/Mutations";
 import { MY_PRODUCTS } from "../GraphQL/Queries";
 import Loading from "../Loading";
+import { RFPercentage } from "react-native-responsive-fontsize";
 
 const noImage = require("../assets/noImage.jpg");
 
@@ -123,11 +124,16 @@ const MyProducts = ({ navigation }) => {
       </TouchableOpacity>
       <View style={{ paddingVertical: 10 }}>
         {myProducts.length === 0 && (
-          <Text
-            style={{ color: "grey", fontWeight: "bold", textAlign: "center" }}
+          <View
+            style={{ justifyContent: 'center' }}
           >
-            No Products yet
-          </Text>
+            <Icon
+              size={RFPercentage(6)}
+              name="cart-outline"
+              type="ionicon"
+            />
+            <Text style={{ color: "black", fontWeight: "bold", textAlign: "center" }}>No Products yet</Text>
+          </View>
         )}
         <FlatList
           data={myProducts}
@@ -149,7 +155,7 @@ const MyProducts = ({ navigation }) => {
 export default MyProducts;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 7 },
+  container: { flex: 1, padding: 7, backgroundColor: 'white' },
   title: { fontSize: 17, fontWeight: "bold", marginLeft: 5 },
   eventCon: {
     flex: 1,

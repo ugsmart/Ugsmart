@@ -87,7 +87,7 @@ const uploadImg = async (image, setImgUrl, setLoading) => {
     .child(`${bucketName}/${Date.now().toString()}`);
   storageRef.put(blob).on(
     "state_changed",
-    () => {},
+    () => { },
     (err) => {
       console.log(err);
       setLoading(false);
@@ -283,7 +283,6 @@ export default function ProductEdit({ navigation, route }) {
   const [imgUrl_3, setImgUrl_3] = useState("");
   const [loading, setLoading] = useState(false);
 
-  console.log(item);
   useEffect(() => {
     setName(item.Name);
     setDescription(item.Description);
@@ -299,10 +298,8 @@ export default function ProductEdit({ navigation, route }) {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      quality: 1,
+      quality: 0.5,
     });
-
-    console.log(result);
 
     if (!result.cancelled) {
       setimage1(result.uri);
@@ -314,10 +311,8 @@ export default function ProductEdit({ navigation, route }) {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      quality: 1,
+      quality: 0.5,
     });
-
-    console.log(result);
 
     if (!result.cancelled) {
       setimage2(result.uri);
@@ -329,10 +324,8 @@ export default function ProductEdit({ navigation, route }) {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      quality: 1,
+      quality: 0.5,
     });
-
-    console.log(result);
 
     if (!result.cancelled) {
       setimage3(result.uri);

@@ -12,7 +12,6 @@ import { Avatar, Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import ErrorPage from "../ErrorPage";
 import { GET_EVENTS } from "../GraphQL/Queries";
-import { Search } from "../Home_Screens/Home_tutor";
 import Loading from "../Loading";
 
 const noImage = require("../assets/noImage.jpg");
@@ -34,9 +33,9 @@ const Eview = ({ item, nav }) => {
       <Text
         style={{
           textAlign: "center",
-          fontFamily: "Ranch",
-          fontSize: RFPercentage(3.8),
-          marginTop: 10,
+          fontFamily: "Rub",
+          fontSize: RFPercentage(3),
+          padding: 5
         }}
       >
         {item.Name}
@@ -44,8 +43,8 @@ const Eview = ({ item, nav }) => {
       <Text
         style={{
           textAlign: "center",
-          fontSize: RFPercentage(2.8),
-          fontFamily: "Ranch",
+          fontSize: RFPercentage(2.2),
+          fontFamily: "Rub"
         }}
       >
         {item.Date}
@@ -90,10 +89,12 @@ export default function Hevent({ navigation }) {
   const [religion, setReligion] = useState([]);
   const [sports, setSports] = useState([]);
   const [socialLifestyle, setSocialLifestyle] = useState([]);
+  const [events, setEvents] = useState([])
 
   useEffect(() => {
     if (data) {
       const events = data.Events;
+      setEvents(data.Events)
       const edu = events.filter((item) => item.Category === "Education");
       setEducation(edu);
       const artsCul = events.filter(
@@ -125,6 +126,16 @@ export default function Hevent({ navigation }) {
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <View style={styles.container}>
+        {events.length === 0 && <View
+          style={{ justifyContent: 'center' }}
+        >
+          <Icon
+            size={RFPercentage(6)}
+            name="calendar-outline"
+            type="ionicon"
+          />
+          <Text style={{ color: "black", fontWeight: "bold", textAlign: "center" }}>No Events yet</Text>
+        </View>}
         {artsCulture.length > 0 && (
           <Category_view
             title="Arts & Culture"
@@ -196,8 +207,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontFamily: "Titan",
-    fontSize: RFPercentage(3.4),
+    fontFamily: "Rub",
+    fontSize: RFPercentage(3.6),
     padding: 5,
   },
   Event: {

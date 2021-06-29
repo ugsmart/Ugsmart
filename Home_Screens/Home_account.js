@@ -5,8 +5,7 @@ import {
   View,
   TouchableOpacity,
   Alert,
-  ScrollView,
-  ImageBackground,
+  ScrollView
 } from "react-native";
 import { Avatar, Icon, ListItem } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
@@ -120,29 +119,17 @@ export default function Haccount({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView style={{ flex: 1 }}>
-        <ImageBackground
-          blurRadius={5}
-          imageStyle={{ borderRadius: 8 }}
-          style={styles.main}
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
+      <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center', padding: 5 }}>
+        <Avatar
+          size={RFPercentage(28)}
+          rounded={true}
           source={require("../assets/tutor.jpg")}
-        >
-          <Avatar
-            size="xlarge"
-            rounded={true}
-            source={require("../assets/tutor.jpg")}
-          />
-        </ImageBackground>
-        <Text style={{ fontWeight: "bold" }}>Account Profile</Text>
-
-        <Aview
-          name="Edit Profile"
-          icon="person-add-outline"
-          onPress={() => {
-            navigation.navigate("Edit");
-          }}
         />
+        <Text style={{ marginTop: 10, fontFamily: 'Rub', fontWeight: 'bold' }}>David Adlai Nettey</Text>
+        <Text style={{ fontFamily: 'Rub', fontWeight: 'bold' }}>netteydavid8@gmail.com</Text>
+      </View>
+      <View style={{ backgroundColor: 'white', flex: 1.5, padding: 5, borderTopRightRadius: 25, borderTopLeftRadius: 25 }}>
         <Aview
           name="Change Password"
           icon="shield-checkmark-outline"
@@ -207,29 +194,26 @@ export default function Haccount({ navigation }) {
             Delete();
           }}
         />
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    padding: 5,
+    backgroundColor: "#eee"
   },
   Touch: {
     flex: 1,
     flexDirection: "row",
-    padding: 4,
+    padding: 5,
     alignItems: "center",
-    marginTop: 0,
   },
   Text: {
     marginHorizontal: 10,
-    fontFamily: "Noto",
-    fontSize: RFPercentage(2.4),
+    fontFamily: "Rub",
+    fontSize: RFPercentage(2.6),
   },
   main: {
     flex: 1,
@@ -237,6 +221,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: "center",
     justifyContent: "center",
-    padding: 15,
+    padding: 10,
   },
 });

@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { ListItem, Avatar } from "react-native-elements";
+import { ListItem, Avatar, Icon } from "react-native-elements";
+import { RFPercentage } from "react-native-responsive-fontsize";
 import { auth, db } from "./Firebase";
 import { PROFILE_NAME } from "./GraphQL/Queries";
 
@@ -67,11 +68,23 @@ const ChatHistory = ({ navigation }) => {
   }, [chats]);
   return (
     <View style={styles.container}>
-      <FlatList
+      {myChats.length === 0 ? <View
+        style={{ flex: 1, justifyContent: 'center' }}>
+        <View
+          style={{ justifyContent: 'center' }}
+        >
+          <Icon
+            size={RFPercentage(6)}
+            name="chatbubbles-outline"
+            type="ionicon"
+          />
+          <Text style={{ color: "black", fontWeight: "bold", textAlign: "center" }}>No Chats Available.</Text>
+        </View>
+      </View> : <FlatList
         data={myChats}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <ChatItem item={item} nav={navigation} />}
-      />
+      />}
     </View>
   );
 };

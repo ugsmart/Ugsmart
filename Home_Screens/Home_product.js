@@ -8,11 +8,10 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import { Avatar, Button, Icon } from "react-native-elements";
+import { Avatar, Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import ErrorPage from "../ErrorPage";
 import { GET_PRODUCTS } from "../GraphQL/Queries";
-import { Search } from "../Home_Screens/Home_tutor";
 import Loading from "../Loading";
 
 const noImage = require("../assets/noImage.jpg");
@@ -34,9 +33,9 @@ const Eview = ({ item, nav }) => {
       <Text
         style={{
           textAlign: "center",
-          fontFamily: "Ranch",
-          fontSize: RFPercentage(3.8),
-          marginTop: 10,
+          fontFamily: "Rub",
+          fontSize: RFPercentage(3),
+          padding: 5
         }}
       >
         {item.Name}
@@ -44,8 +43,8 @@ const Eview = ({ item, nav }) => {
       <Text
         style={{
           textAlign: "center",
-          fontSize: RFPercentage(2.8),
-          fontFamily: "Ranch",
+          fontSize: RFPercentage(2.2),
+          fontFamily: "Rub",
         }}
       >
         {item.Price}
@@ -89,6 +88,8 @@ export default function Hproduct({ navigation }) {
   const [fashion, setFashion] = useState([]);
   const [foodD, setFoodD] = useState([]);
   const [sportsA, setSportsA] = useState([]);
+  const [products, setProducts] = useState([])
+
 
   const refresh = () => {
     refetch();
@@ -97,6 +98,7 @@ export default function Hproduct({ navigation }) {
   useEffect(() => {
     if (data) {
       const products = data.Products;
+      setProducts(data.Products)
       const beaut = products.filter(
         (item) => item.Category === "Beauty & Cosmetics"
       );
@@ -133,6 +135,16 @@ export default function Hproduct({ navigation }) {
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <View style={styles.container}>
+        {products.length === 0 && <View
+          style={{ justifyContent: 'center' }}
+        >
+          <Icon
+            size={RFPercentage(6)}
+            name="cart-outline"
+            type="ionicon"
+          />
+          <Text style={{ color: "black", fontWeight: "bold", textAlign: "center" }}>No Products yet</Text>
+        </View>}
         {beautyCos.length > 0 && (
           <Category_view
             nav={navigation}
@@ -189,8 +201,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontFamily: "Titan",
-    fontSize: RFPercentage(3.4),
+    fontFamily: "Rub",
+    fontSize: RFPercentage(3.6),
     padding: 5,
   },
   Event: {

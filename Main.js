@@ -1,10 +1,8 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Avatar } from "react-native-elements";
 import { Image } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-
 import Chat from "./Chat";
 import Tab from "./Tabs_view";
 import Ievent from "./Info_Screens/Event_info";
@@ -14,7 +12,6 @@ import Sevent from "./Home_Sub_Screens/Sub_event";
 import Sproduct from "./Home_Sub_Screens/Sub_product";
 import Tform from "./Forms_Screens/Tutor_form";
 import Change from "./Accounts_Screen/Changepass";
-import Edit from "./Accounts_Screen/Edit";
 import Invite from "./Accounts_Screen/Invite";
 import Verify from "./Verify";
 import TutorEdit from "./Forms_Screens/Edit_Tutor_form";
@@ -30,18 +27,6 @@ import ChatHistory from "./ChatHistory";
 import PostTRating from "./Ratings_Screens/PostTRating";
 import RatingPageT from "./Ratings_Screens/RatingPageT";
 
-//icon={{name:'person-outline', type:'ionicon'}}
-//Header Right view...
-const Left = () => {
-  return (
-    <Avatar
-      source={require("./assets/tutor.jpg")}
-      rounded={true}
-      size={RFPercentage(6.5)}
-      overlayContainerStyle={{ backgroundColor: "silver" }}
-    />
-  );
-};
 
 //Header Center view...
 const Header = () => {
@@ -156,14 +141,6 @@ const Main = () => {
           name="Tutor"
           options={{ headerStyle: { elevation: 0 } }}
           component={Stutor}
-        />
-        <Stack.Screen
-          name="Edit"
-          options={{
-            headerTitle: "Edit Pofile",
-            headerStyle: { elevation: 0 },
-          }}
-          component={Edit}
         />
         <Stack.Screen
           name="Change"

@@ -105,7 +105,13 @@ const PostTRating = ({ navigation, route }) => {
         buttonStyle={{ backgroundColor: "green", marginTop: 10 }}
         title="Submit"
         loading={bLoading}
-        onPress={submit}
+        onPress={() => {
+          if (rating === 0) {
+            alert("Please select a Rating");
+          } else {
+            submit();
+          }
+        }}
       />
     </KeyboardAvoidingView>
   );

@@ -225,3 +225,32 @@ export const RATE_TUTOR = gql`
     }
   }
 `;
+
+export const EDIT_P_RATING = gql`
+  mutation Edit_Previews($id: String!, $value: Int!, $comment: String!) {
+    Edit_Previews(id: $id, value: $value, comment: $comment) {
+      _id
+    }
+  }
+`;
+export const DELETE_P_RATING = gql`
+  mutation Delete_Previews($id: String!) {
+    Delete_Previews(id: $id) {
+      _id
+    }
+  }
+`;
+export const EDIT_T_RATING = gql`
+  mutation Edit_Treviews($id: String!, $value: Int!, $comment: String!) {
+    Edit_Treviews(id: $id, value: $value, comment: $comment) {
+      _id
+    }
+  }
+`;
+export const DELETE_T_RATING = gql`
+  mutation Delete_Treviews($id: String!) {
+    Delete_Treviews(id: $id) {
+      _id
+    }
+  }
+`;

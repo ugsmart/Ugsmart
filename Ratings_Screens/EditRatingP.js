@@ -9,50 +9,39 @@ import {
   View,
 } from "react-native";
 import { AirbnbRating, Button, Divider, Rating } from "react-native-elements";
-import { RATE_PRODUCT } from "../GraphQL/Mutations";
-import { PROFILE_NAME } from "../GraphQL/Queries";
-import { auth } from "../Firebase";
-import Loading from "../Loading";
-import ErrorPage from "../ErrorPage";
+import { EDIT_P_RATING, RATE_PRODUCT } from "../GraphQL/Mutations";
 
-const PostRating = ({ navigation, route }) => {
-  const { id, R_refresh } = route.params;
-  const [userName, setUserName] = useState("");
-  const { data, loading, error, refetch } = useQuery(PROFILE_NAME, {
-    variables: { user: auth.currentUser.email },
-  });
-  useEffect(() => {
-    if (data) {
-      setUserName(data.Profile.Name);
-    }
-  }, [data]);
-  const [Rate_Product] = useMutation(RATE_PRODUCT);
+const EditRatingP = ({ navigation, route }) => {
+  const { userRating, R_refresh } = route.params;
+  //   console.log(userRating);
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
   const [reviewlength, setReviewlength] = useState(0);
   const [bLoading, setBLoading] = useState(false);
+
+  const [Edit_Previews] = useMutation(EDIT_P_RATING);
+  useEffect(() => {
+    setRating(userRating.value);
+    setReview(userRating.comment);
+    setReviewlength(review.length);
+  }, [userRating]);
+
   const comm = (r) => {
     setRating(r);
   };
-  const refresh = () => {
-    refetch();
-  };
+
   const submit = () => {
     Keyboard.dismiss();
     setBLoading(true);
-    const d = new Date();
-    Rate_Product({
+    Edit_Previews({
       variables: {
-        Product_id: id,
+        id: userRating._id,
         value: rating,
         comment: review,
-        date: d.toLocaleDateString(),
-        username: userName,
-        usermail: auth.currentUser.email,
       },
     })
       .then(() => {
-        alert("Review has successfully been posted");
+        alert("Review has successfully been updated");
         navigation.goBack();
         R_refresh();
         setBLoading(false);
@@ -63,12 +52,6 @@ const PostRating = ({ navigation, route }) => {
         setBLoading(false);
       });
   };
-  if (loading) {
-    return <Loading />;
-  }
-  if (error) {
-    return <ErrorPage refresh={refresh} />;
-  }
 
   return (
     <ScrollView style={styles.container}>
@@ -80,7 +63,7 @@ const PostRating = ({ navigation, route }) => {
         size={30}
         showRating={true}
         onFinishRating={comm}
-        defaultRating={0}
+        defaultRating={rating}
         selectedColor="green"
       />
 
@@ -100,19 +83,13 @@ const PostRating = ({ navigation, route }) => {
         buttonStyle={{ backgroundColor: "green", marginTop: 10 }}
         title="Submit"
         loading={bLoading}
-        onPress={() => {
-          if (rating === 0) {
-            alert("Please select a Rating");
-          } else {
-            submit();
-          }
-        }}
+        onPress={submit}
       />
     </ScrollView>
   );
 };
 
-export default PostRating;
+export default EditRatingP;
 
 const styles = StyleSheet.create({
   container: {

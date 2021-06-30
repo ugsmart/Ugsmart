@@ -26,7 +26,8 @@ import PostRating from "./Ratings_Screens/PostRating";
 import ChatHistory from "./ChatHistory";
 import PostTRating from "./Ratings_Screens/PostTRating";
 import RatingPageT from "./Ratings_Screens/RatingPageT";
-
+import EditRatingP from "./Ratings_Screens/EditRatingP";
+import EditRatingT from "./Ratings_Screens/EditRatingT";
 
 //Header Center view...
 const Header = () => {
@@ -166,11 +167,21 @@ const Main = () => {
           options={{ headerTitle: "Rate Product" }}
         />
         <Stack.Screen
+          name="EditRatingP"
+          component={EditRatingP}
+          options={{ headerTitle: "Edit Review" }}
+        />
+        <Stack.Screen
           name="Ratings T"
           component={RatingPageT}
           options={{ headerTitle: "Ratings and Reviews" }}
         />
         <Stack.Screen name="Rate Tutor" component={PostTRating} />
+        <Stack.Screen
+          name="EditRatingT"
+          component={EditRatingT}
+          options={{ headerTitle: "Edit Review" }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

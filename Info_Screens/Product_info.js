@@ -5,26 +5,29 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Share
+  Share,
+  Alert,
 } from "react-native";
 import { Button, Icon, AirbnbRating } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { SliderBox } from "react-native-image-slider-box";
 import { auth, db } from "../Firebase";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { P_REVIEWS } from "../GraphQL/Queries";
 import Loading from "../Loading";
 import ErrorPage from "../ErrorPage";
-import * as Linking from "expo-linking"
+import * as Linking from "expo-linking";
+import { RatingItem } from "../Ratings_Screens/RatingPage";
+import { DELETE_P_RATING } from "../GraphQL/Mutations";
 
-
-const link = Linking.createURL(`/Iproduct`)
+const link = Linking.createURL(`/Iproduct`);
 const Social = async () => {
   try {
     const result = await Share.share({
       title: "UG Smart",
-      message: `Heya, I just up some products on UG-Smart you might be intreasted in. Click on the link to know more about the Event.\n` +
-        link
+      message:
+        `Heya, I just up some products on UG-Smart you might be intreasted in. Click on the link to know more about the Event.\n` +
+        link,
     });
     if (result.action === Share.sharedAction) {
       if (result.activityType) {
@@ -40,12 +43,45 @@ const Social = async () => {
   }
 };
 
-const Des_view = ({ nav, item, Ratings, refresh }) => {
+const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
+  const [loading, setLoading] = useState(false);
   let total = 0;
   Ratings.map((item) => {
     total = total + item.value;
   });
   const overallRating = (total / Ratings.length).toFixed(1);
+
+  const userRating = Ratings.find(
+    (item) => item.usermail === auth.currentUser.email
+  );
+
+  const deleteRating = () => {
+    Alert.alert("Ugsmart", "Are you sure you want to Delete your review?", [
+      {
+        text: "Yes",
+        onPress: () => {
+          setLoading(true);
+          deleMut({
+            variables: {
+              id: userRating._id,
+            },
+          })
+            .then(() => {
+              alert("Review deleted successfully");
+              refresh();
+              setLoading(false);
+            })
+            .catch((err) => {
+              console.log(err);
+              alert("An error occured, Please try again");
+              setLoading(false);
+            });
+        },
+      },
+      { text: "No" },
+    ]);
+  };
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -152,17 +188,56 @@ const Des_view = ({ nav, item, Ratings, refresh }) => {
           />
           <Text style={{ color: "grey" }}>({Ratings.length})</Text>
         </View>
-        <Button
-          title="Post review"
-          buttonStyle={{ alignSelf: "flex-end" }}
-          titleStyle={{
-            color: "green",
-          }}
-          type="clear"
-          onPress={() =>
-            nav.navigate("Post Rating", { id: item._id, R_refresh: refresh })
-          }
-        />
+        {item.usermail !== auth.currentUser.email && (
+          <>
+            {userRating ? (
+              <View>
+                <RatingItem item={userRating} div={false} />
+                <View style={{ flexDirection: "row" }}>
+                  <Button
+                    title="Edit Review"
+                    titleStyle={{
+                      color: "green",
+                    }}
+                    type="clear"
+                    onPress={() => {
+                      nav.navigate("EditRatingP", {
+                        userRating,
+                        R_refresh: refresh,
+                      });
+                    }}
+                  />
+                  <Button
+                    title="Delete Review "
+                    titleStyle={{
+                      color: "red",
+                    }}
+                    type="clear"
+                    loading={loading}
+                    onPress={() => {
+                      deleteRating();
+                    }}
+                  />
+                </View>
+              </View>
+            ) : (
+              <Button
+                title="Post review"
+                buttonStyle={{ alignSelf: "flex-end" }}
+                titleStyle={{
+                  color: "green",
+                }}
+                type="clear"
+                onPress={() =>
+                  nav.navigate("Post Rating", {
+                    id: item._id,
+                    R_refresh: refresh,
+                  })
+                }
+              />
+            )}
+          </>
+        )}
       </View>
     </ScrollView>
   );
@@ -171,6 +246,7 @@ const Des_view = ({ nav, item, Ratings, refresh }) => {
 export default function Iproduct({ navigation, route }) {
   const { item } = route.params;
   const [ratings, setRatings] = useState([]);
+  const [Delete_Previews] = useMutation(DELETE_P_RATING);
   const { data, loading, error, refetch } = useQuery(P_REVIEWS, {
     variables: { id: item._id },
     fetchPolicy: "network-only",
@@ -195,6 +271,7 @@ export default function Iproduct({ navigation, route }) {
       item={item}
       Ratings={ratings}
       refresh={refresh}
+      deleMut={Delete_Previews}
     />
   );
 }
@@ -203,7 +280,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: RFPercentage(4),
     fontFamily: "Sans",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   tview: {
     alignItems: "center",
@@ -218,7 +295,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: RFPercentage(2.6),
     marginRight: 8,
-    fontFamily: "Sans"
+    fontFamily: "Sans",
   },
   content: {
     flex: 1,
@@ -235,7 +312,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: RFPercentage(2.5),
-    fontFamily: "Sans"
+    fontFamily: "Sans",
   },
   row: {
     flexDirection: "row",

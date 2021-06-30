@@ -14,7 +14,7 @@ import ErrorPage from "../ErrorPage";
 import { P_REVIEWS } from "../GraphQL/Queries";
 import Loading from "../Loading";
 
-const RatingItem = ({ item }) => {
+export const RatingItem = ({ item, div = true }) => {
   return (
     <View style={{ paddingTop: 6 }}>
       <View style={styles.row}>
@@ -39,7 +39,7 @@ const RatingItem = ({ item }) => {
       <View style={{ marginBottom: 3 }}>
         <Text style={{ fontFamily: "Noto" }}>{item.comment}</Text>
       </View>
-      <Divider />
+      {div && <Divider />}
     </View>
   );
 };

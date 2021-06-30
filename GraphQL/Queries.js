@@ -12,6 +12,7 @@ export const GET_TUTORS = gql`
       Transcript
       Approved
       Price
+      Duration
       Image
       usermail
     }
@@ -30,6 +31,7 @@ export const GET_APPROVED_TUTORS = gql`
       Transcript
       Approved
       Price
+      Duration
       Image
       usermail
     }
@@ -139,6 +141,7 @@ export const GET_TUTOR = gql`
       Name
       Description
       Price
+      Duration
       Image
       College
       Card
@@ -159,6 +162,7 @@ export const GET_TUTOR_COL = gql`
       Program
       Description
       Price
+      Duration
       Image
       College
       Name

@@ -23,10 +23,10 @@ export default function App() {
     Ranch: require("./fonts/Rancho-Regular.ttf"),
     Titan: require("./fonts/TitanOne-Regular.ttf"),
     Noto: require("./fonts/NotoSansJP-Regular.otf"),
-    Robo: require("./fonts/Roboto-Thin.ttf"),
-    Rob: require("./fonts/Roboto-Regular.ttf"),
     Sans: require("./fonts/SourceSansPro-Regular.ttf"),
     San: require("./fonts/SourceSansPro-Light.ttf"),
+    Rale: require("./fonts/Raleway-VariableFont_wght.ttf"),
+    Rub: require("./fonts/Rubik-VariableFont_wght.ttf"),
   });
 
   const [userLoggedIn, setUserLoggedIn] = useState(null);

@@ -168,10 +168,17 @@ const styles = StyleSheet.create({
     bottom: 10,
     right: 10,
     padding: 8,
-    backgroundColor: "blue",
+    backgroundColor: "black",
     width: 60,
     height: 60,
     borderRadius: 35,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.30,
+    shadowRadius: 4.65,
     elevation: 10,
   },
 });

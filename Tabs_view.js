@@ -20,9 +20,8 @@ export default function Tabs({ navigation }) {
   const Tab = createMaterialBottomTabNavigator();
   return (
     <Tab.Navigator
-      activeColor="green"
-      shifting={true}
-      barStyle={{ backgroundColor: "white" }}
+      shifting={false}
+      barStyle={{ backgroundColor: "green" }}
     >
       <Tab.Screen
         name="Home"

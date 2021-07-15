@@ -45,6 +45,7 @@ const Social = async () => {
 
 const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
   const [loading, setLoading] = useState(false);
+
   let total = 0;
   Ratings.map((item) => {
     total = total + item.value;
@@ -91,7 +92,7 @@ const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
         <SliderBox
           resizeMethod={"auto"}
           height={400}
-          sliderBoxHeight={350}
+          sliderBoxHeight={370}
           paginationBoxVerticalPadding={1}
           dotColor="red"
           inactiveDotColor="grey"
@@ -101,7 +102,7 @@ const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
       <View style={styles.content}>
         <View style={styles.tview}>
           <Text style={styles.title}>{item.Name}</Text>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: "row", alignItems: "center", marginLeft: 5 }}>
             <Icon
               name="share-social-outline"
               size={RFPercentage(4)}
@@ -125,44 +126,7 @@ const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
             <Icon color="red" name="close-circle-outline" type="ionicon" />
           )}
         </View>
-        {item.usermail !== auth.currentUser.email && (
-          <Button
-            onPress={() => {
-              let chats = [];
-              db.collection("chats")
-                .get()
-                .then((snap) => {
-                  snap.docs.map((doc) => {
-                    chats.push({ id: doc.id, ...doc.data() });
-                  });
-                  const newChats = chats.filter(
-                    (itemC) =>
-                      itemC.chatName.includes(auth.currentUser.email) &&
-                      itemC.chatName.includes(item.usermail)
-                  );
 
-                  if (newChats.length === 0) {
-                    db.collection("chats")
-                      .add({
-                        chatName: `${auth.currentUser.email}${item.usermail}`,
-                      })
-                      .then((docRef) => {
-                        console.log(docRef.id);
-                        nav.navigate("Chat", { id: docRef.id });
-                      })
-                      .catch((err) => alert(err.message));
-                  } else {
-                    nav.navigate("Chat", { id: newChats[0].id });
-                    console.log(newChats[0].id);
-                  }
-                })
-                .catch((err) => alert(err.message));
-            }}
-            title="Chat Me"
-            containerStyle={{ marginTop: 10 }}
-            buttonStyle={{ padding: 15, backgroundColor: "green" }}
-          />
-        )}
         <TouchableOpacity
           activeOpacity={0.5}
           style={styles.row}
@@ -238,6 +202,44 @@ const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
             )}
           </>
         )}
+        {item.usermail !== auth.currentUser.email && (
+          <Button
+            onPress={() => {
+              let chats = [];
+              db.collection("chats")
+                .get()
+                .then((snap) => {
+                  snap.docs.map((doc) => {
+                    chats.push({ id: doc.id, ...doc.data() });
+                  });
+                  const newChats = chats.filter(
+                    (itemC) =>
+                      itemC.chatName.includes(auth.currentUser.email) &&
+                      itemC.chatName.includes(item.usermail)
+                  );
+
+                  if (newChats.length === 0) {
+                    db.collection("chats")
+                      .add({
+                        chatName: `${auth.currentUser.email}${item.usermail}`,
+                      })
+                      .then((docRef) => {
+                        console.log(docRef.id);
+                        nav.navigate("Chat", { id: docRef.id });
+                      })
+                      .catch((err) => alert(err.message));
+                  } else {
+                    nav.navigate("Chat", { id: newChats[0].id });
+                    console.log(newChats[0].id);
+                  }
+                })
+                .catch((err) => alert(err.message));
+            }}
+            title="Chat Me"
+            containerStyle={{ marginTop: 10 }}
+            buttonStyle={{ padding: 15, backgroundColor: "green", marginTop: 10 }}
+          />
+        )}
       </View>
     </ScrollView>
   );
@@ -279,7 +281,7 @@ export default function Iproduct({ navigation, route }) {
 const styles = StyleSheet.create({
   title: {
     fontSize: RFPercentage(4),
-    fontFamily: "Sans",
+    fontFamily: "Rub",
     fontWeight: "bold",
   },
   tview: {
@@ -289,19 +291,18 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: RFPercentage(2.4),
-    fontFamily: "Sans",
+    fontFamily: "Rub",
   },
   Ptext: {
     fontWeight: "bold",
-    fontSize: RFPercentage(2.6),
+    fontSize: RFPercentage(2.8),
     marginRight: 8,
-    fontFamily: "Sans",
+    fontFamily: "Rub",
   },
   content: {
     flex: 1,
     padding: 8,
     backgroundColor: "white",
-    paddingBottom: 60,
   },
   container: {
     flex: 1,
@@ -311,14 +312,15 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   price: {
-    fontSize: RFPercentage(2.5),
-    fontFamily: "Sans",
+    fontSize: RFPercentage(2.4),
+    fontFamily: "Rub",
   },
   row: {
     flexDirection: "row",
-    marginTop: 20,
+    marginTop: 5,
     justifyContent: "space-between",
     paddingRight: 3,
+
   },
   row2: { flexDirection: "row", alignItems: "center" },
 });

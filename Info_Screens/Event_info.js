@@ -42,7 +42,7 @@ const Des_view = ({ item }) => {
       <View style={styles.content}>
         <View style={styles.tview}>
           <Text style={styles.title}>About</Text>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: "row", alignItems: "center", marginRight: 5 }}>
             <Icon
               name="share-social-outline"
               size={RFPercentage(4)}
@@ -82,9 +82,8 @@ export default function Ievent({ route, navigation }) {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: RFPercentage(4.4),
-    fontFamily: "Robo",
-    fontWeight: 'bold'
+    fontSize: RFPercentage(4.2),
+    fontFamily: "Rub",
   },
   tview: {
     alignItems: "center",
@@ -93,7 +92,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: RFPercentage(2.4),
-    fontFamily: "Rob"
+    fontFamily: "Rub",
   },
   content: {
     flex: 1,
@@ -106,9 +105,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   bold: {
-    fontWeight: "bold",
-    fontSize: RFPercentage(3.2),
-    fontFamily: "Robo"
+    fontSize: RFPercentage(3),
+    fontFamily: "Rub",
   },
-  row: { flexDirection: "row", alignItems: "center" },
+  row: { flexDirection: "row", alignItems: "center", marginTop: 5 },
 });

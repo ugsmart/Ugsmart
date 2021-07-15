@@ -33,8 +33,8 @@ const Eview = ({ nav, item }) => {
       <Text
         style={{
           textAlign: "center",
-          fontFamily: "Ranch",
-          fontSize: RFPercentage(3.8),
+          fontFamily: "Rub",
+          fontSize: RFPercentage(3),
           marginTop: 10,
         }}
       >
@@ -43,8 +43,8 @@ const Eview = ({ nav, item }) => {
       <Text
         style={{
           textAlign: "center",
-          fontSize: RFPercentage(2.8),
-          fontFamily: "Ranch",
+          fontSize: RFPercentage(2),
+          fontFamily: "Rub",
         }}
       >
         {item.Date}
@@ -152,11 +152,6 @@ const styles = StyleSheet.create({
     padding: 5,
     justifyContent: "center",
   },
-  title: {
-    fontFamily: "Titan",
-    marginBottom: 10,
-    fontSize: 30,
-  },
   Event: {
     flex: 1,
     justifyContent: "center",
@@ -170,6 +165,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     margin: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.30,
+    shadowRadius: 4.65,
     elevation: 5,
+    maxHeight: 220,
+    maxWidth: "50%",
   },
 });

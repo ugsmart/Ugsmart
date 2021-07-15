@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
-  ImageBackground,
 } from "react-native";
 import { Avatar, Icon, ListItem } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
@@ -53,6 +52,7 @@ const TutorProfile = ({ expanded, view, edit, deleteT }) => {
     </View>
   );
 };
+
 const Aview = ({ name, icon, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.Touch}>
@@ -61,6 +61,7 @@ const Aview = ({ name, icon, onPress }) => {
     </TouchableOpacity>
   );
 };
+
 export default function Haccount({ navigation }) {
   const [expanded, setExpanded] = useState(false);
   const [tutorProfile, setTutorProfile] = useState([]);
@@ -120,21 +121,18 @@ export default function Haccount({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView style={{ flex: 1 }}>
-        <ImageBackground
-          blurRadius={5}
-          imageStyle={{ borderRadius: 8 }}
-          style={styles.main}
-          source={require("../assets/tutor.jpg")}
-        >
-          <Avatar
-            size="xlarge"
-            rounded={true}
-            source={require("../assets/tutor.jpg")}
-          />
-        </ImageBackground>
-        <Text style={{ fontWeight: "bold" }}>Account Profile</Text>
+    <ScrollView contentContainerStyle={{ flexGrow: 2 }} style={styles.container}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 10 }}>
+        <Avatar
+          size={RFPercentage(24)}
+          rounded
+          title={userName.slice(0, 1).toUpperCase()}
+          avatarStyle={{ backgroundColor: 'green' }}
+        />
+        <Text style={{ marginTop: 10 }}>{auth.currentUser.email}</Text>
+        <Text>{userName}</Text>
+      </View>
+      <View style={{ flex: 2, backgroundColor: 'white', borderTopRightRadius: 20, borderTopLeftRadius: 20, padding: 5 }}>
         <Aview
           name="Change Password"
           icon="shield-checkmark-outline"
@@ -191,37 +189,26 @@ export default function Haccount({ navigation }) {
             ]);
           }}
         />
-
-        <Aview
-          name="Delete Account"
-          icon="trash-bin-outline"
-          onPress={() => {
-            Delete();
-          }}
-        />
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    padding: 5,
+    backgroundColor: "#eee"
   },
   Touch: {
     flex: 1,
     flexDirection: "row",
-    padding: 4,
+    padding: 5,
     alignItems: "center",
-    marginTop: 0,
   },
   Text: {
     marginHorizontal: 10,
     fontFamily: "Noto",
-    fontSize: RFPercentage(2.4),
+    fontSize: RFPercentage(2.5),
   },
   main: {
     flex: 1,
@@ -229,6 +216,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: "center",
     justifyContent: "center",
-    padding: 15,
+    padding: 10,
   },
 });

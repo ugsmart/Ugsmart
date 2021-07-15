@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { Button, Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
@@ -29,7 +29,7 @@ const Textview = ({ text, num, jud, icon, value, setEmail }) => {
       </View>
       <View style={{ flex: 4.2, padding: 5, justifyContent: "center" }}>
         <TextInput
-          style={{ fontSize: RFPercentage(2.8), padding: 5 }}
+          style={{ fontSize: RFPercentage(2.8), padding: 5, fontFamily: "Rub" }}
           placeholder={text}
           secureTextEntry={jud}
           value={value}
@@ -75,7 +75,7 @@ const Textview1 = ({ num, value, setPassword }) => {
       </View>
       <View style={{ flex: 4.2, padding: 5, justifyContent: "center" }}>
         <TextInput
-          style={{ fontSize: RFPercentage(2.8), padding: 5 }}
+          style={{ fontSize: RFPercentage(2.8), padding: 5, fontFamily: "Rub" }}
           placeholder="Password"
           secureTextEntry={jud}
           value={value}
@@ -122,56 +122,55 @@ export default function Login({ navigation }) {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View style={style.logview}>
-        <Image
-          style={style.img}
-          resizeMode="center"
-          source={require("./assets/img.png")}
-        />
-        <Text
-          style={{
-            fontSize: RFPercentage(8.5),
-            fontFamily: "Titan",
-            alignSelf: "center",
-          }}
-        >
-          Login
-        </Text>
-        <Textview
-          text="Email"
-          num={20}
-          icon="mail-outline"
-          jud={false}
-          value={email}
-          setEmail={setEmail}
-        />
-        <Textview1
-          num={10}
-          jud={true}
-          value={password}
-          setPassword={setPassword}
-        />
-        <Button
-          loading={loading}
-          title="Login"
-          onPress={login}
-          buttonStyle={{
-            marginTop: 20,
-            padding: 15,
-            backgroundColor: "#37A7E8",
-          }}
-          containerStyle={{ width: "100%" }}
-        />
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Signup");
-          }}
-          style={style.Opac}
-        >
-          <Text style={style.text}>Don't have an Account? Sign up now.</Text>
-        </TouchableOpacity>
-      </View>
+    <ScrollView style={{ flex: 1, backgroundColor: 'white' }} contentContainerStyle={{ flexGrow: 2, justifyContent: 'center', padding: 10 }}>
+      <Image
+        style={style.img}
+        resizeMode="center"
+        source={require("./assets/icon.png")}
+      />
+      <Text
+        style={{
+          fontSize: RFPercentage(8.5),
+          fontFamily: "Titan",
+          alignSelf: "center",
+        }}
+      >
+        Login
+      </Text>
+      <Textview
+        text="Email"
+        num={20}
+        icon="mail-outline"
+        jud={false}
+        value={email}
+        setEmail={setEmail}
+      />
+      <Textview1
+        num={10}
+        jud={true}
+        value={password}
+        setPassword={setPassword}
+      />
+      <Button
+        loading={loading}
+        title="Login"
+        onPress={login}
+        titleStyle={{ fontFamily: "Rub", fontWeight: 'bold' }}
+        buttonStyle={{
+          marginTop: 20,
+          padding: 15,
+          backgroundColor: "#37A7E8",
+        }}
+        containerStyle={{ width: "100%" }}
+      />
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Signup");
+        }}
+        style={style.Opac}
+      >
+        <Text style={style.text}>Don't have an Account? Sign up now.</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -188,13 +187,13 @@ const style = StyleSheet.create({
     padding: 10,
   },
   img: {
-    width: 120,
-    height: 120,
-    marginBottom: 20,
-    alignSelf: "center",
+    width: 100,
+    height: 100,
+    marginBottom: 10,
+    alignSelf: "center"
   },
   text: {
-    fontFamily: "Noto",
+    fontFamily: "Rub",
     fontWeight: "bold",
     textAlign: "center",
     fontSize: RFPercentage(2.5),

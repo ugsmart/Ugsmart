@@ -39,7 +39,7 @@ export const Search = ({ place, value, setValue }) => {
       </View>
       <View style={{ flex: 4.2, padding: 5, justifyContent: "center" }}>
         <TextInput
-          style={{ fontSize: RFPercentage(2.8), padding: 5 }}
+          style={{ fontSize: RFPercentage(2.8), padding: 5, fontFamily: 'Rub' }}
           placeholder={place}
           value={value}
           onChangeText={setValue}
@@ -66,10 +66,9 @@ const Eview = ({ item, nav }) => {
       <Text
         style={{
           textAlign: "center",
-          fontFamily: "Lato",
+          fontFamily: "Rub",
           fontSize: RFPercentage(3),
           marginTop: 10,
-          padding: 5
         }}
       >
         {item.Name}
@@ -78,7 +77,7 @@ const Eview = ({ item, nav }) => {
         style={{
           textAlign: "center",
           fontSize: RFPercentage(2),
-          fontFamily: "Lato",
+          fontFamily: "Rub",
         }}
       >
         {item.Program}
@@ -203,10 +202,9 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   title: {
-    fontFamily: "Lato",
-    fontSize: RFPercentage(3.5),
+    fontFamily: "Titan",
+    fontSize: RFPercentage(3.4),
     padding: 5,
-    fontWeight: 'bold'
   },
   content: {
     flex: 4,
@@ -221,8 +219,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     margin: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.30,
+    shadowRadius: 4.65,
     elevation: 5,
-    maxHeight: 230,
+    maxHeight: 220,
   },
   touch: {
     flexDirection: "row",

@@ -7,13 +7,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { ListItem, Avatar } from "react-native-elements";
+import { ListItem, Avatar, Icon } from "react-native-elements";
 import { auth, db } from "./Firebase";
+import { RFPercentage } from "react-native-responsive-fontsize";
 import { PROFILE_NAME } from "./GraphQL/Queries";
 
 const ChatItem = ({ item, nav }) => {
   const rEmail = item.chatName.replace(auth.currentUser.email, "");
-  const { data, loading, error } = useQuery(PROFILE_NAME, {
+  const { data } = useQuery(PROFILE_NAME, {
     variables: { user: rEmail },
   });
   const [rName, setRName] = useState("");
@@ -74,7 +75,7 @@ const ChatHistory = ({ navigation }) => {
         >
           <Icon
             size={RFPercentage(6)}
-            name="chartbubble-outline"
+            name="chatbubbles-outline"
             type="ionicon"
           />
           <Text style={{ color: "black", fontWeight: "bold", textAlign: "center" }}>No Chats Available.</Text>

@@ -120,51 +120,11 @@ const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
         </View>
         <Text style={styles.text}>{item.Description}</Text>
         <Text style={styles.Ptext}>Program</Text>
-        <Text>{item.Program}</Text>
-        <Text style={styles.text}>College of {item.College}</Text>
+        <Text style={styles.text}>{item.Program}</Text>
         <Text style={styles.Ptext}>Price Details</Text>
-        <Text>
+        <Text style={styles.text}>
           Ghc{item.Price} {item.Duration}
         </Text>
-        {item.usermail !== auth.currentUser.email && (
-          <Button
-            onPress={() => {
-              let chats = [];
-              db.collection("chats")
-                .get()
-                .then((snap) => {
-                  snap.docs.map((doc) => {
-                    chats.push({ id: doc.id, ...doc.data() });
-                  });
-                  const newChats = chats.filter(
-                    (itemC) =>
-                      itemC.chatName.includes(auth.currentUser.email) &&
-                      itemC.chatName.includes(item.usermail)
-                  );
-
-                  if (newChats.length === 0) {
-                    db.collection("chats")
-                      .add({
-                        chatName: `${auth.currentUser.email}${item.usermail}`,
-                      })
-                      .then((docRef) => {
-                        console.log(docRef.id);
-                        nav.navigate("Chat", { id: docRef.id });
-                      })
-                      .catch((err) => alert(err.message));
-                  } else {
-                    nav.navigate("Chat", { id: newChats[0].id });
-                    console.log(newChats[0].id);
-                  }
-                })
-                .catch((err) => alert(err.message));
-            }}
-            title="Chat Me"
-            containerStyle={{ marginTop: 10 }}
-            buttonStyle={{ padding: 15, backgroundColor: "green" }}
-          />
-        )}
-
         <TouchableOpacity
           activeOpacity={0.5}
           style={styles.row}
@@ -240,6 +200,45 @@ const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
             )}
           </>
         )}
+        {item.usermail !== auth.currentUser.email && (
+          <Button
+            onPress={() => {
+              let chats = [];
+              db.collection("chats")
+                .get()
+                .then((snap) => {
+                  snap.docs.map((doc) => {
+                    chats.push({ id: doc.id, ...doc.data() });
+                  });
+                  const newChats = chats.filter(
+                    (itemC) =>
+                      itemC.chatName.includes(auth.currentUser.email) &&
+                      itemC.chatName.includes(item.usermail)
+                  );
+
+                  if (newChats.length === 0) {
+                    db.collection("chats")
+                      .add({
+                        chatName: `${auth.currentUser.email}${item.usermail}`,
+                      })
+                      .then((docRef) => {
+                        console.log(docRef.id);
+                        nav.navigate("Chat", { id: docRef.id });
+                      })
+                      .catch((err) => alert(err.message));
+                  } else {
+                    nav.navigate("Chat", { id: newChats[0].id });
+                    console.log(newChats[0].id);
+                  }
+                })
+                .catch((err) => alert(err.message));
+            }}
+            title="Chat Me"
+            containerStyle={{ marginTop: 10 }}
+            buttonStyle={{ padding: 15, backgroundColor: "green", marginTop: 10 }}
+          />
+        )}
+
       </View>
     </ScrollView>
   );
@@ -282,8 +281,8 @@ export default function Itutor({ navigation, route }) {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: RFPercentage(4.2),
-    fontFamily: "Robo",
+    fontSize: RFPercentage(4),
+    fontFamily: "Rub",
     fontWeight: "bold",
   },
   tview: {
@@ -293,11 +292,11 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: RFPercentage(2.5),
-    fontFamily: "Rob",
+    fontFamily: "Rub",
   },
   Ptext: {
     fontWeight: "bold",
-    fontSize: RFPercentage(2.9),
+    fontSize: RFPercentage(3),
   },
   content: {
     flex: 1,
@@ -313,6 +312,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingRight: 3,
+    marginTop: 5
   },
   row2: { flexDirection: "row", alignItems: "center" },
 });

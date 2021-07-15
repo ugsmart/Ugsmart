@@ -46,7 +46,7 @@ const Individual_view = ({ text, image, nav, sub }) => {
     <Pressable onPress={() => {
       nav.navigate(sub, { name: text })
     }}>
-      <ImageBackground blurRadius={0.5} imageStyle={{ flex: 1, borderRadius: 15 }} source={image} style={styles.background}>
+      <ImageBackground blurRadius={0.5} imageStyle={{ flex: 1, borderRadius: 10 }} source={image} style={styles.background}>
         <Text style={styles.text}>{text}</Text>
       </ImageBackground>
     </Pressable>
@@ -91,12 +91,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   text: {
-    fontFamily: "Ranch",
-    fontSize: RFPercentage(5.2),
+    fontFamily: "Rub",
+    fontSize: RFPercentage(3.5),
     color: 'white',
     position: 'absolute',
-    bottom: 8,
-    left: 15
+    bottom: 2,
+    left: 8
   },
   background: {
     alignItems: 'center',
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   title: {
-    fontFamily: "San",
-    fontSize: RFPercentage(4),
+    fontFamily: "Titan",
+    fontSize: RFPercentage(3.8),
   }
 });

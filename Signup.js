@@ -6,10 +6,11 @@ import {
   StyleSheet,
   ScrollView,
   TextInput,
+  KeyboardAvoidingView,
+  Platform
 } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
-
 import { auth } from "./Firebase";
 import { useMutation } from "@apollo/client";
 import { CREATE_USER } from "./GraphQL/Mutations";
@@ -37,7 +38,7 @@ const Textview = ({ text, num, icon, value, setValue }) => {
       </View>
       <View style={{ flex: 4.2, padding: 5, justifyContent: "center" }}>
         <TextInput
-          style={{ fontSize: RFPercentage(2.8), padding: 5 }}
+          style={{ fontSize: RFPercentage(2.8), padding: 5, fontFamily: "Rub" }}
           placeholder={text}
           value={value}
           onChangeText={setValue}
@@ -82,7 +83,7 @@ const Textview1 = ({ num, value, setValue }) => {
       </View>
       <View style={{ flex: 4.2, padding: 5, justifyContent: "center" }}>
         <TextInput
-          style={{ fontSize: RFPercentage(2.8), padding: 5 }}
+          style={{ fontSize: RFPercentage(2.8), padding: 5, fontFamily: "Rub" }}
           placeholder="Password"
           value={value}
           onChangeText={setValue}
@@ -147,55 +148,54 @@ export default function Signup({ navigation }) {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View style={style.logview}>
-        <Image
-          style={style.img}
-          resizeMode="center"
-          source={require("./assets/img.png")}
-        />
-        <Text
-          style={{
-            fontFamily: "Titan",
-            alignSelf: "flex-start",
-            fontSize: RFPercentage(8.2),
-          }}
-        >
-          SignUp
-        </Text>
-        <Textview
-          text="Name"
-          num={20}
-          icon="person-outline"
-          value={name}
-          setValue={setName}
-        />
-        <Textview
-          text="E-mail"
-          num={20}
-          icon="mail-outline"
-          value={email}
-          setValue={setEmail}
-        />
-        <Textview
-          text="Telephone"
-          num={20}
-          icon="phone-portrait-outline"
-          value={phone}
-          setValue={setPhone}
-        />
-        <Textview1 num={20} value={password} setValue={setPassword} />
-        <Button
-          title="Signup"
-          onPress={signUp}
-          buttonStyle={{
-            marginTop: 20,
-            padding: 15,
-            backgroundColor: "#37A7E8",
-          }}
-          containerStyle={{ width: "100%" }}
-        />
-      </View>
+    <ScrollView style={{ flex: 1, backgroundColor: "white" }} contentContainerStyle={{ flexGrow: 2, justifyContent: 'center', padding: 10 }}>
+      <Image
+        style={style.img}
+        resizeMode="center"
+        source={require("./assets/icon.png")}
+      />
+      <Text
+        style={{
+          fontFamily: "Titan",
+          alignSelf: "flex-start",
+          fontSize: RFPercentage(8.2),
+        }}
+      >
+        SignUp
+      </Text>
+      <Textview
+        text="Name"
+        num={20}
+        icon="person-outline"
+        value={name}
+        setValue={setName}
+      />
+      <Textview
+        text="E-mail"
+        num={20}
+        icon="mail-outline"
+        value={email}
+        setValue={setEmail}
+      />
+      <Textview
+        text="Telephone"
+        num={20}
+        icon="phone-portrait-outline"
+        value={phone}
+        setValue={setPhone}
+      />
+      <Textview1 num={20} value={password} setValue={setPassword} />
+      <Button
+        title="Signup"
+        titleStyle={{ fontFamily: "Rub", fontWeight: "bold" }}
+        onPress={signUp}
+        buttonStyle={{
+          marginTop: 20,
+          padding: 15,
+          backgroundColor: "#37A7E8",
+        }}
+        containerStyle={{ width: "100%" }}
+      />
     </ScrollView>
   );
 }

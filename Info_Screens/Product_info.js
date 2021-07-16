@@ -43,7 +43,15 @@ const Social = async () => {
   }
 };
 
-const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
+const Des_view = ({
+  nav,
+  item,
+  Ratings,
+  refresh,
+  deleMut,
+  chatLoading,
+  setChatLoading,
+}) => {
   const [loading, setLoading] = useState(false);
 
   let total = 0;
@@ -102,7 +110,13 @@ const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
       <View style={styles.content}>
         <View style={styles.tview}>
           <Text style={styles.title}>{item.Name}</Text>
-          <View style={{ flexDirection: "row", alignItems: "center", marginLeft: 5 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginLeft: 5,
+            }}
+          >
             <Icon
               name="share-social-outline"
               size={RFPercentage(4)}
@@ -205,6 +219,7 @@ const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
         {item.usermail !== auth.currentUser.email && (
           <Button
             onPress={() => {
+              setChatLoading(true);
               let chats = [];
               db.collection("chats")
                 .get()
@@ -225,19 +240,33 @@ const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
                       })
                       .then((docRef) => {
                         console.log(docRef.id);
+                        setChatLoading(false);
                         nav.navigate("Chat", { id: docRef.id });
                       })
-                      .catch((err) => alert(err.message));
+                      .catch((err) => {
+                        alert(err.message);
+                        setChatLoading(false);
+                      });
                   } else {
+                    setChatLoading(false);
                     nav.navigate("Chat", { id: newChats[0].id });
                     console.log(newChats[0].id);
                   }
                 })
-                .catch((err) => alert(err.message));
+                .catch((err) => {
+                  alert(err.message);
+                  setChatLoading(false);
+                });
             }}
             title="Chat Me"
             containerStyle={{ marginTop: 10 }}
-            buttonStyle={{ padding: 15, backgroundColor: "green", marginTop: 10 }}
+            buttonStyle={{
+              padding: 15,
+              backgroundColor: "green",
+              marginTop: 10,
+            }}
+            loading={chatLoading}
+            disabled={chatLoading}
           />
         )}
       </View>
@@ -248,6 +277,7 @@ const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
 export default function Iproduct({ navigation, route }) {
   const { item } = route.params;
   const [ratings, setRatings] = useState([]);
+  const [chatLoading, setChatLoading] = useState(false);
   const [Delete_Previews] = useMutation(DELETE_P_RATING);
   const { data, loading, error, refetch } = useQuery(P_REVIEWS, {
     variables: { id: item._id },
@@ -274,6 +304,8 @@ export default function Iproduct({ navigation, route }) {
       Ratings={ratings}
       refresh={refresh}
       deleMut={Delete_Previews}
+      chatLoading={chatLoading}
+      setChatLoading={setChatLoading}
     />
   );
 }
@@ -320,7 +352,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     justifyContent: "space-between",
     paddingRight: 3,
-
   },
   row2: { flexDirection: "row", alignItems: "center" },
 });

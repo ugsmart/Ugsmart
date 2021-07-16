@@ -44,7 +44,15 @@ const Social = async () => {
   }
 };
 
-const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
+const Des_view = ({
+  nav,
+  item,
+  Ratings,
+  refresh,
+  deleMut,
+  chatLoading,
+  setChatLoading,
+}) => {
   const [loading, setLoading] = useState(false);
   let total = 0;
   Ratings.map((item) => {
@@ -203,6 +211,7 @@ const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
         {item.usermail !== auth.currentUser.email && (
           <Button
             onPress={() => {
+              setChatLoading(true);
               let chats = [];
               db.collection("chats")
                 .get()
@@ -223,22 +232,35 @@ const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
                       })
                       .then((docRef) => {
                         console.log(docRef.id);
+                        setChatLoading(false);
                         nav.navigate("Chat", { id: docRef.id });
                       })
-                      .catch((err) => alert(err.message));
+                      .catch((err) => {
+                        alert(err.message);
+                        setChatLoading(false);
+                      });
                   } else {
+                    setChatLoading(false);
                     nav.navigate("Chat", { id: newChats[0].id });
                     console.log(newChats[0].id);
                   }
                 })
-                .catch((err) => alert(err.message));
+                .catch((err) => {
+                  alert(err.message);
+                  setChatLoading(false);
+                });
             }}
             title="Chat Me"
             containerStyle={{ marginTop: 10 }}
-            buttonStyle={{ padding: 15, backgroundColor: "green", marginTop: 10 }}
+            buttonStyle={{
+              padding: 15,
+              backgroundColor: "green",
+              marginTop: 10,
+            }}
+            loading={chatLoading}
+            disabled={chatLoading}
           />
         )}
-
       </View>
     </ScrollView>
   );
@@ -247,6 +269,7 @@ const Des_view = ({ nav, item, Ratings, refresh, deleMut }) => {
 export default function Itutor({ navigation, route }) {
   const { item } = route.params;
   const [ratings, setRatings] = useState([]);
+  const [chatLoading, setChatLoading] = useState(false);
   const [Delete_Treviews] = useMutation(DELETE_T_RATING);
   const { data, loading, error, refetch } = useQuery(T_REVIEWS, {
     variables: { id: item._id },
@@ -275,6 +298,8 @@ export default function Itutor({ navigation, route }) {
       Ratings={ratings}
       refresh={refresh}
       deleMut={Delete_Treviews}
+      chatLoading={chatLoading}
+      setChatLoading={setChatLoading}
     />
   );
 }
@@ -312,7 +337,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingRight: 3,
-    marginTop: 5
+    marginTop: 5,
   },
   row2: { flexDirection: "row", alignItems: "center" },
 });

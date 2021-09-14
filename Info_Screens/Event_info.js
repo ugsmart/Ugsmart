@@ -5,12 +5,13 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 const noImage = require("../assets/noImage.jpg");
 import * as Linking from "expo-linking"
 
-const link = Linking.createURL(`/Ievent`)
+//https://expo.io/@adlai/Ugsmart
+const link = 'https://expo.io/@adlai/Ugsmart'
 const Social = async () => {
   try {
     const result = await Share.share({
       title: "UG Smart",
-      message: `Heya, I just up some products on UG-Smart you might be intreasted in. Click on the link to know more about the Event.\n` +
+      message: `Heyy, I just put up an upcoming event you'll be interested in on UG-smart link the link below to download the app and view my Event.\n` +
         link
     });
     if (result.action === Share.sharedAction) {

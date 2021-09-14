@@ -112,7 +112,7 @@ const MyEvents = ({ navigation }) => {
       <TouchableOpacity
         style={styles.touchable}
         onPress={() => {
-          navigation.navigate("Event Form");
+          navigation.navigate("Event Form", { refresh });
         }}
       >
         <Icon name="add-outline" type="ionicon" color="white" />

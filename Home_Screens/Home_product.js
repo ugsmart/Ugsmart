@@ -45,11 +45,27 @@ const Eview = ({ item, nav }) => {
           textAlign: "center",
           fontSize: RFPercentage(2),
           fontFamily: "Rub",
-
         }}
       >
         {item.Price}
       </Text>
+      {item.Bater && (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontWeight: "bold" }}>Bater trade</Text>
+          <Icon
+            containerStyle={{ alignSelf: "center", marginLeft: 5 }}
+            type="ionicon"
+            name="checkmark-circle"
+            color="green"
+            size={16}
+          />
+        </View>
+      )}
     </TouchableOpacity>
   );
 };
@@ -82,15 +98,16 @@ const Category_view = ({ nav, name, data }) => {
 };
 
 export default function Hproduct({ navigation }) {
-  const { data, loading, error, refetch } = useQuery(GET_PRODUCTS);
+  const { data, loading, error, refetch } = useQuery(GET_PRODUCTS, {
+    pollInterval: 1000,
+  });
   const [beautyCos, setBeautyCos] = useState([]);
   const [educational, setEducational] = useState([]);
   const [elecAcc, setElecAcc] = useState([]);
   const [fashion, setFashion] = useState([]);
   const [foodD, setFoodD] = useState([]);
   const [sportsA, setSportsA] = useState([]);
-  const [products, setProducts] = useState([])
-
+  const [products, setProducts] = useState([]);
 
   const refresh = () => {
     refetch();
@@ -99,7 +116,7 @@ export default function Hproduct({ navigation }) {
   useEffect(() => {
     if (data) {
       const products = data.Products;
-      setProducts(data.Products)
+      setProducts(data.Products);
       const beaut = products.filter(
         (item) => item.Category === "Beauty & Cosmetics"
       );
@@ -136,16 +153,20 @@ export default function Hproduct({ navigation }) {
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <View style={styles.container}>
-        {products.length === 0 && <View
-          style={{ justifyContent: 'center' }}
-        >
-          <Icon
-            size={RFPercentage(6)}
-            name="cart-outline"
-            type="ionicon"
-          />
-          <Text style={{ color: "black", fontWeight: "bold", textAlign: "center" }}>No Products yet</Text>
-        </View>}
+        {products.length === 0 && (
+          <View style={{ justifyContent: "center" }}>
+            <Icon size={RFPercentage(6)} name="cart-outline" type="ionicon" />
+            <Text
+              style={{
+                color: "black",
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
+              No Products yet
+            </Text>
+          </View>
+        )}
         {beautyCos.length > 0 && (
           <Category_view
             nav={navigation}
@@ -224,7 +245,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.30,
+    shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 5,
     maxHeight: 220,

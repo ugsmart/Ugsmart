@@ -404,7 +404,12 @@ export default function Pform({ navigation, route }) {
         />
         <Catego value={category} setValue={setCategory} />
         <Barter value={barter} setValue={setBarter} />
-        <Inputview text="Price Details" value={price} setValue={setPrice} />
+        <Inputview
+          text="Price Details (Ghc)"
+          value={price}
+          setValue={setPrice}
+          keyboard="numeric"
+        />
         <Button
           title="Done"
           onPress={() => {

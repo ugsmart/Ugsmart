@@ -82,7 +82,7 @@ const Category_view = ({ nav, title, name, data }) => {
 };
 
 export default function Hevent({ navigation }) {
-  const { data, loading, error, refetch } = useQuery(GET_EVENTS);
+  const { data, loading, error, refetch } = useQuery(GET_EVENTS, { pollInterval: 1000 });
   const [artsCulture, setArtsCulture] = useState([]);
   const [education, setEducation] = useState([]);
   const [entertainment, setEntertainment] = useState([]);

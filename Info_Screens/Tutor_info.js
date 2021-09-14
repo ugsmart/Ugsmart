@@ -21,13 +21,13 @@ import * as Linking from "expo-linking";
 import { RatingItem } from "../Ratings_Screens/RatingPage";
 import { DELETE_T_RATING } from "../GraphQL/Mutations";
 
-const link = Linking.createURL(`/Itutor`);
+const link = 'https://expo.io/@adlai/Ugsmart';
 const Social = async () => {
   try {
     const result = await Share.share({
       title: "UG Smart",
       message:
-        `Heya, I just up some products on UG-Smart you might be intreasted in. Click on the link to know more about the Event.\n` +
+        `Heya, I just put up my Tutor Profile on UG-smart link the link below to download the app and view my Event. '\n` +
         link,
     });
     if (result.action === Share.sharedAction) {

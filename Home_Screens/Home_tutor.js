@@ -115,7 +115,7 @@ const Category_view = ({ nav, name, data }) => {
 
 export default function Htutor({ navigation }) {
   const { data, loading, error, refetch } = useQuery(GET_APPROVED_TUTORS, {
-    pollInterval: 500,
+    pollInterval: 1000,
   });
   const [tutors, setTutors] = useState([])
   const [healthS, setHealthS] = useState([]);

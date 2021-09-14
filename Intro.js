@@ -48,11 +48,11 @@ export default function Intro({ navigation }) {
 
 const style = StyleSheet.create({
     container: {
+        padding: 10,
         flex: 1,
-        padding: 15,
-        alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "white"
+        backgroundColor: "white",
+        alignItems: 'center'
     },
     buttonCircle: {
         width: 50,

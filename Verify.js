@@ -40,7 +40,7 @@ const Verify = ({ navigation }) => {
       .then(() => {
         auth.onAuthStateChanged((user) => {
           if (user.emailVerified) {
-            navigation.replace("Home");
+            navigation.replace("Main");
           } else {
             alert("You are still not verified, Check email");
           }
@@ -56,7 +56,7 @@ const Verify = ({ navigation }) => {
   const logout = () => {
     auth
       .signOut()
-      .then(() => {})
+      .then(() => { })
       .catch((err) => alert(err.message));
   };
 

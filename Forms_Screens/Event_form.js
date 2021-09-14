@@ -33,6 +33,55 @@ const Inputview = ({ text, value, setValue, keyboard = "default" }) => {
   );
 };
 
+const Priceinputview = ({ text, setPrice, setvalue, value }) => {
+  return (
+    <View>
+      <Text style={styles.Text}>{text}</Text>
+      <View style={{ flexDirection: "row" }}>
+        <TouchableOpacity
+          onPress={() => {
+            setvalue(true);
+            setPrice("Free");
+          }}
+          style={styles.Opacv}
+        >
+          <Icon type="ionicon" name="happy-outline" />
+          <Text style={styles.Text1}>Free</Text>
+          {value && (
+            <Icon
+              type="ionicon"
+              name="checkmark-circle"
+              color="green"
+              size={20}
+              containerStyle={{ marginLeft: "auto" }}
+            />
+          )}
+        </TouchableOpacity>
+        <View style={{ padding: 2 }} />
+        <TouchableOpacity
+          style={styles.Opacv}
+          onPress={() => {
+            setvalue(false);
+            setPrice("");
+          }}
+        >
+          <Icon type="ionicon" name="cash-outline" />
+          <Text style={styles.Text1}>Priced</Text>
+          {!value && (
+            <Icon
+              type="ionicon"
+              name="checkmark-circle"
+              color="green"
+              size={20}
+              containerStyle={{ marginLeft: "auto" }}
+            />
+          )}
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
 const DnTview = ({ show1, show2, set1, set2, date, time, tim, dat, tnd }) => {
   return (
     <View style={{ flexDirection: "row", marginTop: 20 }}>
@@ -135,12 +184,14 @@ const Catego = ({ cat, setCat }) => {
   );
 };
 
-export default function Eform({ navigation }) {
+export default function Eform({ navigation, route }) {
+  const { refresh } = route.params;
   const [Add_Event, { error }] = useMutation(ADD_EVENT);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [isFree, setIsFree] = useState(true);
   const [loading, setLoading] = useState(false);
   //Variables for Date n Time Picker Modal
   const [showd, setd] = useState(false);
@@ -224,6 +275,7 @@ export default function Eform({ navigation }) {
               setLoading(false);
               Alert.alert("Event has been added sucessfully");
               navigation.goBack();
+              refresh();
             })
             .catch((err) => {
               setLoading(false);
@@ -248,7 +300,22 @@ export default function Eform({ navigation }) {
           value={description}
           setValue={setDescription}
         />
-        <Inputview text="Price Details" value={price} setValue={setPrice} />
+
+        <Priceinputview
+          value={isFree}
+          setPrice={setPrice}
+          setvalue={setIsFree}
+          text="Price Option"
+        />
+        {!isFree && (
+          <Inputview
+            text="Price (Ghc)"
+            value={price}
+            setValue={setPrice}
+            keyboard="numeric"
+          />
+        )}
+
         <DnTview
           tnd={setdnt}
           show1={showd}

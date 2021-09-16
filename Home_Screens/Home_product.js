@@ -47,7 +47,7 @@ const Eview = ({ item, nav }) => {
           fontFamily: "Rub",
         }}
       >
-        {item.Price}
+        Ghc {item.Price}
       </Text>
       {item.Bater && (
         <View

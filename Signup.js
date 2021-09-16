@@ -7,13 +7,15 @@ import {
   ScrollView,
   TextInput,
   KeyboardAvoidingView,
-  Platform
+  Platform,
 } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { auth } from "./Firebase";
 import { useMutation } from "@apollo/client";
 import { CREATE_USER } from "./GraphQL/Mutations";
+import * as Animatable from "react-native-animatable";
+
 const Textview = ({ text, num, icon, value, setValue }) => {
   return (
     <View
@@ -148,8 +150,17 @@ export default function Signup({ navigation }) {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "white" }} contentContainerStyle={{ flexGrow: 2, justifyContent: 'center', padding: 10 }}>
-      <Image
+    <ScrollView
+      style={{ flex: 1, backgroundColor: "white" }}
+      contentContainerStyle={{
+        flexGrow: 2,
+        justifyContent: "center",
+        padding: 10,
+      }}
+    >
+      <Animatable.Image
+        animation="fadeInRight"
+        duration={2000}
         style={style.img}
         resizeMode="center"
         source={require("./assets/icon.png")}
@@ -195,6 +206,9 @@ export default function Signup({ navigation }) {
           backgroundColor: "#37A7E8",
         }}
         containerStyle={{ width: "100%" }}
+        loading={loading}
+        disabled={loading}
+        disabledStyle={{ backgroundColor: "#6BAFE8" }}
       />
     </ScrollView>
   );

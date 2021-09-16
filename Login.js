@@ -1,9 +1,18 @@
 import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { Button, Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { auth } from "./Firebase";
+import * as Animatable from "react-native-animatable";
 
 const Textview = ({ text, num, jud, icon, value, setEmail }) => {
   return (
@@ -122,8 +131,17 @@ export default function Login({ navigation }) {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: 'white' }} contentContainerStyle={{ flexGrow: 2, justifyContent: 'center', padding: 10 }}>
-      <Image
+    <ScrollView
+      style={{ flex: 1, backgroundColor: "white" }}
+      contentContainerStyle={{
+        flexGrow: 2,
+        justifyContent: "center",
+        padding: 10,
+      }}
+    >
+      <Animatable.Image
+        animation="fadeInDown"
+        duration={2200}
         style={style.img}
         resizeMode="center"
         source={require("./assets/icon.png")}
@@ -155,7 +173,7 @@ export default function Login({ navigation }) {
         loading={loading}
         title="Login"
         onPress={login}
-        titleStyle={{ fontFamily: "Rub", fontWeight: 'bold' }}
+        titleStyle={{ fontFamily: "Rub", fontWeight: "bold" }}
         buttonStyle={{
           marginTop: 20,
           padding: 15,
@@ -190,7 +208,7 @@ const style = StyleSheet.create({
     width: 100,
     height: 100,
     marginBottom: 10,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   text: {
     fontFamily: "Rub",

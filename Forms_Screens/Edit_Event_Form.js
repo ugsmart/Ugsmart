@@ -34,6 +34,55 @@ const Inputview = ({ text, value, setValue, keyboard = "default" }) => {
   );
 };
 
+const Priceinputview = ({ text, setPrice, setvalue, value }) => {
+  return (
+    <View>
+      <Text style={styles.Text}>{text}</Text>
+      <View style={{ flexDirection: "row" }}>
+        <TouchableOpacity
+          onPress={() => {
+            setvalue(true);
+            setPrice("Free");
+          }}
+          style={styles.Opacv}
+        >
+          <Icon type="ionicon" name="happy-outline" />
+          <Text style={styles.Text1}>Free</Text>
+          {value && (
+            <Icon
+              type="ionicon"
+              name="checkmark-circle"
+              color="green"
+              size={20}
+              containerStyle={{ marginLeft: "auto" }}
+            />
+          )}
+        </TouchableOpacity>
+        <View style={{ padding: 2 }} />
+        <TouchableOpacity
+          style={styles.Opacv}
+          onPress={() => {
+            setvalue(false);
+            setPrice("");
+          }}
+        >
+          <Icon type="ionicon" name="cash-outline" />
+          <Text style={styles.Text1}>Priced</Text>
+          {!value && (
+            <Icon
+              type="ionicon"
+              name="checkmark-circle"
+              color="green"
+              size={20}
+              containerStyle={{ marginLeft: "auto" }}
+            />
+          )}
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
 const DnTview = ({ show1, show2, set1, set2, date, time, tim, dat, tnd }) => {
   return (
     <View style={{ flexDirection: "row", marginTop: 20 }}>
@@ -154,6 +203,7 @@ export default function EditEvent({ navigation, route }) {
   const [done, setdone] = useState(false);
   const [imgUrl, setImgUrl] = useState("");
   const [deleteLoad, setDeleteLoad] = useState(false);
+  const [isFree, setIsFree] = useState(true);
   useEffect(() => {
     setCat(item.Category);
     setDescription(item.Description);
@@ -162,6 +212,7 @@ export default function EditEvent({ navigation, route }) {
     setTime(item.Time);
     setDate(item.Date);
     setImgUrl(item.Flyer);
+    setIsFree(item.Price.toLowerCase() === "free" ? true : false);
   }, [item]);
   //....Image Picker Codes....///
   const pickImage = async () => {
@@ -300,7 +351,21 @@ export default function EditEvent({ navigation, route }) {
           value={description}
           setValue={setDescription}
         />
-        <Inputview text="Price Details" value={price} setValue={setPrice} />
+        <Priceinputview
+          value={isFree}
+          setPrice={setPrice}
+          setvalue={setIsFree}
+          text="Price Option"
+        />
+        {!isFree && (
+          <Inputview
+            text="Price (Ghc)"
+            value={price}
+            setValue={setPrice}
+            keyboard="numeric"
+          />
+        )}
+
         <DnTview
           tnd={setdnt}
           show1={showd}
@@ -324,6 +389,8 @@ export default function EditEvent({ navigation, route }) {
           }}
           loading={loading}
           containerStyle={{ width: "100%" }}
+          disabled={loading}
+          disabledStyle={{ backgroundColor: "#6BAFE8" }}
         />
       </View>
     </ScrollView>

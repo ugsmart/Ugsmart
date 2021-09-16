@@ -47,8 +47,25 @@ const Eview = ({ nav, item }) => {
           fontFamily: "Rub",
         }}
       >
-        {item.Price}
+        Ghc {item.Price}
       </Text>
+      {item.Bater && (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontWeight: "bold" }}>Bater trade</Text>
+          <Icon
+            containerStyle={{ alignSelf: "center", marginLeft: 5 }}
+            type="ionicon"
+            name="checkmark-circle"
+            color="green"
+            size={16}
+          />
+        </View>
+      )}
     </TouchableOpacity>
   );
 };
@@ -174,7 +191,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.30,
+    shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 5,
     maxHeight: 220,

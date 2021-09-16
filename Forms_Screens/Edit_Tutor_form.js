@@ -290,6 +290,8 @@ export default function TutorEdit({ navigation, route }) {
           }}
           containerStyle={{ width: "100%" }}
           loading={loading}
+          disabled={loading}
+          disabledStyle={{ backgroundColor: "#6BAFE8" }}
         />
       </View>
     </ScrollView>

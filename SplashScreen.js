@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View, Image, ActivityIndicator } from "react-native";
 import { auth } from "./Firebase";
+import * as Animatable from "react-native-animatable";
 
 const Splash = ({ navigation }) => {
   useEffect(() => {
@@ -12,7 +13,12 @@ const Splash = ({ navigation }) => {
   }, []);
   return (
     <View style={styles.container}>
-      <Image source={require("./assets/logo.png")} style={styles.image} />
+      <Animatable.Image
+        source={require("./assets/logo.png")}
+        style={styles.image}
+        animation="fadeInDown"
+        duration={2500}
+      />
       <ActivityIndicator color="black" />
     </View>
   );

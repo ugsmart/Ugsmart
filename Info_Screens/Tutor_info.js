@@ -21,7 +21,7 @@ import * as Linking from "expo-linking";
 import { RatingItem } from "../Ratings_Screens/RatingPage";
 import { DELETE_T_RATING } from "../GraphQL/Mutations";
 
-const link = 'https://expo.io/@adlai/Ugsmart';
+const link = "https://expo.io/@adlai/Ugsmart";
 const Social = async () => {
   try {
     const result = await Share.share({
@@ -131,7 +131,7 @@ const Des_view = ({
         <Text style={styles.text}>{item.Program}</Text>
         <Text style={styles.Ptext}>Price Details</Text>
         <Text style={styles.text}>
-          Ghc{item.Price} {item.Duration}
+          Ghc {item.Price} {item.Duration}
         </Text>
         <TouchableOpacity
           activeOpacity={0.5}
@@ -259,6 +259,7 @@ const Des_view = ({
             }}
             loading={chatLoading}
             disabled={chatLoading}
+            disabledStyle={{ backgroundColor: "green" }}
           />
         )}
       </View>

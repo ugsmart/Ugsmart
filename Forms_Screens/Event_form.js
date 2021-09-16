@@ -339,6 +339,8 @@ export default function Eform({ navigation, route }) {
           }}
           loading={loading}
           containerStyle={{ width: "100%" }}
+          disabled={loading}
+          disabledStyle={{ backgroundColor: "#6BAFE8" }}
         />
       </View>
     </ScrollView>

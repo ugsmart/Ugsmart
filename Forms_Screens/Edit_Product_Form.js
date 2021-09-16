@@ -434,6 +434,8 @@ export default function ProductEdit({ navigation, route }) {
             backgroundColor: "#37A7E8",
           }}
           containerStyle={{ width: "100%" }}
+          disabled={loading}
+          disabledStyle={{ backgroundColor: "#6BAFE8" }}
         />
       </View>
     </ScrollView>

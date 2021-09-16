@@ -15,6 +15,7 @@ import { GET_TUTOR } from "../GraphQL/Queries";
 import { DELETE_TUTOR } from "../GraphQL/Mutations";
 import Loading from "../Loading";
 import ErrorPage from "../ErrorPage";
+import * as Animatable from "react-native-animatable";
 
 const Logout = () => {
   auth.signOut();
@@ -30,7 +31,11 @@ const Delete = () => {
 
 const TutorProfile = ({ expanded, view, edit, deleteT }) => {
   return (
-    <View style={{ marginLeft: 30, display: expanded ? "flex" : "none" }}>
+    <Animatable.View
+      transition="display"
+      duration={2000}
+      style={{ marginLeft: 30, display: expanded ? "flex" : "none" }}
+    >
       <ListItem bottomDivider onPress={() => view()}>
         <ListItem.Content>
           <ListItem.Title>View Tutor Profile</ListItem.Title>
@@ -49,7 +54,7 @@ const TutorProfile = ({ expanded, view, edit, deleteT }) => {
         </ListItem.Content>
         <ListItem.Chevron />
       </ListItem>
-    </View>
+    </Animatable.View>
   );
 };
 
@@ -121,18 +126,36 @@ export default function Haccount({ navigation }) {
   }
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 2 }} style={styles.container}>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 10 }}>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 2 }}
+      style={styles.container}
+    >
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 10,
+        }}
+      >
         <Avatar
           size={RFPercentage(24)}
           rounded
           title={userName.slice(0, 1).toUpperCase()}
-          avatarStyle={{ backgroundColor: 'green' }}
+          avatarStyle={{ backgroundColor: "green" }}
         />
         <Text style={{ marginTop: 10 }}>{auth.currentUser.email}</Text>
         <Text>{userName}</Text>
       </View>
-      <View style={{ flex: 2, backgroundColor: 'white', borderTopRightRadius: 20, borderTopLeftRadius: 20, padding: 5 }}>
+      <View
+        style={{
+          flex: 2,
+          backgroundColor: "white",
+          borderTopRightRadius: 20,
+          borderTopLeftRadius: 20,
+          padding: 5,
+        }}
+      >
         <Aview
           name="Change Password"
           icon="shield-checkmark-outline"
@@ -197,7 +220,7 @@ export default function Haccount({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#eee"
+    backgroundColor: "#eee",
   },
   Touch: {
     flex: 1,

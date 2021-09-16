@@ -1,11 +1,19 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, ActivityIndicator } from "react-native";
+import * as Animatable from "react-native-animatable";
 
 const Loading = () => {
   return (
     <View style={styles.container}>
       <ActivityIndicator color="black" />
-      <Text style={styles.text}>Loading...</Text>
+      <Animatable.Text
+        style={styles.text}
+        animation="pulse"
+        iterationCount="infinite"
+        iterationDelay={200}
+      >
+        Loading...
+      </Animatable.Text>
     </View>
   );
 };

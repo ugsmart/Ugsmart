@@ -3,16 +3,17 @@ import { StyleSheet, View, ScrollView, Image, Text, Share } from "react-native";
 import { Icon } from "react-native-elements";
 import { RFPercentage } from "react-native-responsive-fontsize";
 const noImage = require("../assets/noImage.jpg");
-import * as Linking from "expo-linking"
+import * as Linking from "expo-linking";
 
 //https://expo.io/@adlai/Ugsmart
-const link = 'https://expo.io/@adlai/Ugsmart'
+const link = "https://expo.io/@adlai/Ugsmart";
 const Social = async () => {
   try {
     const result = await Share.share({
       title: "UG Smart",
-      message: `Heyy, I just put up an upcoming event you'll be interested in on UG-smart link the link below to download the app and view my Event.\n` +
-        link
+      message:
+        `Heyy, I just put up an upcoming event you'll be interested in on UG-smart link the link below to download the app and view my Event.\n` +
+        link,
     });
     if (result.action === Share.sharedAction) {
       if (result.activityType) {
@@ -43,7 +44,13 @@ const Des_view = ({ item }) => {
       <View style={styles.content}>
         <View style={styles.tview}>
           <Text style={styles.title}>About</Text>
-          <View style={{ flexDirection: "row", alignItems: "center", marginRight: 5 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginRight: 5,
+            }}
+          >
             <Icon
               name="share-social-outline"
               size={RFPercentage(4)}
@@ -63,7 +70,11 @@ const Des_view = ({ item }) => {
         </View>
         <View style={styles.row}>
           <Text style={styles.bold}>Price Details: </Text>
-          <Text style={styles.text}>{item.Price}</Text>
+          {item.Price.toLowerCase() === "free" ? (
+            <Text style={styles.text}>Free</Text>
+          ) : (
+            <Text style={styles.text}>Ghc {item.Price}</Text>
+          )}
         </View>
       </View>
     </ScrollView>

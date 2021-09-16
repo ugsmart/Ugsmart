@@ -20,7 +20,7 @@ import { RatingItem } from "../Ratings_Screens/RatingPage";
 import { DELETE_P_RATING } from "../GraphQL/Mutations";
 
 //'https://expo.io/@adlai/Ugsmart'
-const link = 'https://expo.io/@adlai/Ugsmart';
+const link = "https://expo.io/@adlai/Ugsmart";
 const Social = async () => {
   try {
     const result = await Share.share({
@@ -127,7 +127,7 @@ const Des_view = ({
         </View>
         <Text style={styles.text}>{item.Description}</Text>
         <Text style={styles.Ptext}>Price Details</Text>
-        <Text style={styles.price}>{item.Price}</Text>
+        <Text style={styles.price}>Ghc {item.Price}</Text>
         <View style={{ flexDirection: "row", marginTop: 5 }}>
           <Text style={styles.Ptext}>Barter Trade</Text>
           {item.Bater ? (
@@ -267,6 +267,7 @@ const Des_view = ({
             }}
             loading={chatLoading}
             disabled={chatLoading}
+            disabledStyle={{ backgroundColor: "green" }}
           />
         )}
       </View>
